@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" type="image/png" href="logo.png"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Taste &amp; View | Discover Food, Culture &amp; Places in Andhra Pradesh</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   TASTE & VIEW — REDESIGNED UI v5
+   Mobile-app style · South Indian warmth · Premium clean
+   ALL existing JS hooks (IDs/classes) preserved
+═══════════════════════════════════════════════════════════ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  /* Brand */
+  --saffron:#FF6B00;--saffron-lt:#FF8C35;--saffron-dk:#D95A00;
+  --gold:#FFB300;--gold-lt:#FFC933;--gold-dk:#E09800;
+  /* Surfaces */
+  --bg:#F7F4F0;--card:#FFFFFF;--card2:#FFFAF5;
+  --surface:#F0EBE3;--surface2:#E8E0D5;
+  /* Text */
+  --tx:#1A1208;--tx2:#5C4A2A;--tx3:#9C8870;--tx4:#BFB0A0;
+  /* Accent */
+  --green:#16A34A;--blue:#2563EB;--red:#DC2626;
+  /* Shadows */
+  --sh-sm:0 2px 8px rgba(90,50,10,.08);
+  --sh:0 4px 20px rgba(90,50,10,.10);
+  --sh-md:0 8px 32px rgba(90,50,10,.14);
+  --sh-lg:0 20px 60px rgba(90,50,10,.18);
+  --sh-gold:0 4px 20px rgba(255,107,0,.25);
+  /* Radius */
+  --r-sm:10px;--r:16px;--r-lg:22px;--r-xl:30px;--r-full:999px;
+  /* Transitions */
+  --t:all .22s cubic-bezier(.4,0,.2,1);
+  --ts:all .16s cubic-bezier(.4,0,.2,1);
+  /* Gradients */
+  --gg:linear-gradient(135deg,#FF8C35,#FF6B00,#D95A00);
+  --gg2:linear-gradient(135deg,#FFC933,#FFB300,#E09800);
+  --gcard:linear-gradient(180deg,transparent 45%,rgba(26,18,8,.85) 100%);
+  /* Layout */
+  --hdr-h:62px;--bnav-h:68px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);color:var(--tx);
+  min-height:100vh;overflow-x:hidden;
+  padding-bottom:0;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none}
+input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif}
+img{display:block}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+
+/* ─────────────────────────────────────
+   TOP HEADER — App style
+───────────────────────────────────── */
+/* ─── HEADER — Logo LEFT · Icons RIGHT ─── */
+.header{
+  position:sticky;top:0;z-index:900;
+  background:rgba(247,244,240,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--surface);
+  box-shadow:0 1px 12px rgba(90,50,10,.06);
+  height:var(--hdr-h);
+}
+.header-in{
+  width:100%;max-width:1200px;margin:0 auto;
+  padding:0 14px;height:100%;
+  display:flex;align-items:center;gap:10px;
+}
+/* Logo — always left */
+.logo{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;flex-shrink:0;
+}
+.logo img{width:30px;height:30px;border-radius:9px;object-fit:cover;box-shadow:var(--sh-sm)}
+.logo-text{
+  font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:800;
+  background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.01em;white-space:nowrap;
+}
+.tagline{display:none}
+/* Search pill — grows in centre */
+.search-wrap{flex:1;min-width:0;max-width:400px;position:relative}
+.header-search-pill{
+  width:100%;display:flex;align-items:center;gap:8px;
+  background:var(--surface);border-radius:var(--r-full);
+  padding:9px 14px;cursor:pointer;transition:var(--t);
+  border:1.5px solid transparent;
+}
+.header-search-pill:focus-within,.header-search-pill:hover{
+  background:#fff;border-color:rgba(255,107,0,.3);box-shadow:var(--sh-sm);
+}
+.header-search-pill i{color:var(--tx3);font-size:.82rem;flex-shrink:0}
+.header-search-pill input{
+  background:transparent;border:none;outline:none;
+  color:var(--tx);font-size:.82rem;width:100%;min-width:0;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.header-search-pill input::placeholder{color:var(--tx3)}
+.search-kbd{font-size:.56rem;background:#fff;border:1px solid var(--surface2);color:var(--tx3);padding:2px 5px;border-radius:5px;flex-shrink:0;box-shadow:var(--sh-sm);display:none}
+@media(min-width:640px){.search-kbd{display:inline}}
+/* Right icons group — always right */
+.header-right{
+  display:flex;align-items:center;gap:6px;
+  flex-shrink:0;margin-left:auto;
+}
+.icon-btn{
+  position:relative;width:36px;height:36px;border-radius:50%;
+  background:var(--surface);border:1.5px solid var(--surface2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--tx2);font-size:.84rem;transition:var(--t);text-decoration:none;
+  flex-shrink:0;
+}
+.icon-btn:hover{background:rgba(255,107,0,.1);border-color:var(--saffron);color:var(--saffron)}
+/* Hide AI/Profile icons on very small screens, show on sm+ */
+.mob-hide{display:none}
+@media(min-width:480px){.mob-hide{display:flex}}
+.fav-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--saffron);color:#fff;
+  font-size:.44rem;font-weight:800;
+  width:15px;height:15px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+.login-btn{
+  display:flex;align-items:center;gap:5px;
+  background:var(--gg);color:#fff;padding:8px 13px;border-radius:var(--r-full);
+  font-size:.76rem;font-weight:700;transition:var(--t);
+  box-shadow:var(--sh-gold);white-space:nowrap;flex-shrink:0;
+}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,107,0,.4)}
+.login-txt{display:none}
+@media(min-width:400px){.login-txt{display:inline}}
+/* Desktop */
+@media(min-width:768px){
+  .header-in{gap:16px;padding:0 20px}
+  .search-wrap{max-width:380px}
+  .tagline{display:block;font-size:.62rem;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+  .mob-hide{display:flex}
+}
+
+/* Search dropdown — preserve original behaviour */
+.search-wrap{position:relative;flex:1;max-width:480px}
+.search-input-row{display:none}/* hidden — using pill above */
+.search-dropdown{
+  position:absolute;top:calc(100% + 8px);left:-16px;right:-16px;
+  background:var(--card);border-radius:var(--r-lg);
+  border:1px solid var(--surface);box-shadow:var(--sh-lg);
+  overflow:hidden;z-index:200;display:none;
+}
+.search-dropdown.open{display:block;animation:ddIn .16s ease}
+@keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.search-cat-tabs{display:flex;border-bottom:1px solid var(--surface);padding:4px 6px 0;overflow-x:auto;scrollbar-width:none;gap:2px}
+.search-cat-tabs::-webkit-scrollbar{display:none}
+.scat{padding:8px 12px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);cursor:pointer;white-space:nowrap;border:none;border-bottom:2.5px solid transparent;background:none;font-family:'Plus Jakarta Sans',sans-serif;transition:var(--t);border-radius:var(--r-sm) var(--r-sm) 0 0}
+.scat.active,.scat:hover{color:var(--saffron);border-bottom-color:var(--saffron)}
+.search-results{max-height:280px;overflow-y:auto}
+.search-result-item{display:flex;align-items:center;gap:11px;padding:11px 14px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--surface)}
+.search-result-item:hover,.search-result-item.focused{background:rgba(255,107,0,.05)}
+.sri-img{width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.sri-body{flex:1;min-width:0}
+.sri-name{font-size:.84rem;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sri-meta{font-size:.66rem;color:var(--tx3);margin-top:2px;display:flex;gap:7px}
+.sri-badge{font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:var(--r-full);background:rgba(255,107,0,.1);color:var(--saffron);border:1px solid rgba(255,107,0,.2);white-space:nowrap;align-self:center;flex-shrink:0}
+.search-empty{padding:28px 14px;text-align:center;color:var(--tx3);font-size:.8rem}
+
+/* ─────────────────────────────────────
+   LOCATION BAR
+───────────────────────────────────── */
+.location-bar{
+  background:var(--card);border-bottom:1px solid var(--surface);
+  padding:8px 16px;
+}
+.location-bar-in{max-width:480px;margin:0 auto}
+.location-box{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--surface);border:1.5px solid var(--surface2);
+  border-radius:var(--r-full);padding:7px 14px;transition:var(--t);
+}
+.location-box:hover{border-color:var(--saffron)}
+.location-box i{color:var(--saffron);font-size:.9rem}
+.location-box select{background:transparent;border:none;outline:none;color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:600;cursor:pointer}
+.location-box select option{background:var(--card);color:var(--tx)}
+@media(min-width:768px){.location-bar-in{max-width:1200px}}
+
+/* ─────────────────────────────────────
+   TOP NAV — Horizontal scrollable chips
+───────────────────────────────────── */
+.top-nav{
+  background:var(--card);border-bottom:1px solid var(--surface);
+  padding:10px 16px;display:flex;gap:7px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.top-nav::-webkit-scrollbar{display:none}
+.top-nav-in{display:flex;gap:7px;margin:0 auto}
+.top-nav a{
+  text-decoration:none;color:var(--tx2);font-size:.72rem;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  padding:8px 14px;white-space:nowrap;
+  border-radius:var(--r-full);border:1.5px solid var(--surface);
+  background:var(--surface);transition:var(--t);
+  display:flex;align-items:center;gap:5px;flex-shrink:0;
+}
+.top-nav a:hover{border-color:var(--saffron);color:var(--saffron);background:rgba(255,107,0,.06)}
+.top-nav a.active{background:var(--gg);border-color:transparent;color:#fff;box-shadow:var(--sh-gold)}
+.top-nav a i{font-size:.7rem}
+
+/* ─────────────────────────────────────
+   AD HERO CAROUSEL — Full width, responsive
+───────────────────────────────────── */
+.ad-hero{
+  position:relative;overflow:hidden;
+  /* Full bleed on mobile — no side margins */
+  height:56vw;min-height:196px;max-height:340px;
+  margin:8px 0;border-radius:0;box-shadow:none;
+}
+@media(min-width:420px){
+  .ad-hero{height:52vw;min-height:210px;max-height:360px;
+    margin:10px 14px;border-radius:var(--r-xl);box-shadow:var(--sh-md)}
+}
+@media(min-width:768px){
+  .ad-hero{height:360px;max-height:none;
+    margin:14px 20px;border-radius:var(--r-xl)}
+}
+@media(min-width:1200px){.ad-hero{height:440px;margin:16px 20px}}
+.carousel-track{display:flex;height:100%;transition:transform .65s cubic-bezier(.4,0,.2,1);will-change:transform}
+.carousel-slide{min-width:100%;height:100%;position:relative;flex-shrink:0;overflow:hidden}
+@media(min-width:420px){.carousel-slide{border-radius:var(--r-xl)}}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;transition:transform 8s ease;display:block}
+.carousel-slide.active img{transform:scale(1.05)}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(160deg,rgba(26,18,8,.84) 0%,rgba(26,18,8,.12) 52%,rgba(26,18,8,.6) 100%)}
+@media(min-width:420px){.slide-overlay{border-radius:var(--r-xl)}}
+.slide-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 16px 16px;z-index:2}
+@media(min-width:480px){.slide-content{padding:20px 22px}}
+@media(min-width:768px){.slide-content{padding:32px 40px;justify-content:center}}
+.slide-eyebrow{display:inline-flex;align-items:center;gap:5px;background:rgba(255,107,0,.2);border:1px solid rgba(255,107,0,.4);border-radius:var(--r-full);padding:3px 9px;font-size:.52rem;font-weight:800;color:var(--gold-lt);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;width:fit-content;animation:slideUp .5s ease .2s both}
+.slide-headline{font-family:'Syne',sans-serif;font-size:clamp(.96rem,3.8vw,2.2rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:6px;max-width:340px;animation:slideUp .5s ease .3s both}
+.slide-headline span{color:var(--gold-lt)}
+.slide-sub{font-size:clamp(.66rem,2vw,.8rem);color:rgba(255,248,240,.78);margin-bottom:10px;max-width:300px;line-height:1.55;animation:slideUp .5s ease .4s both;display:-webkit-box;--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.slide-ctas{display:flex;gap:7px;flex-wrap:wrap;animation:slideUp .5s ease .5s both}
+.slide-btn-p{display:inline-flex;align-items:center;gap:5px;background:var(--gg);color:#fff;padding:8px 14px;border-radius:var(--r-full);font-size:.7rem;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:var(--t);box-shadow:var(--sh-gold)}
+.slide-btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,0,.5)}
+.slide-btn-o{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);color:#fff;padding:8px 13px;border-radius:var(--r-full);font-size:.7rem;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.3);cursor:pointer;transition:var(--t)}
+.slide-btn-o:hover{background:rgba(255,255,255,.26);transform:translateY(-2px)}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(247,244,240,.88);backdrop-filter:blur(10px);border:1px solid rgba(90,50,10,.1);color:var(--tx2);font-size:.72rem;cursor:pointer;transition:var(--t);z-index:10;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-sm)}
+.carousel-btn:hover{background:#fff;color:var(--saffron);box-shadow:var(--sh)}
+.carousel-btn.prev{left:8px}.carousel-btn.next{right:8px}
+.carousel-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:10}
+.cdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer;transition:var(--t);border:none}
+.cdot.active{background:#fff;width:20px;border-radius:3px}
+.carousel-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--gg);z-index:10;border-radius:0;transition:width linear}
+@media(min-width:420px){.carousel-progress{border-radius:0 0 var(--r-xl) var(--r-xl)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* ─────────────────────────────────────
+   OFFERS TICKER STRIP
+───────────────────────────────────── */
+.offers-strip{
+  background:var(--card);margin:0 0 2px;
+  padding:10px 0;overflow:hidden;position:relative;
+  border-top:1px solid var(--surface);border-bottom:1px solid var(--surface);
+}
+.offers-strip::before,.offers-strip::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
+.offers-strip::before{left:0;background:linear-gradient(90deg,var(--card),transparent)}
+.offers-strip::after{right:0;background:linear-gradient(270deg,var(--card),transparent)}
+.offers-track{display:flex;width:max-content;animation:tickerAnim 32s linear infinite}
+.offers-track:hover{animation-play-state:paused}
+@keyframes tickerAnim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.offer-pill{display:inline-flex;align-items:center;gap:6px;padding:0 20px;font-size:.74rem;font-weight:600;color:var(--tx2);white-space:nowrap;border-right:1px solid var(--surface)}
+.offer-pill i{color:var(--saffron)}.offer-pill strong{color:var(--saffron-dk)}
+
+/* ─────────────────────────────────────
+   APP CATEGORY SHORTCUTS
+   (New section — before analysis)
+───────────────────────────────────── */
+.app-cats{
+  background:var(--card);padding:16px 0 18px;
+  border-bottom:1px solid var(--surface);
+}
+.app-cats-in{max-width:480px;margin:0 auto;padding:0 12px}
+.app-cats-grid{
+  display:flex;gap:0;
+  overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  justify-content:space-around;
+}
+.app-cats-grid::-webkit-scrollbar{display:none}
+.app-cat-item{
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;flex-shrink:0;flex:1;min-width:62px;max-width:80px;
+  transition:var(--t);text-decoration:none;padding:4px 2px;
+}
+.app-cat-item:active{transform:scale(.88)}
+/* PERFECT CIRCLE — Zomato/Swiggy style */
+.app-cat-ico{
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;transition:var(--t);
+  box-shadow:0 4px 14px rgba(90,50,10,.10);
+}
+.app-cat-item:hover .app-cat-ico{transform:translateY(-3px);box-shadow:var(--sh)}
+.app-cat-ico.restaurants{background:linear-gradient(145deg,#FFECD8,#FFBE8A)}
+.app-cat-ico.restaurants i{color:#E55A00}
+.app-cat-ico.places{background:linear-gradient(145deg,#DDFBE8,#86E6AF)}
+.app-cat-ico.places i{color:#1A7A40}
+.app-cat-ico.hotels{background:linear-gradient(145deg,#D8EEFF,#7EC4FF)}
+.app-cat-ico.hotels i{color:#0A5EA8}
+.app-cat-ico.culture{background:linear-gradient(145deg,#EFD8FF,#CB8AFF)}
+.app-cat-ico.culture i{color:#6B11B0}
+.app-cat-ico.events{background:linear-gradient(145deg,#FFF3CC,#FFD966)}
+.app-cat-ico.events i{color:#B35B00}
+.app-cat-lbl{
+  font-size:.69rem;font-weight:700;color:var(--tx2);
+  text-align:center;white-space:nowrap;letter-spacing:-.01em;
+}
+@media(min-width:768px){
+  .app-cats{padding:20px 0 24px}
+  .app-cats-in{max-width:1200px;padding:0 16px}
+  .app-cats-grid{justify-content:flex-start;gap:4px;overflow-x:visible}
+  .app-cat-item{min-width:80px;max-width:100px;flex:0 0 auto}
+  .app-cat-ico{width:66px;height:66px;font-size:1.5rem}
+  .app-cat-lbl{font-size:.78rem}
+}
+
+/* ─────────────────────────────────────
+   SECTIONS — General layout
+───────────────────────────────────── */
+.section{
+  padding:22px 14px 26px;
+  position:relative;max-width:100%;margin:0 auto;overflow:visible;
+}
+/* No fade overlay — clean grid layout */
+.section-hd{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+}
+/* Grid inside section */
+.section>.grid,.section .grid{overflow:visible}
+.section-inner>.grid,.section>.stagger.grid{overflow:visible}
+@media(min-width:768px){
+  .section{max-width:1200px;padding:34px 20px 40px}
+  .section-hd{padding:0}
+}
+
+/* Section headers */
+.section-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);
+  border-radius:var(--r-full);padding:4px 10px;
+  font-size:.58rem;font-weight:800;color:var(--saffron);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:1.22rem;font-weight:800;
+  color:var(--tx);line-height:1.15;letter-spacing:-.01em;
+}
+.section-underline{width:36px;height:3px;background:var(--gg);border-radius:2px;margin-top:5px}
+.section-subtitle{font-size:.74rem;color:var(--tx3);margin-top:4px}
+.see-all-btn{
+  display:flex;align-items:center;gap:4px;
+  font-size:.75rem;font-weight:700;color:var(--saffron);
+  padding:7px 14px;border-radius:var(--r-full);
+  border:1.5px solid rgba(255,107,0,.25);background:rgba(255,107,0,.07);
+  transition:var(--t);flex-shrink:0;cursor:pointer;
+}
+.see-all-btn:hover{background:var(--saffron);color:#fff;border-color:transparent}
+
+/* ─────────────────────────────────────
+   ANALYSIS SECTION
+───────────────────────────────────── */
+#analysis{background:var(--card);padding:22px 14px 24px;margin-bottom:8px;max-width:none}
+#analysis .section-inner{max-width:660px;margin:0 auto;padding:0}
+@media(min-width:768px){#analysis .section-inner{max-width:1200px}}
+/* keep original .analysis-wrap but reskin */
+.analysis-wrap{
+  background:var(--bg);border-radius:var(--r-lg);
+  border:1.5px solid var(--surface);
+  padding:18px 16px;max-width:660px;margin:0 auto 20px;
+}
+.analysis-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.budget-input-wrap{position:relative;flex:1;min-width:130px}
+.currency-sym{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--saffron);font-weight:800;font-size:.9rem;pointer-events:none}
+.budget-input{
+  width:100%;padding:11px 12px 11px 30px;
+  background:var(--card);border:1.5px solid var(--surface);
+  border-radius:var(--r-full);color:var(--tx);
+  font-size:.88rem;outline:none;transition:var(--t);
+}
+.budget-input:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.budget-input::placeholder{color:var(--tx3)}
+.cat-select{
+  flex:1;min-width:130px;padding:11px 32px 11px 14px;
+  background:var(--card);border:1.5px solid var(--surface);
+  border-radius:var(--r-full);color:var(--tx);
+  font-size:.86rem;outline:none;cursor:pointer;transition:var(--t);
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23FF6B00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.cat-select:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.cat-select option{background:var(--card);color:var(--tx)}
+.analyze-btn{
+  background:var(--gg);border:none;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.82rem;font-weight:800;
+  padding:11px 20px;border-radius:var(--r-full);cursor:pointer;
+  letter-spacing:.04em;transition:var(--t);
+  box-shadow:var(--sh-gold);white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.analyze-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,0,.45)}
+.analyze-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.sort-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px;max-width:660px;margin:0 auto 14px}
+.result-count{font-size:.8rem;color:var(--tx3)}
+.result-count span{color:var(--saffron);font-weight:700}
+.sort-select{
+  background:var(--card);border:1.5px solid var(--surface);
+  color:var(--tx);font-size:.76rem;padding:7px 26px 7px 11px;
+  border-radius:var(--r-full);outline:none;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' stroke='%23FF6B00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;
+}
+.sort-select option{background:var(--card)}
+.ai-reasoning{
+  background:linear-gradient(135deg,rgba(255,107,0,.06),rgba(255,179,0,.04));
+  border:1.5px solid rgba(255,107,0,.18);
+  border-radius:var(--r-lg);padding:16px 18px;
+  margin-bottom:20px;max-width:660px;margin-left:auto;margin-right:auto;
+  position:relative;overflow:hidden;
+}
+.ai-reasoning::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--gg);border-radius:2px 2px 0 0}
+.ai-reasoning-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.ai-reasoning-hd i{color:var(--gold)}.ai-reasoning-hd span{font-size:.78rem;font-weight:800;color:var(--gold-dk);letter-spacing:.06em}
+.ai-reasoning p{font-size:.82rem;color:var(--tx2);line-height:1.72}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.cursor::after{content:'|';color:var(--saffron);animation:blink .8s infinite}
+
+/* ─────────────────────────────────────
+   CARD GRID
+───────────────────────────────────── */
+/* ─────────────────────────────────────
+   CARD GRID — 2-col mobile · 3-4 col desktop
+───────────────────────────────────── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:11px;
+  /* No overflow issues — clean grid */
+}
+@media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr);gap:14px}}
+@media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+/* Cards fill grid naturally */
+.grid>.card,.grid>.culture-card{width:auto;min-width:0;max-width:none;flex-shrink:unset}
+.grid>.empty-state{grid-column:1/-1}
+
+/* ─────────────────────────────────────
+   CARD — New app-style design
+───────────────────────────────────── */
+.card{
+  background:var(--card);border-radius:var(--r-lg);
+  overflow:hidden;transition:var(--t);
+  position:relative;
+  box-shadow:var(--sh-sm);
+  border:1px solid var(--surface);
+  display:flex;flex-direction:column;
+  animation:fadeUp .4s ease both;
+}
+.card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(255,107,0,.2)}
+.card:active{transform:scale(.97)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card:nth-child(1){animation-delay:.04s}.card:nth-child(2){animation-delay:.08s}
+.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.16s}
+.card:nth-child(5){animation-delay:.20s}.card:nth-child(6){animation-delay:.24s}
+.card:nth-child(7){animation-delay:.28s}.card:nth-child(8){animation-delay:.32s}
+/* Image */
+.card-img-wrap{position:relative;overflow:hidden;height:155px;flex-shrink:0}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s;display:block}
+.card:hover .card-img-wrap img{transform:scale(1.06)}
+/* Gradient overlay */
+.card-img-wrap::after{content:'';position:absolute;inset:0;background:var(--gcard);pointer-events:none}
+.card-badge{
+  position:absolute;top:9px;left:9px;z-index:2;
+  background:rgba(247,244,240,.92);backdrop-filter:blur(8px);
+  border:1px solid var(--surface);color:var(--tx2);
+  font-size:.56rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 8px;border-radius:var(--r-full);display:flex;align-items:center;gap:4px;
+}
+.card-rating{
+  position:absolute;top:9px;right:9px;z-index:2;
+  background:rgba(247,244,240,.92);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,179,0,.3);color:var(--gold-dk);
+  font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:var(--r-full);
+}
+.card-cost{
+  position:absolute;bottom:9px;right:9px;z-index:2;
+  font-size:.62rem;font-weight:800;padding:3px 8px;border-radius:var(--r-full);
+  background:var(--gg);color:#fff;
+}
+.card-cost.free{background:linear-gradient(135deg,#16A34A,#15803D)}
+/* Body */
+.card-body{padding:10px 12px 6px;flex:1;overflow:hidden}
+.card-body h3{font-size:.88rem;font-weight:700;margin-bottom:3px;color:var(--tx);line-height:1.3}
+.card-body p{font-size:.72rem;color:var(--tx3);line-height:1.5;display:-webkit-box;--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Actions */
+.card-actions{display:flex;gap:5px;padding:0 10px 10px;flex-shrink:0}
+.btn-view{
+  flex:1.2;padding:8px 6px;
+  background:var(--gg);border:none;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.69rem;font-weight:700;
+  border-radius:var(--r-sm);cursor:pointer;transition:var(--t);
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.btn-view:hover{opacity:.88;transform:scale(1.02)}
+.btn-dir{
+  flex:1;padding:8px 4px;
+  background:rgba(37,99,235,.08);border:1.5px solid rgba(37,99,235,.2);
+  color:var(--blue);font-family:'Plus Jakarta Sans',sans-serif;font-size:.69rem;font-weight:700;
+  border-radius:var(--r-sm);cursor:pointer;transition:var(--t);
+  display:flex;align-items:center;justify-content:center;gap:4px;text-decoration:none;
+}
+.btn-dir:hover{background:rgba(37,99,235,.18);border-color:var(--blue)}
+.btn-fav{
+  width:32px;height:32px;background:var(--surface);border:1.5px solid var(--surface2);
+  color:var(--tx3);border-radius:var(--r-sm);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;
+  transition:var(--t);flex-shrink:0;
+}
+.btn-fav:hover,.btn-fav.active{color:#DC2626;border-color:#FECACA;background:#FFF0F0}
+/* AI Pick badge */
+.card.ai-pick{border-color:rgba(255,179,0,.4)}
+.card.ai-pick::before{
+  content:'✦ AI Pick';position:absolute;top:7px;left:50%;transform:translateX(-50%);
+  background:var(--gg2);color:var(--tx);font-size:.5rem;font-weight:800;
+  letter-spacing:.1em;padding:3px 9px;border-radius:var(--r-full);z-index:3;
+  white-space:nowrap;box-shadow:var(--sh-sm);
+}
+
+/* ─────────────────────────────────────
+   CULTURE CARDS
+───────────────────────────────────── */
+.culture-tabs{display:flex;gap:7px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:flex-start;margin-bottom:20px;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.culture-tabs::-webkit-scrollbar{display:none}
+.culture-tab{background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 14px;border-radius:var(--r-full);cursor:pointer;transition:var(--t);display:flex;align-items:center;gap:5px;flex-shrink:0;white-space:nowrap}
+.culture-tab:hover{border-color:var(--saffron);color:var(--saffron)}
+.culture-tab.active{background:var(--gg);border-color:transparent;color:#fff;box-shadow:var(--sh-gold)}
+.culture-card{background:var(--card);border:1px solid var(--surface);border-radius:var(--r-lg);overflow:hidden;transition:var(--t);animation:fadeUp .44s ease both;box-shadow:var(--sh-sm)}
+.culture-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(255,107,0,.25)}
+.culture-card .cc-img{width:100%;height:170px;object-fit:cover;transition:transform .44s;display:block}
+.culture-card:hover .cc-img{transform:scale(1.06)}
+.culture-card .cc-body{padding:12px 14px 14px}
+.culture-card .cc-cat{font-size:.58rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--saffron);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.culture-card .cc-name{font-size:.9rem;font-weight:700;color:var(--tx);margin-bottom:4px}
+.culture-card .cc-desc{font-size:.72rem;color:var(--tx3);line-height:1.55;display:-webkit-box;--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.culture-card .cc-tag{display:inline-flex;align-items:center;gap:4px;margin-top:9px;background:rgba(255,107,0,.08);border:1px solid rgba(255,107,0,.15);color:var(--saffron);font-size:.6rem;font-weight:700;padding:3px 8px;border-radius:var(--r-full)}
+
+/* ─────────────────────────────────────
+   VIEW MORE BUTTON
+───────────────────────────────────── */
+.view-more-wrap{text-align:center;margin-top:16px;padding:0 16px;position:relative;z-index:3}
+.view-more-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--card);border:1.5px solid var(--surface2);
+  color:var(--tx2);padding:10px 24px;border-radius:var(--r-full);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;
+  cursor:pointer;transition:var(--t);letter-spacing:.04em;
+  box-shadow:var(--sh-sm);
+}
+.view-more-btn:hover{border-color:var(--saffron);color:var(--saffron);background:rgba(255,107,0,.05)}
+
+/* ─────────────────────────────────────
+   MAP SECTION
+───────────────────────────────────── */
+#mapSection{background:var(--card);padding:0;max-width:none;border-top:1px solid var(--surface);border-bottom:1px solid var(--surface)}
+#mapSection .sec-inner{max-width:1200px;margin:0 auto}
+#mapSection .sec-inner{max-width:1200px;margin:0 auto}
+.map-controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:16px;max-width:1200px;margin-left:auto;margin-right:auto}
+.map-filter-select{padding:9px 32px 9px 14px;background:var(--card);border:1.5px solid var(--surface);border-radius:var(--r-full);color:var(--tx);font-size:.82rem;outline:none;cursor:pointer;transition:var(--t);-webkit-appearance:none;appearance:none;min-width:150px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23FF6B00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;box-shadow:var(--sh-sm)}
+.map-filter-select:focus{border-color:var(--saffron)}.map-filter-select option{background:var(--card)}
+.map-type-filters{display:flex;gap:6px;flex-wrap:wrap}
+.mtype-btn{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;background:var(--surface);border:1.5px solid var(--surface2);border-radius:var(--r-full);color:var(--tx3);font-size:.68rem;font-weight:700;cursor:pointer;transition:var(--t);font-family:'Plus Jakarta Sans',sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.mtype-btn:hover{border-color:var(--saffron);color:var(--saffron)}
+.mtype-btn.active{background:var(--gg);border-color:transparent;color:#fff;box-shadow:var(--sh-gold)}
+#mapContainer{border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--surface);box-shadow:var(--sh-md);height:400px;max-width:1200px;margin:0 auto}
+@media(max-width:767px){#mapContainer{height:280px}}
+.leaflet-popup-content-wrapper{background:var(--card)!important;border:1px solid var(--surface)!important;border-radius:var(--r-lg)!important;box-shadow:var(--sh-lg)!important;color:var(--tx)!important;padding:0!important}
+.leaflet-popup-tip{background:var(--card)!important}
+.leaflet-popup-content{margin:0!important}
+.map-popup{min-width:210px}
+.map-popup img{width:100%;height:110px;object-fit:cover;border-radius:var(--r-lg) var(--r-lg) 0 0;display:block}
+.map-popup-body{padding:11px 13px 13px}
+.map-popup-cat{font-size:.58rem;font-weight:800;color:var(--saffron);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.map-popup-name{font-family:'Syne',sans-serif;font-size:.88rem;color:var(--tx);margin-bottom:4px}
+.map-popup-state{font-size:.68rem;color:var(--tx3);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.map-popup-desc{font-size:.72rem;color:var(--tx3);line-height:1.5;margin-bottom:9px}
+.map-popup-btn{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;padding:8px;background:var(--gg);border:none;color:#fff;border-radius:var(--r-sm);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;text-decoration:none}
+
+/* ─────────────────────────────────────
+   DIVIDERS
+───────────────────────────────────── */
+/* ─────────────────────────────────────
+   STATUS BAR
+───────────────────────────────────── */
+.status-bar-section{
+  display:flex;justify-content:center;
+  background:var(--card);border-top:1px solid var(--surface);border-bottom:1px solid var(--surface);
+  overflow-x:auto;scrollbar-width:none;
+}
+.status-bar-section::-webkit-scrollbar{display:none}
+.sstat{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:22px 32px;border-right:1px solid var(--surface);min-width:110px;
+  transition:var(--t);
+}
+.sstat:last-child{border-right:none}
+.sstat:hover{background:rgba(255,107,0,.04)}
+.sstat-icon{font-size:1.2rem;color:var(--saffron);margin-bottom:6px}
+.sstat-num{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;color:var(--tx);line-height:1}
+.sstat-lbl{font-size:.58rem;color:var(--tx3);letter-spacing:.14em;text-transform:uppercase;margin-top:4px}
+
+/* ─────────────────────────────────────
+   JOIN SECTION
+───────────────────────────────────── */
+.join-section{
+  padding:40px 16px;background:var(--card2);
+  border-top:1px solid var(--surface);border-bottom:1px solid var(--surface);
+}
+.join-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:768px){.join-inner{grid-template-columns:1fr;gap:24px}}
+.join-title{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:800;color:var(--tx);margin-bottom:11px;line-height:1.2}
+.join-sub{font-size:.84rem;color:var(--tx3);line-height:1.72;margin-bottom:24px}
+.join-benefits{display:flex;flex-direction:column;gap:10px}
+.benefit{display:flex;align-items:flex-start;gap:12px;background:var(--bg);border:1.5px solid var(--surface);border-radius:var(--r);padding:12px 14px;transition:var(--t)}
+.benefit:hover{border-color:rgba(255,107,0,.3);transform:translateX(4px)}
+.benefit-icon{width:34px;height:34px;flex-shrink:0;background:var(--gg);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.86rem}
+.benefit-text h4{font-size:.82rem;font-weight:700;color:var(--tx);margin-bottom:2px}
+.benefit-text p{font-size:.72rem;color:var(--tx3);line-height:1.5}
+.join-form{background:var(--card);border:1.5px solid var(--surface);border-radius:var(--r-xl);padding:26px 22px;box-shadow:var(--sh)}
+.join-form h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--tx);margin-bottom:3px}
+.join-form>p{font-size:.76rem;color:var(--tx3);margin-bottom:18px}
+.form-group{margin-bottom:12px}
+.form-label{font-size:.64rem;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;font-weight:700}
+.form-ctrl{width:100%;padding:10px 13px;background:var(--bg);border:1.5px solid var(--surface);border-radius:var(--r);color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:.85rem;outline:none;transition:var(--t)}
+.form-ctrl:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(255,107,0,.1);background:var(--card)}
+.form-ctrl::placeholder{color:var(--tx3)}
+.form-ctrl-select{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23FF6B00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.form-ctrl-select option{background:var(--card)}
+textarea.form-ctrl{resize:vertical;min-height:80px}
+.join-submit{width:100%;padding:12px;background:var(--gg);border:none;color:#fff;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:var(--sh-gold)}
+.join-submit:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(255,107,0,.4)}
+
+/* ─────────────────────────────────────
+   NEWSLETTER
+───────────────────────────────────── */
+.nl-form{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.nl-input{flex:1;min-width:210px;padding:12px 16px;background:var(--card);border:1.5px solid var(--surface);border-radius:var(--r-full);color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;outline:none;transition:var(--t)}
+.nl-input:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.nl-btn{display:inline-flex;align-items:center;gap:6px;background:var(--gg);color:#fff;border:none;padding:12px 22px;border-radius:var(--r-full);font-family:'Plus Jakarta Sans',sans-serif;font-size:.86rem;font-weight:700;cursor:pointer;transition:var(--t);box-shadow:var(--sh-gold)}
+.nl-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,0,.45)}
+
+/* ─────────────────────────────────────
+   EMPTY STATE
+───────────────────────────────────── */
+.empty-state{grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--tx3);background:var(--card);border-radius:var(--r-xl);border:1.5px dashed var(--surface2)}
+.empty-state i{font-size:2.4rem;color:var(--surface2);display:block;margin-bottom:12px}
+.empty-state p{font-size:.84rem}
+
+/* ─────────────────────────────────────
+   MODAL
+───────────────────────────────────── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(26,18,8,.55);backdrop-filter:blur(10px);justify-content:center;align-items:flex-end;padding:0}
+@media(min-width:768px){.modal-overlay{align-items:center;padding:20px}}
+.modal-overlay.open{display:flex;animation:mfade .2s ease}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal-box{
+  background:var(--card);border-radius:var(--r-xl) var(--r-xl) 0 0;
+  max-width:540px;width:100%;max-height:92vh;overflow-y:auto;
+  position:relative;box-shadow:0 -12px 56px rgba(26,18,8,.2);
+  animation:mSlideUp .28s cubic-bezier(.4,0,.2,1);
+}
+@media(min-width:768px){.modal-box{border-radius:var(--r-xl);animation:mIn .28s cubic-bezier(.34,1.56,.64,1)}}
+@keyframes mSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes mIn{from{opacity:0;transform:scale(.92) translateY(18px)}to{opacity:1;transform:none}}
+/* Drag handle */
+.modal-box::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:36px;height:4px;border-radius:2px;background:var(--surface2)}
+@media(min-width:768px){.modal-box::before{display:none}}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.84rem;display:flex;align-items:center;justify-content:center;transition:var(--t);z-index:2}
+.modal-close:hover{color:var(--saffron);border-color:var(--saffron)}
+.modal-img{width:100%;height:220px;object-fit:cover;border-radius:var(--r-xl) var(--r-xl) 0 0}
+.modal-content{padding:20px 20px 24px}
+.modal-cat{font-size:.62rem;color:var(--tx3);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:5px;margin-top:2px}
+.modal-content h2{font-family:'Syne',sans-serif;font-size:1.22rem;font-weight:800;margin:8px 0 11px;color:var(--tx)}
+.modal-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.modal-tag{background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx2);font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:var(--r-full);display:flex;align-items:center;gap:5px}
+.modal-tag.hl{color:var(--gold-dk);border-color:rgba(255,179,0,.3);background:rgba(255,179,0,.08)}
+.modal-tag.green{color:var(--green);border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.08)}
+.modal-desc{font-size:.84rem;color:var(--tx2);line-height:1.78;margin-bottom:16px}
+.contact-now-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;background:linear-gradient(135deg,var(--green),#15803D);border:none;color:#fff;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:var(--t);text-decoration:none;margin-bottom:9px;box-shadow:0 4px 16px rgba(22,163,74,.35)}
+.contact-now-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,163,74,.45)}
+.modal-actions{display:flex;gap:8px}
+.modal-save-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx2);border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:var(--t)}
+.modal-save-btn:hover{border-color:var(--saffron);color:var(--saffron)}
+.modal-save-btn.saved{color:#DC2626;border-color:#FECACA;background:#FFF0F0}
+
+/* ─────────────────────────────────────
+   FOOTER
+───────────────────────────────────── */
+.footer{background:var(--tx);padding:44px 16px 24px;color:rgba(247,244,240,.7);position:relative;overflow:hidden}
+.footer-bg-text{position:absolute;font-family:'Syne',sans-serif;font-size:clamp(4rem,12vw,10rem);font-weight:800;color:rgba(255,107,0,.04);white-space:nowrap;pointer-events:none;letter-spacing:.02em;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);/* centred so no overflow gap */}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:44px;padding-bottom:32px;border-bottom:1px solid rgba(247,244,240,.1);position:relative;z-index:1}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr;gap:22px}}
+.footer-brand-logo{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:9px}
+.footer-brand-desc{font-size:.78rem;color:rgba(247,244,240,.5);line-height:1.78;max-width:290px;margin-bottom:18px}
+.footer-social{display:flex;gap:8px}
+.social-btn{width:36px;height:36px;border-radius:50%;background:rgba(247,244,240,.07);border:1px solid rgba(247,244,240,.12);display:flex;align-items:center;justify-content:center;color:rgba(247,244,240,.55);text-decoration:none;font-size:.86rem;transition:var(--t)}
+.social-btn:hover{background:rgba(255,107,0,.2);color:var(--saffron);border-color:var(--saffron);transform:translateY(-3px)}
+.footer-inner h4{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;color:var(--gold-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:.78rem;color:rgba(247,244,240,.5);text-decoration:none;transition:var(--t);display:flex;align-items:center;gap:6px}
+.footer-links a:hover{color:var(--saffron);padding-left:4px}
+.footer-links a i{font-size:.66rem;width:13px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px}
+.footer-contact-item i{color:var(--saffron);margin-top:2px;font-size:.78rem;width:13px}
+.footer-contact-item span{font-size:.76rem;color:rgba(247,244,240,.5);line-height:1.5}
+.footer-contact-item a{color:rgba(247,244,240,.5);text-decoration:none}
+.footer-contact-item a:hover{color:var(--saffron)}
+.footer-bottom{max-width:1100px;margin:22px auto 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:11px;position:relative;z-index:1}
+.footer-bottom p{font-size:.72rem;color:rgba(247,244,240,.38)}
+.footer-bottom-links{display:flex;gap:14px}
+.footer-bottom-links a{font-size:.72rem;color:rgba(247,244,240,.38);text-decoration:none;transition:color .2s}
+.footer-bottom-links a:hover{color:var(--saffron)}
+@media(max-width:768px){.footer-bottom{flex-direction:column;text-align:center}}
+
+/* kill ALL pseudo-elements on center button */
+/* active dot only on regular links — never on center */
+
+/* ─────────────────────────────────────
+   VOICE FAB
+───────────────────────────────────── */
+.voice-fab{position:fixed;bottom:calc(var(--bnav-h) + var(--safe-b) + 14px);right:16px;z-index:700;width:48px;height:48px;border-radius:50%;background:var(--gg);border:none;color:#fff;font-size:1.1rem;cursor:pointer;transition:var(--t);box-shadow:0 6px 22px rgba(255,107,0,.44);display:flex;align-items:center;justify-content:center}
+.voice-fab:hover{transform:scale(1.1);box-shadow:0 8px 28px rgba(255,107,0,.55)}
+.voice-fab.listening{animation:vPulse 1s ease-in-out infinite;background:linear-gradient(135deg,#16A34A,#15803D)}
+@keyframes vPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.voice-panel{position:fixed;bottom:calc(var(--bnav-h) + var(--safe-b) + 72px);right:16px;z-index:701;width:272px;background:var(--card);border:1.5px solid var(--surface);border-radius:var(--r-xl);padding:18px;box-shadow:var(--sh-md);display:none;animation:mIn .22s ease}
+.voice-panel.open{display:block}
+.voice-panel-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.voice-panel-hd span{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;color:var(--tx)}
+.voice-panel-hd button{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:.9rem}
+.voice-status{font-size:.76rem;color:var(--tx3);margin-bottom:8px;line-height:1.55;min-height:34px}
+.voice-transcript{font-size:.78rem;color:var(--saffron);font-style:italic;min-height:18px}
+.voice-wave{display:flex;gap:4px;justify-content:center;align-items:center;height:28px;margin:8px 0}
+.voice-bar{width:3px;background:var(--saffron);border-radius:2px;animation:waveBar .8s ease-in-out infinite}
+.voice-bar:nth-child(2){animation-delay:.1s}.voice-bar:nth-child(3){animation-delay:.2s}.voice-bar:nth-child(4){animation-delay:.3s}.voice-bar:nth-child(5){animation-delay:.4s}
+@keyframes waveBar{0%,100%{height:4px}50%{height:22px}}
+
+/* ─────────────────────────────────────
+   BACK TO TOP
+───────────────────────────────────── */
+#backToTop{position:fixed;bottom:calc(var(--bnav-h) + var(--safe-b) + 14px);left:16px;z-index:700;width:42px;height:42px;border-radius:50%;background:var(--card);border:1.5px solid var(--surface);color:var(--tx2);font-size:.88rem;cursor:pointer;transition:var(--t);display:none;align-items:center;justify-content:center;box-shadow:var(--sh)}
+#backToTop:hover{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+
+/* ─────────────────────────────────────
+   TOAST
+───────────────────────────────────── */
+
+
+/* ─────────────────────────────────────
+   LOADING DOTS
+───────────────────────────────────── */
+.loading-dots{display:flex;gap:5px;justify-content:center;padding:4px 0}
+.loading-dots span{width:7px;height:7px;border-radius:50%;background:rgba(247,244,240,.8);animation:ldot 1.2s infinite ease-in-out}
+.loading-dots span:nth-child(2){animation-delay:.2s}.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes ldot{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}
+
+/* ─────────────────────────────────────
+   ALTERNATING SECTION BACKGROUNDS
+   Like Zomato/Swiggy app pattern
+───────────────────────────────────── */
+#food{background:var(--bg)}
+#places{background:var(--card)}
+#culture{background:var(--bg)}
+#events{background:var(--card)}
+/* Culture tabs also get bg */
+#culture .culture-tabs{background:transparent}
+
+/* ─────────────────────────────────────
+   MOBILE SECTION — clean layout
+───────────────────────────────────── */
+@media(max-width:767px){
+  .section{overflow:visible;max-width:100%}
+  .section-hd{padding:0 14px}
+  .section>.grid,.section .grid{padding-left:14px;padding-right:14px}
+  body{overflow-x:hidden}
+  /* Fix footer black gap on mobile */
+  .footer{padding:32px 14px 20px;position:relative}
+  .footer-bg-text{display:none}/* hide oversized BG text that causes gaps */
+  .footer-inner{gap:16px}
+  .footer-bottom{flex-direction:column;text-align:center;gap:8px}
+  /* Status bar scroll on mobile */
+  .status-bar-section{justify-content:flex-start}
+  .sstat{min-width:90px;padding:16px 18px}
+  .sstat-num{font-size:1.4rem}
+  /* Analysis section inner */
+  #analysis .section-inner{padding:0 14px}
+  .analysis-wrap{padding:14px 12px}
+  .analysis-row{flex-direction:column;gap:8px}
+  .budget-input-wrap,.cat-select{width:100%;min-width:100%}
+  .analyze-btn{width:100%;justify-content:center}
+}
+
+/* ─────────────────────────────────────
+   PILL-STYLE SECTION SEPARATORS
+───────────────────────────────────── */
+.divider{
+  display:flex;align-items:center;gap:10px;
+  padding:4px 16px;max-width:480px;margin:0 auto;
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--surface)}
+.divider i{color:var(--saffron);font-size:.74rem;flex-shrink:0}
+@media(min-width:768px){.divider{max-width:1200px}}
+
+/* ─────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .56s ease,transform .56s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.stagger>*{opacity:0;transform:translateY(16px);transition:opacity .44s ease,transform .44s ease}
+.stagger.visible>*:nth-child(1){transition-delay:.04s}.stagger.visible>*:nth-child(2){transition-delay:.09s}
+.stagger.visible>*:nth-child(3){transition-delay:.14s}.stagger.visible>*:nth-child(4){transition-delay:.19s}
+.stagger.visible>*:nth-child(5){transition-delay:.24s}.stagger.visible>*:nth-child(6){transition-delay:.29s}
+.stagger.visible>*:nth-child(7){transition-delay:.34s}.stagger.visible>*:nth-child(8){transition-delay:.39s}
+.stagger.visible>*{opacity:1;transform:translateY(0)}
+
+/* ─────────────────────────────────────
+   DESKTOP — full layout
+───────────────────────────────────── */
+@media(min-width:768px){
+  body{padding-bottom:0}
+    .voice-fab{bottom:20px;right:20px}
+  .voice-panel{bottom:82px;right:20px}
+  #backToTop{bottom:20px;left:20px}
+  .toast{bottom:24px}
+  .section{max-width:1200px;padding:40px 20px 44px;overflow:visible}
+  .section::after{display:none}
+  .section>.grid,.section .grid{padding-left:0;padding-right:0}
+  .app-cats{padding:22px 20px 24px}
+  .app-cats-in,.location-bar-in{max-width:1200px;padding:0 20px}
+  .search-wrap{max-width:none;flex:1}
+  .search-dropdown{left:0;right:0}
+  .footer-bg-text{display:block}
+  #analysis .section-inner{max-width:1200px;padding:0 20px}
+}
+
+/* ════ TASTE✦VIEW FLOATING NAVBAR ════ */
+.tv-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:9000;display:flex;align-items:center;gap:2px;padding:5px 6px;padding-bottom:max(5px,env(safe-area-inset-bottom,5px));background:rgba(255,255,255,.80);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,107,0,.18);border-radius:999px;box-shadow:0 4px 24px rgba(255,107,0,.13),0 1px 4px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.95);white-space:nowrap}
+.tv-item{width:44px;height:44px;min-width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;flex-direction:row;gap:0;padding:0;border-radius:999px;border:none;background:transparent;cursor:pointer;text-decoration:none;outline:none;-webkit-tap-highlight-color:transparent;overflow:hidden;transition:width .32s cubic-bezier(.4,0,.2,1),background .22s ease,box-shadow .22s ease,transform .18s cubic-bezier(.34,1.56,.64,1)}
+.tv-item:active{transform:scale(.86)!important}
+.tv-icon{width:20px;height:20px;min-width:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.56,.64,1)}
+.tv-icon svg{width:20px!important;height:20px!important;display:block;overflow:hidden;stroke-width:1.75px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;color:#C5C5C5;transition:color .18s ease}
+.tv-lbl{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.01em;white-space:nowrap;overflow:hidden;max-width:0;opacity:0;color:#fff;padding-right:0;transition:max-width .32s cubic-bezier(.4,0,.2,1),opacity .22s ease,padding-right .32s}
+.tv-item:not(.tv-active):not(.tv-center):hover .tv-icon svg{color:#FF6B00}
+.tv-item:not(.tv-active):not(.tv-center):hover{background:rgba(255,107,0,.08)}
+.tv-item:not(.tv-active):not(.tv-center):hover .tv-icon{transform:translateY(-2px) scale(1.1)}
+.tv-item.tv-active{width:auto;min-width:44px;padding:0 14px 0 10px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);box-shadow:0 4px 16px rgba(255,107,0,.38),0 1px 3px rgba(255,107,0,.2)}
+.tv-item.tv-active .tv-icon{margin-right:5px}
+.tv-item.tv-active .tv-icon svg{color:#fff;transform:scale(1.05)}
+.tv-item.tv-active .tv-lbl{max-width:72px;opacity:1;padding-right:2px}
+.tv-item.tv-active:hover{box-shadow:0 6px 22px rgba(255,107,0,.48)}
+.tv-center{width:46px;height:46px;min-width:46px;border-radius:50%;border:none;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin:0 3px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);box-shadow:0 4px 18px rgba(255,107,0,.42),0 0 0 3px rgba(255,107,0,.13);transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s ease;text-decoration:none}
+.tv-center .tv-icon svg{width:20px!important;height:20px!important;color:#fff;stroke-width:1.75px}
+.tv-center:hover{transform:translateY(-3px) scale(1.09);box-shadow:0 8px 26px rgba(255,107,0,.52),0 0 0 4px rgba(255,107,0,.16)}
+.tv-center:active{transform:scale(.88)!important}
+@media(min-width:768px){.tv-nav{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     HEADER
+═══════════════════════════════════ -->
+<header class="header">
+  <div class="header-in">
+    <!-- Logo -->
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Taste&amp;View"/>
+      <div>
+        <div class="logo-text">Taste✦View</div>
+        <div class="tagline">Food, Culture &amp; Places</div>
+      </div>
+    </a>
+
+    <!-- Search (uses original search logic) -->
+    <div class="search-wrap" id="searchWrap">
+      <div class="header-search-pill search-input-row">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search places, food, events…" autocomplete="off" maxlength="100"/>
+        <span class="search-kbd">⌘K</span>
+      </div>
+      <div class="search-dropdown" id="searchDropdown">
+        <div class="search-cat-tabs">
+          <button class="scat active" data-cat="All">All</button>
+          <button class="scat" data-cat="Restaurant">Food</button>
+          <button class="scat" data-cat="Best Place">Places</button>
+          <button class="scat" data-cat="Holy Place">Sacred</button>
+          <button class="scat" data-cat="Cafe">Cafes</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+
+    <!-- Right actions -->
+    <div class="header-right">
+      <a href="favorites.html" class="icon-btn" title="Favorites">
+        <i class="fa-solid fa-bookmark"></i>
+        <span class="fav-badge" id="favBadge" style="display:none"></span>
+      </a>
+      <a href="ai-assistant.html" class="icon-btn mob-hide" title="AI Assistant">
+        <i class="fa-solid fa-robot"></i>
+      </a>
+      <a href="profile.html" class="icon-btn mob-hide" title="Profile">
+        <i class="fa-regular fa-circle-user"></i>
+      </a>
+      <a href="login.html" class="login-btn">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        <span class="login-txt">Login</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- LOCATION BAR -->
+<section class="location-bar">
+  <div class="location-bar-in">
+    <div class="location-box">
+      <i class="fa-solid fa-location-dot"></i>
+      <select id="locationSelect">
+        <option value="Ongole">Ongole</option>
+        <option value="Guntur">Guntur</option>
+        <option value="Vijayawada">Vijayawada</option>
+        <option value="Vizag">Visakhapatnam</option>
+        <option value="Tirupati">Tirupati</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- TOP NAV CHIPS -->
+<nav class="top-nav">
+  <a href="#analysis" id="nav-analysis"><i class="fa-solid fa-magnifying-glass-dollar"></i> Analysis</a>
+  <a href="#food" id="nav-food"><i class="fa-solid fa-utensils"></i> Food</a>
+  <a href="#places" id="nav-places"><i class="fa-solid fa-mountain-sun"></i> Places</a>
+  <a href="#mapSection" id="nav-map"><i class="fa-solid fa-map-location-dot"></i> India Map</a>
+  <a href="#culture" id="nav-culture"><i class="fa-solid fa-masks-theater"></i> Culture</a>
+  <a href="#events" id="nav-events"><i class="fa-solid fa-calendar-star"></i> Events</a>
+  <a href="plan-trip.html" id="nav-plan"><i class="fa-solid fa-route"></i> Plan Trip</a>
+  <a href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Chat</a>
+  <a href="ich.html"><i class="fa-solid fa-om"></i> India Culture</a>
+  <a href="history.html"><i class="fa-solid fa-scroll"></i> History</a>
+  <a href="explore-world.html"><i class="fa-solid fa-earth-americas"></i> Explore World</a>
+</nav>
+
+<!-- ═══════════════════════════════════
+     AD HERO CAROUSEL
+═══════════════════════════════════ -->
+<section class="ad-hero" id="adHero">
+  <div class="carousel-track" id="cTrack">
+    <div class="carousel-slide active">
+      <img src="ads/tv4.jpeg" alt="Food"/>
+      <div class="slide-overlay"></div>
+      <div class="slide-content"></div>
+    </div>
+    <div class="carousel-slide">
+      <img src="ads/prime.jpeg" alt="Flavors of Tradition"/>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-eyebrow"><i class="fa-solid fa-umbrella-beach"></i> Flavors of Tradition</div>
+        <h2 class="slide-headline">Explore <span>Culture</span><br>Taste Authentic India</h2>
+        <p class="slide-sub">A perfect blend of rich flavors and heritage. From spicy street food to iconic monuments — unforgettable.</p>
+        <div class="slide-ctas">
+          <a href="#places" class="slide-btn-p"><i class="fa-solid fa-mountain-sun"></i> Explore Now</a>
+          <a href="#mapSection" class="slide-btn-o"><i class="fa-solid fa-map"></i> Map</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="ads/tv1.jpeg" alt="Taste the Tradition"/>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-eyebrow"><i class="fa-solid fa-calendar-star"></i> Taste the Tradition</div>
+        <h2 class="slide-headline"><span>Authentic Dum Biryani</span><br>Under ₹299</h2>
+        <p class="slide-sub">Rich flavors of perfectly cooked biryani made with aromatic spices — a true delight for food lovers.</p>
+        <div class="slide-ctas">
+          <a href="#events" class="slide-btn-p"><i class="fa-solid fa-calendar-star"></i> Order Now</a>
+          <a href="#culture" class="slide-btn-o"><i class="fa-solid fa-masks-theater"></i> Menu</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="ads/tv2.jpeg" alt="Spiritual Vibes"/>
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <div class="slide-eyebrow"><i class="fa-solid fa-bowl-food"></i> Spiritual Vibes</div>
+        <h2 class="slide-headline">Feel the Divine Energy<br><span>Sacred Street Food</span></h2>
+        <p class="slide-sub">Ancient cities with spirituality, rituals, and unique street food experiences unlike anywhere else.</p>
+        <div class="slide-ctas">
+          <a href="#analysis" class="slide-btn-p"><i class="fa-solid fa-sparkles"></i> Discover</a>
+          <a href="#food" class="slide-btn-o"><i class="fa-solid fa-bowl-food"></i> Food</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="ads/tv3.jpeg" alt="Discover More"/>
+      <div class="slide-overlay"></div>
+      <div class="slide-content"></div>
+    </div>
+  </div>
+  <button class="carousel-btn prev" id="cPrev"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="carousel-btn next" id="cNext"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="carousel-dots" id="cDots"></div>
+  <div class="carousel-progress" id="cProgress" style="width:0%"></div>
+</section>
+
+<!-- OFFERS STRIP -->
+<div class="offers-strip">
+  <div class="offers-track" id="offersTrack">
+    <span class="offer-pill"><i class="fa-solid fa-fire"></i> <strong>50% OFF</strong> on Restaurants Today</span>
+    <span class="offer-pill"><i class="fa-solid fa-leaf"></i> <strong>Free Entry</strong> at All Beaches</span>
+    <span class="offer-pill"><i class="fa-solid fa-place-of-worship"></i> <strong>No Queue</strong> Temples — Early Morning</span>
+    <span class="offer-pill"><i class="fa-solid fa-mug-hot"></i> <strong>Buy 1 Get 1</strong> at Selected Cafes</span>
+    <span class="offer-pill"><i class="fa-solid fa-calendar-star"></i> <strong>Cultural Night</strong> — Mar 22, Town Hall</span>
+    <span class="offer-pill"><i class="fa-solid fa-bowl-food"></i> <strong>Street Food Expo</strong> — Apr 1, RTC Grounds</span>
+    <span class="offer-pill"><i class="fa-solid fa-wallet"></i> <strong>Budget Meals</strong> from ₹50 near you</span>
+    <span class="offer-pill"><i class="fa-solid fa-star"></i> <strong>Avg Rating 4.8★</strong> across 30+ places</span>
+    <span class="offer-pill"><i class="fa-solid fa-fire"></i> <strong>50% OFF</strong> on Restaurants Today</span>
+    <span class="offer-pill"><i class="fa-solid fa-leaf"></i> <strong>Free Entry</strong> at All Beaches</span>
+    <span class="offer-pill"><i class="fa-solid fa-place-of-worship"></i> <strong>No Queue</strong> Temples — Early Morning</span>
+    <span class="offer-pill"><i class="fa-solid fa-mug-hot"></i> <strong>Buy 1 Get 1</strong> at Selected Cafes</span>
+    <span class="offer-pill"><i class="fa-solid fa-calendar-star"></i> <strong>Cultural Night</strong> — Mar 22, Town Hall</span>
+    <span class="offer-pill"><i class="fa-solid fa-bowl-food"></i> <strong>Street Food Expo</strong> — Apr 1, RTC Grounds</span>
+    <span class="offer-pill"><i class="fa-solid fa-wallet"></i> <strong>Budget Meals</strong> from ₹50 near you</span>
+    <span class="offer-pill"><i class="fa-solid fa-star"></i> <strong>Avg Rating 4.8★</strong> across 30+ places</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     APP CATEGORY SHORTCUTS
+═══════════════════════════════════ -->
+<div class="app-cats">
+  <div class="app-cats-in">
+    <div class="app-cats-grid">
+      <a href="#food" class="app-cat-item">
+        <div class="app-cat-ico restaurants"><i class="fa-solid fa-utensils"></i></div>
+        <span class="app-cat-lbl">Restaurants</span>
+      </a>
+      <a href="#places" class="app-cat-item">
+        <div class="app-cat-ico places"><i class="fa-solid fa-mountain-sun"></i></div>
+        <span class="app-cat-lbl">Places</span>
+      </a>
+      <a href="#places" class="app-cat-item">
+        <div class="app-cat-ico hotels"><i class="fa-solid fa-hotel"></i></div>
+        <span class="app-cat-lbl">Hotels</span>
+      </a>
+      <a href="#culture" class="app-cat-item">
+        <div class="app-cat-ico culture"><i class="fa-solid fa-masks-theater"></i></div>
+        <span class="app-cat-lbl">Culture</span>
+      </a>
+      <a href="#events" class="app-cat-item">
+        <div class="app-cat-ico events"><i class="fa-solid fa-calendar-star"></i></div>
+        <span class="app-cat-lbl">Events</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SMART BUDGET ANALYSIS
+═══════════════════════════════════ -->
+<section id="analysis" class="reveal">
+  <div class="section-inner">
+    <div class="section-hd">
+      <div class="section-hd-left">
+        <div class="section-pill"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-Powered</div>
+        <h2 class="section-title">Smart Budget Analysis</h2>
+        <div class="section-underline"></div>
+      </div>
+    </div>
+    <div class="analysis-wrap">
+      <div class="analysis-row">
+        <div class="budget-input-wrap">
+          <span class="currency-sym">₹</span>
+          <input class="budget-input" type="number" id="budgetInput" placeholder="Your budget (e.g. 200)" min="0" max="100000"/>
+        </div>
+        <select class="cat-select" id="catSelect">
+          <option value="All">All Categories</option>
+          <option value="Restaurant">Restaurants</option>
+          <option value="Street Food">Street Food</option>
+          <option value="Cafe">Cafes</option>
+          <option value="Theatre">Theatre</option>
+          <option value="Best Place">Best Places</option>
+          <option value="Holy Place">Holy Places</option>
+          <option value="Mall">Malls</option>
+        </select>
+        <button class="analyze-btn" id="analyzeBtn"><i class="fa-solid fa-sparkles"></i> Analyze</button>
+      </div>
+    </div>
+    <div class="ai-reasoning" id="aiReasoning" style="display:none;max-width:660px;margin:0 auto 20px">
+      <div class="ai-reasoning-hd"><i class="fa-solid fa-robot"></i><span>AI Budget Analysis</span></div>
+      <p id="aiReasonText" class="cursor"></p>
+      <p style="font-size:.62rem;color:var(--tx3);margin-top:8px;opacity:.7"><i class="fa-solid fa-circle-info" style="margin-right:4px"></i>AI-generated — verify details before visiting.</p>
+    </div>
+    <div class="sort-bar" id="sortBar" style="display:none;max-width:660px;margin:0 auto 14px">
+      <span class="result-count">Found <span id="resultCount">0</span> matches</span>
+      <select class="sort-select" id="sortSel">
+        <option value="rating">Best Rated</option>
+        <option value="low">Lowest Cost</option>
+        <option value="high">Highest Cost</option>
+      </select>
+    </div>
+    <div class="grid stagger" id="analysisGrid"></div>
+    <div class="view-more-wrap" id="analysisMore" style="display:none">
+      <button class="view-more-btn" id="analysiMoreBtn"><i class="fa-solid fa-chevron-down"></i> View More Results</button>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><i class="fa-solid fa-om"></i></div>
+
+<!-- ═══════════════════════════════════
+     FOOD SECTION
+═══════════════════════════════════ -->
+<section id="food" class="section reveal">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-utensils"></i> Top Rated</div>
+      <h2 class="section-title">Restaurants &amp; Street Food</h2>
+      <div class="section-underline"></div>
+    </div>
+    <button class="see-all-btn" onclick="expandSection('food')">See All <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+  <div class="grid stagger" id="foodGrid"></div>
+  <div class="view-more-wrap" id="foodMore" style="display:none">
+    <button class="view-more-btn" onclick="expandSection('food')"><i class="fa-solid fa-chevron-down"></i> View More</button>
+  </div>
+</section>
+
+<div class="divider"><i class="fa-solid fa-leaf"></i></div>
+
+<!-- ═══════════════════════════════════
+     PLACES SECTION
+═══════════════════════════════════ -->
+<section id="places" class="section reveal">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-mountain-sun"></i> Must Visit</div>
+      <h2 class="section-title">Best Places to Visit</h2>
+      <div class="section-underline"></div>
+    </div>
+    <button class="see-all-btn" onclick="expandSection('places')">See All <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+  <div class="grid stagger" id="placesGrid"></div>
+  <div class="view-more-wrap" id="placesMore" style="display:none">
+    <button class="view-more-btn" onclick="expandSection('places')"><i class="fa-solid fa-chevron-down"></i> View More</button>
+  </div>
+</section>
+
+<div class="divider"><i class="fa-solid fa-map-location-dot"></i></div>
+
+<!-- ═══════════════════════════════════
+     INDIA MAP SECTION
+═══════════════════════════════════ -->
+<section id="mapSection" class="reveal">
+  <div class="sec-inner">
+    <div class="section" style="padding-bottom:0">
+      <div class="section-hd">
+        <div class="section-hd-left">
+          <div class="section-pill"><i class="fa-solid fa-map-location-dot"></i> All 28 States</div>
+          <h2 class="section-title">Explore India on Map</h2>
+          <div class="section-underline"></div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 16px 28px;max-width:1200px;margin:0 auto">
+      <div class="map-controls">
+        <select class="map-filter-select" id="mapStateSelect">
+          <option value="All">All States</option>
+          <option value="Andhra Pradesh">Andhra Pradesh</option>
+          <option value="Tamil Nadu">Tamil Nadu</option>
+          <option value="Karnataka">Karnataka</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Rajasthan">Rajasthan</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
+          <option value="Kerala">Kerala</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="West Bengal">West Bengal</option>
+          <option value="Madhya Pradesh">Madhya Pradesh</option>
+          <option value="Odisha">Odisha</option>
+          <option value="Goa">Goa</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Uttarakhand">Uttarakhand</option>
+          <option value="Himachal Pradesh">Himachal Pradesh</option>
+          <option value="Jammu and Kashmir">Jammu &amp; Kashmir</option>
+        </select>
+        <select class="map-filter-select" id="mapCitySelect">
+          <option value="All">All Cities</option>
+        </select>
+        <div class="map-type-filters">
+          <button class="mtype-btn active" data-type="All"><i class="fa-solid fa-globe"></i> All</button>
+          <button class="mtype-btn" data-type="Historical"><i class="fa-solid fa-landmark"></i> Historical</button>
+          <button class="mtype-btn" data-type="Temple"><i class="fa-solid fa-place-of-worship"></i> Temples</button>
+          <button class="mtype-btn" data-type="Nature"><i class="fa-solid fa-tree"></i> Nature</button>
+          <button class="mtype-btn" data-type="Hidden Gem"><i class="fa-solid fa-gem"></i> Hidden Gems</button>
+          <button class="mtype-btn" data-type="Famous"><i class="fa-solid fa-star"></i> Famous</button>
+        </div>
+      </div>
+      <div id="mapContainer"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><i class="fa-solid fa-masks-theater"></i></div>
+
+<!-- ═══════════════════════════════════
+     CULTURE SECTION
+═══════════════════════════════════ -->
+<section id="culture" class="section reveal">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-masks-theater"></i> Heritage</div>
+      <h2 class="section-title">Local Culture &amp; Heritage</h2>
+      <div class="section-underline"></div>
+    </div>
+    <button class="see-all-btn" onclick="expandSection('culture')">See All <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+  <div class="culture-tabs">
+    <button class="culture-tab active" data-sub="All"><i class="fa-solid fa-globe"></i> All</button>
+    <button class="culture-tab" data-sub="Performing Arts"><i class="fa-solid fa-person-dancing"></i> Performing Arts</button>
+    <button class="culture-tab" data-sub="Traditional Attire"><i class="fa-solid fa-shirt"></i> Attire</button>
+    <button class="culture-tab" data-sub="Local Food"><i class="fa-solid fa-bowl-food"></i> Local Food</button>
+    <button class="culture-tab" data-sub="Festival"><i class="fa-solid fa-star-and-crescent"></i> Festivals</button>
+    <button class="culture-tab" data-sub="Traditional Art"><i class="fa-solid fa-palette"></i> Art &amp; Craft</button>
+    <button class="culture-tab" data-sub="Sacred Tradition"><i class="fa-solid fa-om"></i> Sacred</button>
+    <button class="culture-tab" data-sub="Heritage"><i class="fa-solid fa-landmark"></i> Heritage</button>
+  </div>
+  <div class="grid stagger" id="cultureGrid"></div>
+  <div class="view-more-wrap" id="cultureMore" style="display:none">
+    <button class="view-more-btn" onclick="expandSection('culture')"><i class="fa-solid fa-chevron-down"></i> View More</button>
+  </div>
+</section>
+
+<div class="divider"><i class="fa-solid fa-calendar-star"></i></div>
+
+<!-- ═══════════════════════════════════
+     EVENTS SECTION
+═══════════════════════════════════ -->
+<section id="events" class="section reveal">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-calendar-star"></i> Upcoming</div>
+      <h2 class="section-title">Upcoming Events</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="grid stagger" id="eventsGrid"></div>
+
+  <!-- Newsletter CTA -->
+  <div style="margin-top:40px;padding:30px 22px;background:var(--card);border:1.5px solid var(--surface);border-radius:var(--r-xl);max-width:700px;margin-left:auto;margin-right:auto;text-align:center;box-shadow:var(--sh-sm)">
+    <div class="section-pill" style="margin-bottom:12px"><i class="fa-solid fa-bell"></i> Stay Updated</div>
+    <h3 style="font-family:'Syne',sans-serif;font-size:clamp(1.05rem,2.5vw,1.4rem);font-weight:800;color:var(--tx);margin-bottom:9px">Get the Best Deals &amp; Events</h3>
+    <p style="font-size:.82rem;color:var(--tx3);line-height:1.72;margin-bottom:20px">Weekly picks of the best food spots, events and hidden places — straight to your inbox.</p>
+    <form id="newsletterForm" onsubmit="handleNewsletter(event)">
+      <div class="nl-form">
+        <input type="email" id="nlEmail" class="nl-input" placeholder="your@email.com" maxlength="120" required/>
+        <button type="submit" class="nl-btn"><i class="fa-solid fa-paper-plane"></i> Subscribe Free</button>
+      </div>
+    </form>
+    <p style="font-size:.64rem;color:var(--tx3);margin-top:11px;opacity:.7"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i>No spam. Unsubscribe anytime. See our <a href="privacy.html" style="color:var(--saffron);text-decoration:none">Privacy Policy</a>.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     JOIN SECTION
+═══════════════════════════════════ -->
+<section class="join-section reveal">
+  <div class="join-inner">
+    <div>
+      <h2 class="join-title">Be a Part of<br>Taste &amp; View</h2>
+      <p class="join-sub">Share your trends and traditions with millions of food &amp; culture lovers across Andhra Pradesh. List your business, share your story, or become a local guide.</p>
+      <div class="join-benefits">
+        <div class="benefit"><div class="benefit-icon"><i class="fa-solid fa-store"></i></div><div class="benefit-text"><h4>List Your Business Free</h4><p>Reach thousands of daily visitors looking for food &amp; culture</p></div></div>
+        <div class="benefit"><div class="benefit-icon"><i class="fa-solid fa-chart-line"></i></div><div class="benefit-text"><h4>Grow Your Reach</h4><p>Get discovered by budget-conscious travelers and food explorers</p></div></div>
+        <div class="benefit"><div class="benefit-icon"><i class="fa-solid fa-masks-theater"></i></div><div class="benefit-text"><h4>Promote Local Culture</h4><p>Share traditions, crafts and cultural events to preserve heritage</p></div></div>
+        <div class="benefit"><div class="benefit-icon"><i class="fa-solid fa-star"></i></div><div class="benefit-text"><h4>Verified Partner Badge</h4><p>Earn trust with official partner badge and priority placement</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="join-form">
+        <h3>Join Our Community</h3>
+        <p>Tell us about your business or tradition</p>
+        <div class="form-group"><label class="form-label">Your Name</label><input class="form-ctrl" type="text" placeholder="Full name" id="joinName" maxlength="80"/></div>
+        <div class="form-group"><label class="form-label">Email Address</label><input class="form-ctrl" type="email" placeholder="your@email.com" id="joinEmail" maxlength="120"/></div>
+        <div class="form-group"><label class="form-label">Phone Number</label><input class="form-ctrl" type="tel" placeholder="+91 xxxxxxxxxx" id="joinPhone" maxlength="15"/></div>
+        <div class="form-group">
+          <label class="form-label">Business / Culture Type</label>
+          <select class="form-ctrl form-ctrl-select" id="joinType">
+            <option value="">Select type</option>
+            <option>Restaurant / Café</option><option>Street Food Stall</option><option>Tourist Attraction</option>
+            <option>Cultural Performance</option><option>Traditional Craft</option><option>Event Organizer</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Brief Description</label><textarea class="form-ctrl" id="joinDesc" placeholder="Tell us about your place or tradition…" maxlength="500"></textarea></div>
+        <button class="join-submit" onclick="handleJoinSubmit()"><i class="fa-solid fa-paper-plane"></i> Submit Application</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATUS BAR -->
+<div class="status-bar-section reveal">
+  <div class="sstat"><div class="sstat-icon"><i class="fa-solid fa-map-location-dot"></i></div><div class="sstat-num">30+</div><div class="sstat-lbl">Places</div></div>
+  <div class="sstat"><div class="sstat-icon"><i class="fa-solid fa-city"></i></div><div class="sstat-num">5</div><div class="sstat-lbl">Cities</div></div>
+  <div class="sstat"><div class="sstat-icon"><i class="fa-solid fa-masks-theater"></i></div><div class="sstat-num">12+</div><div class="sstat-lbl">Cultures</div></div>
+  <div class="sstat"><div class="sstat-icon"><i class="fa-solid fa-star"></i></div><div class="sstat-num">4.8★</div><div class="sstat-lbl">Avg Rating</div></div>
+  <div class="sstat"><div class="sstat-icon"><i class="fa-solid fa-tag"></i></div><div class="sstat-num">₹0</div><div class="sstat-lbl">Free Places</div></div>
+  <div class="sstat"><div class="sstat-icon"><i class="fa-solid fa-users"></i></div><div class="sstat-num">10K+</div><div class="sstat-lbl">Users</div></div>
+</div>
+
+<!-- ═══════════════════════════════════
+     FOOTER
+═══════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-logo">Taste✦View</div>
+      <p class="footer-brand-desc">Your AI-powered guide to the finest food, culture and hidden gems across Andhra Pradesh and all of India.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+      <div style="margin-top:16px">
+        <p style="font-size:.58rem;color:rgba(247,244,240,.4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px;font-weight:700">Available On</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="#" style="display:flex;align-items:center;gap:7px;padding:8px 13px;background:rgba(247,244,240,.06);border:1px solid rgba(247,244,240,.12);border-radius:11px;text-decoration:none;transition:var(--t)">
+            <i class="fa-brands fa-google-play" style="font-size:1.25rem;color:var(--saffron)"></i>
+            <div><div style="font-size:.5rem;color:rgba(247,244,240,.5);letter-spacing:.1em;text-transform:uppercase">Get it on</div><div style="font-size:.76rem;font-weight:700;color:rgba(247,244,240,.88)">Google Play</div></div>
+          </a>
+          <a href="#" style="display:flex;align-items:center;gap:7px;padding:8px 13px;background:rgba(247,244,240,.06);border:1px solid rgba(247,244,240,.12);border-radius:11px;text-decoration:none;transition:var(--t)">
+            <i class="fa-brands fa-apple" style="font-size:1.35rem;color:rgba(247,244,240,.88)"></i>
+            <div><div style="font-size:.5rem;color:rgba(247,244,240,.5);letter-spacing:.1em;text-transform:uppercase">Download on the</div><div style="font-size:.76rem;font-weight:700;color:rgba(247,244,240,.88)">App Store</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <div class="footer-links">
+        <a href="#analysis"><i class="fa-solid fa-magnifying-glass-dollar"></i> Budget Analysis</a>
+        <a href="#food"><i class="fa-solid fa-utensils"></i> Restaurants &amp; Food</a>
+        <a href="#places"><i class="fa-solid fa-mountain-sun"></i> Best Places</a>
+        <a href="#mapSection"><i class="fa-solid fa-map-location-dot"></i> India Map</a>
+        <a href="#culture"><i class="fa-solid fa-masks-theater"></i> Culture &amp; Heritage</a>
+        <a href="#events"><i class="fa-solid fa-calendar-star"></i> Events</a>
+        <a href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Assistant</a>
+        <a href="ich.html"><i class="fa-solid fa-om"></i> India's Culture</a>
+        <a href="history.html"><i class="fa-solid fa-scroll"></i> History of India</a>
+        <a href="explore-world.html"><i class="fa-solid fa-earth-americas"></i> Explore World</a>
+      </div>
+    </div>
+    <div>
+      <h4>Contact &amp; Info</h4>
+      <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span>Ongole, Prakasam Dist.,<br>Andhra Pradesh, India</span></div>
+      <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><span>+91 xxxxxxxxxx</span></div>
+      <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="274f424b4b48675346545342514e4250094e49">[email&#160;protected]</a></span></div>
+      <div class="footer-contact-item"><i class="fa-solid fa-clock"></i><span>Open: 9 AM – 10 PM IST</span></div>
+      <div style="margin-top:16px"><h4>Legal</h4><div class="footer-links" style="margin-top:10px">
+        <a href="privacy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        <a href="#"><i class="fa-solid fa-file-contract"></i> Terms of Service</a>
+        <a href="#"><i class="fa-solid fa-circle-info"></i> About Us</a>
+      </div></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Taste &amp; View · All Rights Reserved · Made with <i class="fa-solid fa-heart" style="color:var(--saffron)"></i> in Andhra Pradesh</p>
+    <div class="footer-bottom-links"><a href="#">Sitemap</a><a href="#">Cookies</a><a href="#">Support</a></div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════
+     MODAL (IDs intact)
+═══════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+    <img class="modal-img" id="modalImg" src="" alt=""/>
+    <div class="modal-content">
+      <div class="modal-cat" id="modalCat"></div>
+      <h2 id="modalName"></h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <a class="contact-now-btn" id="modalDir" href="#" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-location-arrow"></i> Get Directions</a>
+      <div class="modal-actions">
+        <button class="modal-save-btn" id="modalSaveBtn" onclick="toggleModalFav()"><i class="fa-regular fa-bookmark"></i> Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     VOICE FAB
+═══════════════════════════════════ -->
+<button class="voice-fab" id="voiceFab" title="Voice Assistant" onclick="toggleVoicePanel()">
+  <i class="fa-solid fa-microphone" id="voiceFabIcon"></i>
+</button>
+<div class="voice-panel" id="voicePanel">
+  <div class="voice-panel-hd">
+    <span><i class="fa-solid fa-microphone"></i> Voice Assistant</span>
+    <button onclick="toggleVoicePanel()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="voice-wave" id="voiceWave" style="display:none">
+    <div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div>
+  </div>
+  <div class="voice-status" id="voiceStatus">Tap the microphone and speak your query</div>
+  <div class="voice-transcript" id="voiceTranscript"></div>
+  <button class="analyze-btn" style="width:100%;justify-content:center;margin-top:10px;font-size:.76rem;padding:10px" onclick="startVoice()">
+    <i class="fa-solid fa-microphone"></i> Start Listening
+  </button>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════
+     BOTTOM NAV (IDs/classes intact)
+═══════════════════════════════════ -->
+<nav class="tv-nav" id="tvNav"><a class="tv-item tv-active" href="index.html" title="Home" aria-label="Home"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="tv-lbl">Home</span></a><a class="tv-item" href="explore-world.html" title="Explore" aria-label="Explore"><span class="tv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><span class="tv-lbl">Explore</span></a><a class="tv-center" href="ai-assistant.html" title="AI Assistant" aria-label="AI Assistant"><span class="tv-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M9 11V7a3 3 0 016 0v4"/><circle cx="9" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="1" fill="currentColor" stroke="none"/></svg></span></a><a class="tv-item" href="plan-trip.html" title="Plan Trip" aria-label="Plan Trip"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg></span><span class="tv-lbl">Plan Trip</span></a><a class="tv-item" href="history.html" title="History" aria-label="History"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l2.5 2.5"/><path d="M3.05 11a9 9 0 100 2M3 4v4h4"/></svg></span><span class="tv-lbl">History</span></a></nav>
+
+<!-- ═══════════════════════════════════
+     SCRIPTS (all original JS intact)
+═══════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="data.js"></script>
+<script>
+/* ── UTILS ── */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
+function scrollToEl(sel){document.querySelector(sel)?.scrollIntoView({behavior:'smooth'});}
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
+
+/* ── FAVORITES ── */
+function getFavs(){try{return JSON.parse(localStorage.getItem('tv_favs_v1'))||[];}catch{return[];}}
+function isFavorite(id){return getFavs().includes(String(id));}
+function toggleFavorite(id){let f=getFavs();const idx=f.indexOf(String(id));if(idx>-1)f.splice(idx,1);else f.push(String(id));try{localStorage.setItem('tv_favs_v1',JSON.stringify(f));}catch{}updateFavBadge();return idx===-1;}
+function updateFavBadge(){const f=getFavs(),b=document.getElementById('favBadge');if(!b)return;b.style.display=f.length?'flex':'none';b.textContent=f.length;}
+
+/* ── STATE ── */
+let currentCity='Ongole', sectionExpanded={food:false,places:false,culture:false}, cultureSubFilter='All', analysisCurrent=[], currentModalId=null;
+const ITEMS=8, aiLog=[];
+function aiOk(){const n=Date.now(),p=aiLog.filter(t=>n-t<60000);aiLog.length=0;aiLog.push(...p);return aiLog.length<5;}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  updateFavBadge(); renderCity(currentCity);
+  initSearch(); initCarousel(); initIndiaMap(); initReveal();
+  document.getElementById('locationSelect').addEventListener('change',e=>{
+    currentCity=e.target.value;sectionExpanded={food:false,places:false,culture:false};renderCity(currentCity);
+  });
+  document.getElementById('analyzeBtn').addEventListener('click',runAnalysis);
+  document.getElementById('budgetInput').addEventListener('keydown',e=>{if(e.key==='Enter')runAnalysis();});
+  document.getElementById('sortSel').addEventListener('change',()=>renderAnalysisGrid(analysisCurrent));
+  document.querySelectorAll('.culture-tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.culture-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active'); cultureSubFilter=t.dataset.sub; sectionExpanded.culture=false; renderCulture();
+  }));
+  const secMap={analysis:'nav-analysis',food:'nav-food',places:'nav-places',mapSection:'nav-map',culture:'nav-culture',events:'nav-events'};
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.top-nav a').forEach(a=>a.classList.remove('active'));const n=document.getElementById(secMap[e.target.id]);if(n)n.classList.add('active');}}),{threshold:.2});
+  Object.keys(secMap).forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();document.getElementById('searchInput').focus();}});
+  window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b)b.style.display=window.scrollY>600?'flex':'none';});
+  document.getElementById('mapStateSelect').addEventListener('change',e=>{populateCitySelect(e.target.value);refreshIndiaMap();});
+  document.getElementById('mapCitySelect').addEventListener('change',refreshIndiaMap);
+  document.querySelectorAll('.mtype-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.mtype-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeMapType=btn.dataset.type;refreshIndiaMap();
+  }));
+});
+
+/* ── CITY RENDER ── */
+function renderCity(city){
+  const d=APP_DATA.cities[city]; if(!d) return;
+  setModalData([...d.places,...(d.events||[])]);
+  document.getElementById('analysisGrid').innerHTML='';
+  document.getElementById('aiReasoning').style.display='none';
+  document.getElementById('sortBar').style.display='none';
+  document.getElementById('analysisMore').style.display='none';
+  renderFoodSection(d.places); renderPlacesSection(d.places); renderCulture(); renderEventsSection(d.events||[]);
+}
+
+/* ── RENDERERS ── */
+function renderFoodSection(p){renderSectionGrid('foodGrid','foodMore',p.filter(x=>['Restaurant','Street Food','Cafe'].includes(x.category)).sort((a,b)=>b.rating-a.rating),'food');}
+function renderPlacesSection(p){renderSectionGrid('placesGrid','placesMore',p.filter(x=>['Best Place','Holy Place','Mall'].includes(x.category)).sort((a,b)=>b.rating-a.rating),'places');}
+function renderCulture(){const d=APP_DATA.cities[currentCity];const c=d?.culture||[];const items=cultureSubFilter==='All'?c:c.filter(x=>x.subcat===cultureSubFilter);renderCultureGrid('cultureGrid','cultureMore',items,'culture');}
+
+function renderSectionGrid(gId,mId,items,key){
+  const g=document.getElementById(gId),m=document.getElementById(mId);
+  const limit=sectionExpanded[key]?items.length:Math.min(ITEMS,items.length);
+  if(!items.length){g.innerHTML=`<div class="empty-state"><i class="fa-solid fa-compass"></i><p>No places found for this city</p></div>`;m.style.display='none';return;}
+  g.innerHTML=items.slice(0,limit).map(i=>buildCard(i)).join('');
+  g.classList.add('stagger'); setTimeout(()=>g.classList.add('visible'),50);
+  m.style.display=(!sectionExpanded[key]&&items.length>ITEMS)?'block':'none';
+}
+function renderCultureGrid(gId,mId,items,key){
+  const g=document.getElementById(gId),m=document.getElementById(mId);
+  const limit=sectionExpanded[key]?items.length:Math.min(ITEMS,items.length);
+  if(!items.length){g.innerHTML=`<div class="empty-state"><i class="fa-solid fa-masks-theater"></i><p>No culture entries found</p></div>`;m.style.display='none';return;}
+  const cards=items.slice(0,limit).map(c=>{
+    const d=document.createElement('div');d.className='culture-card';
+    d.innerHTML=`<img class="cc-img" src="${esc(c.img)}" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1547153760-18fc86324498?w=400&q=80'"><div class="cc-body"><div class="cc-cat"><i class="fa-solid ${esc(c.icon||'fa-star')}"></i> <span></span></div><div class="cc-name"></div><div class="cc-desc"></div><span class="cc-tag"><i class="fa-solid fa-tag"></i> <span></span></span></div>`;
+    d.querySelector('.cc-cat span').textContent=c.subcat||'';
+    d.querySelector('.cc-name').textContent=c.name||'';
+    d.querySelector('.cc-desc').textContent=c.description||'';
+    d.querySelector('.cc-tag span').textContent=c.tag||'';
+    return d.outerHTML;
+  });
+  g.innerHTML=cards.join(''); g.classList.add('stagger'); setTimeout(()=>g.classList.add('visible'),50);
+  m.style.display=(!sectionExpanded[key]&&items.length>ITEMS)?'block':'none';
+}
+function renderEventsSection(events){
+  const g=document.getElementById('eventsGrid');
+  if(!events.length){g.innerHTML=`<div class="empty-state"><i class="fa-solid fa-calendar"></i><p>No upcoming events</p></div>`;return;}
+  const cards=events.map(ev=>{
+    const c=document.createElement('div');c.className='card';
+    c.innerHTML=`<div class="card-img-wrap"><img src="${esc(ev.img)}" alt="" loading="lazy"><span class="card-badge"><i class="fa-solid fa-calendar-star"></i> Event</span><span class="card-cost" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)"></span></div><div class="card-body"><h3></h3><p></p><p style="margin-top:5px;font-size:.7rem;color:var(--saffron)"><i class="fa-solid fa-location-dot"></i> <span></span></p></div><div class="card-actions"><button class="btn-view" style="flex:1"><i class="fa-solid fa-info-circle"></i> Details</button></div>`;
+    c.querySelector('.card-cost').textContent=ev.date||'';
+    c.querySelector('.card-body h3').textContent=ev.name||'';
+    c.querySelector('.card-body p').textContent=ev.description||'';
+    c.querySelector('.card-body p+p span').textContent=ev.location||'';
+    c.querySelector('.btn-view').onclick=()=>showToast('Event: '+ev.name);
+    return c.outerHTML;
+  });
+  g.innerHTML=cards.join('');
+}
+function expandSection(key){
+  sectionExpanded[key]=true;
+  const d=APP_DATA.cities[currentCity];
+  if(key==='food')renderFoodSection(d.places);
+  else if(key==='places')renderPlacesSection(d.places);
+  else if(key==='culture')renderCulture();
+}
+
+/* ── CARD BUILDER ── */
+let _modalDataMap={};
+function setModalData(items){_modalDataMap={};items.forEach(i=>{_modalDataMap[i.id]=i;});}
+function buildCard(item){
+  const fav=isFavorite(item.id);
+  const safeId=esc(item.id);
+  const icon=getCategoryIcon(item.category);
+  const safeCost=item.cost>0?`₹${item.cost}/avg`:'FREE';
+  const cityCoords={Ongole:'15.5057,80.0499',Guntur:'16.3067,80.4365',Vijayawada:'16.5062,80.6480',Vizag:'17.6868,83.2185',Tirupati:'13.6288,79.4192'};
+  const lat=item.lat||null, lng=item.lng||null;
+  const dest=lat&&lng?`${lat},${lng}`:(cityCoords[currentCity]||'15.5057,80.0499');
+  const mapsUrl=`https://www.google.com/maps/dir/?api=1&destination=${dest}${item.name?'&destination_place_id='+encodeURIComponent(item.name):''}`;
+  const html=`<div class="card" data-id="${safeId}">
+    <div class="card-img-wrap">
+      <img src="${esc(item.img)}" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80'">
+      <span class="card-badge"><i class="fa-solid ${icon}"></i> <span class="cb-cat"></span></span>
+      <span class="card-rating"><i class="fa-solid fa-star" style="font-size:.6rem;color:#FFB300"></i> <span class="cb-rat"></span></span>
+      <span class="card-cost ${item.cost===0?'free':''}">${safeCost}</span>
+    </div>
+    <div class="card-body"><h3 class="cb-name"></h3><p class="cb-desc"></p></div>
+    <div class="card-actions">
+      <button class="btn-view" onclick="openModal('${safeId}')"><i class="fa-solid fa-eye"></i> View</button>
+      <a class="btn-dir" href="${esc(mapsUrl)}" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-location-arrow"></i> Dir</a>
+      <button class="btn-fav ${fav?'active':''}" onclick="handleFav(this,'${safeId}')"><i class="fa-${fav?'solid':'regular'} fa-bookmark"></i></button>
+    </div>
+  </div>`;
+  const tmp=document.createElement('div');tmp.innerHTML=html;
+  tmp.querySelector('.cb-cat').textContent=item.category||'';
+  tmp.querySelector('.cb-rat').textContent=item.rating||'';
+  tmp.querySelector('.cb-name').textContent=item.name||'';
+  tmp.querySelector('.cb-desc').textContent=item.description||'';
+  return tmp.innerHTML;
+}
+function handleFav(btn,id){
+  const added=toggleFavorite(id);
+  btn.classList.toggle('active',added);
+  btn.querySelector('i').className=added?'fa-solid fa-bookmark':'fa-regular fa-bookmark';
+  showToast(added?'Saved to favorites!':'Removed from favorites');
+}
+
+/* ── MODAL ── */
+function openModal(id){
+  const item=_modalDataMap[id]; if(!item) return;
+  currentModalId=id;
+  try{let rv=JSON.parse(localStorage.getItem('tv_recently_viewed')||'[]');rv=rv.filter(x=>x.id!==id);rv.unshift({id,name:item.name,img:item.img,category:item.category});if(rv.length>20)rv=rv.slice(0,20);localStorage.setItem('tv_recently_viewed',JSON.stringify(rv));}catch{}
+  const overlay=document.getElementById('modalOverlay');
+  document.getElementById('modalImg').src=item.img||'';
+  const catEl=document.getElementById('modalCat');catEl.innerHTML=`<i class="fa-solid ${getCategoryIcon(item.category)}" style="color:var(--saffron);margin-right:5px"></i>${esc(item.category||'')}`;
+  document.getElementById('modalName').textContent=item.name||'';
+  document.getElementById('modalDesc').textContent=item.description||'';
+  const meta=document.getElementById('modalMeta');meta.innerHTML='';
+  if(item.rating){const t=document.createElement('span');t.className='modal-tag hl';t.innerHTML=`<i class="fa-solid fa-star"></i> ${item.rating} Rating`;meta.appendChild(t);}
+  if(item.cost!==undefined){const t=document.createElement('span');t.className=`modal-tag ${item.cost===0?'green':''}`;t.innerHTML=`<i class="fa-solid fa-tag"></i> ${item.cost===0?'FREE':'₹'+item.cost+' avg'}`;meta.appendChild(t);}
+  if(item.timing){const t=document.createElement('span');t.className='modal-tag';t.innerHTML=`<i class="fa-regular fa-clock"></i> ${esc(item.timing)}`;meta.appendChild(t);}
+  const cityCoords2={Ongole:'15.5057,80.0499',Guntur:'16.3067,80.4365',Vijayawada:'16.5062,80.6480',Vizag:'17.6868,83.2185',Tirupati:'13.6288,79.4192'};
+  const mDest=item.lat&&item.lng?`${item.lat},${item.lng}`:(cityCoords2[currentCity]||'15.5057,80.0499');
+  document.getElementById('modalDir').href=`https://www.google.com/maps/dir/?api=1&destination=${mDest}`;
+  const saveBtn=document.getElementById('modalSaveBtn');
+  const fav=isFavorite(id);saveBtn.className=`modal-save-btn${fav?' saved':''}`;saveBtn.innerHTML=`<i class="fa-${fav?'solid':'regular'} fa-bookmark"></i> ${fav?'Saved':'Save'}`;
+  overlay.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+function toggleModalFav(){if(!currentModalId)return;const added=toggleFavorite(currentModalId);const btn=document.getElementById('modalSaveBtn');btn.className=`modal-save-btn${added?' saved':''}`;btn.innerHTML=`<i class="fa-${added?'solid':'regular'} fa-bookmark"></i> ${added?'Saved':'Save'}`;showToast(added?'Saved!':'Removed');}
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+function getCategoryIcon(cat){const m={'Restaurant':'fa-utensils','Street Food':'fa-bowl-food','Cafe':'fa-mug-hot','Best Place':'fa-mountain-sun','Holy Place':'fa-place-of-worship','Mall':'fa-store','Theatre':'fa-film'};return m[cat]||'fa-map-pin';}
+
+/* ── ANALYSIS ── */
+async function runAnalysis(){
+  const budget=parseFloat(document.getElementById('budgetInput').value);
+  const cat=document.getElementById('catSelect').value;
+  if(isNaN(budget)||budget<0||budget>100000){showToast('Please enter a valid budget (₹0–₹1,00,000)');return;}
+  const btn=document.getElementById('analyzeBtn');
+  btn.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';btn.disabled=true;
+  const d=APP_DATA.cities[currentCity];
+  let filtered=d.places.filter(i=>i.cost<=budget&&(cat==='All'||i.category===cat));
+  filtered.sort((a,b)=>b.rating-a.rating); analysisCurrent=filtered;
+  document.getElementById('sortBar').style.display='flex';
+  document.getElementById('resultCount').textContent=filtered.length;
+  renderAnalysisGrid(filtered);
+  if(aiOk()) await showAIReasoning(budget,cat,filtered,currentCity);
+  btn.innerHTML='<i class="fa-solid fa-sparkles"></i> Analyze';btn.disabled=false;
+}
+async function showAIReasoning(budget,cat,results,city){
+  aiLog.push(Date.now());
+  const box=document.getElementById('aiReasoning'),el=document.getElementById('aiReasonText');
+  box.style.display='block';el.textContent='';
+  const top=results.slice(0,4).map(i=>`${i.name}(${i.category},₹${i.cost},⭐${i.rating})`).join(', ');
+  try{
+    const res=await fetch('/api/ai',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({city,messages:[{role:'user',content:`Budget ₹${budget}, ${cat==='All'?'any category':cat}. Top options: ${top||'none'}. Total: ${results.length}. 2-sentence warm analysis, mention 1-2 picks by name, one tip. Under 65 words.`}],maxTokens:120})});
+    if(res.ok){const d=await res.json();typeText(el,d.text||fallbackReason(budget,cat,results));}
+    else typeText(el,fallbackReason(budget,cat,results));
+  }catch{typeText(el,fallbackReason(budget,cat,results));}
+}
+function fallbackReason(budget,cat,results){
+  if(!results.length)return`No ${cat==='All'?'places':cat.toLowerCase()} found within ₹${budget}. Try increasing your budget!`;
+  const top=results[0],free=results.filter(i=>i.cost===0).length;
+  return`With ₹${Math.floor(budget)} you have ${results.length} great options in ${currentCity}! Top pick: ${top.name} (⭐${top.rating}). ${free>0?free+' places are completely free!':''}`;
+}
+function typeText(el,text){el.textContent='';let i=0;const t=setInterval(()=>{el.textContent+=text[i++]||'';if(i>=text.length)clearInterval(t);},16);}
+function renderAnalysisGrid(items){
+  const sort=document.getElementById('sortSel').value;
+  let s=[...items];
+  if(sort==='rating')s.sort((a,b)=>b.rating-a.rating);
+  else if(sort==='low')s.sort((a,b)=>a.cost-b.cost);
+  else s.sort((a,b)=>b.cost-a.cost);
+  const g=document.getElementById('analysisGrid');
+  setModalData(s);
+  if(!s.length){g.innerHTML=`<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><p>No matches. Try a higher budget.</p></div>`;document.getElementById('analysisMore').style.display='none';return;}
+  g.innerHTML=s.slice(0,12).map((item,i)=>{const c=buildCard(item);return i<3?c.replace('class="card"','class="card ai-pick"'):c;}).join('');
+  g.classList.add('stagger');setTimeout(()=>g.classList.add('visible'),50);
+  document.getElementById('analysisMore').style.display=s.length>12?'block':'none';
+  document.getElementById('analysiMoreBtn').onclick=()=>{g.innerHTML=s.map((item,i)=>{const c=buildCard(item);return i<3?c.replace('class="card"','class="card ai-pick"'):c;}).join('');document.getElementById('analysisMore').style.display='none';};
+}
+
+/* ── LIVE SEARCH ── */
+function initSearch(){
+  const input=document.getElementById('searchInput'),dropdown=document.getElementById('searchDropdown'),results=document.getElementById('searchResults');
+  let searchCat='All',focusIdx=-1;
+  function allItems(){return Object.entries(APP_DATA.cities).flatMap(([city,d])=>d.places.map(p=>({...p,city})));}
+  function doSearch(q){
+    const query=q.toLowerCase().trim();
+    if(!query){dropdown.classList.remove('open');return;}
+    const filtered=allItems().filter(i=>(searchCat==='All'||i.category===searchCat)&&(i.name.toLowerCase().includes(query)||i.description.toLowerCase().includes(query)||(i.tags||[]).some(t=>t.toLowerCase().includes(query)))).slice(0,8);
+    focusIdx=-1; renderSearchResults(filtered); dropdown.classList.add('open');
+  }
+  function renderSearchResults(items){
+    if(!items.length){results.innerHTML=`<div class="search-empty"><i class="fa-solid fa-magnifying-glass" style="font-size:1.4rem;display:block;margin-bottom:7px;color:var(--surface2)"></i>No results found</div>`;return;}
+    results.innerHTML='';
+    items.forEach((item,idx)=>{
+      const div=document.createElement('div');div.className='search-result-item';div.dataset.idx=idx;
+      const img=document.createElement('img');img.className='sri-img';img.src=item.img||'';img.alt='';img.onerror=()=>img.style.display='none';
+      const body=document.createElement('div');body.className='sri-body';
+      const name=document.createElement('div');name.className='sri-name';name.textContent=item.name;
+      const meta=document.createElement('div');meta.className='sri-meta';
+      const r=document.createElement('span');r.textContent='⭐ '+item.rating;
+      const loc=document.createElement('span');loc.textContent=item.city;
+      meta.appendChild(r);meta.appendChild(loc);body.appendChild(name);body.appendChild(meta);
+      const badge=document.createElement('span');badge.className='sri-badge';badge.textContent=item.category;
+      div.appendChild(img);div.appendChild(body);div.appendChild(badge);
+      div.onclick=()=>{dropdown.classList.remove('open');input.value='';const all=allItems();setModalData(all);openModal(item.id);};
+      results.appendChild(div);
+    });
+  }
+  input.addEventListener('input',()=>doSearch(input.value));
+  input.addEventListener('focus',()=>{if(input.value.trim())dropdown.classList.add('open');});
+  input.addEventListener('keydown',e=>{
+    if(!dropdown.classList.contains('open'))return;
+    const items=results.querySelectorAll('.search-result-item');
+    if(e.key==='ArrowDown'){e.preventDefault();focusIdx=Math.min(focusIdx+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('focused',i===focusIdx));}
+    else if(e.key==='ArrowUp'){e.preventDefault();focusIdx=Math.max(focusIdx-1,0);items.forEach((el,i)=>el.classList.toggle('focused',i===focusIdx));}
+    else if(e.key==='Enter'&&focusIdx>=0)items[focusIdx].click();
+    else if(e.key==='Escape'){dropdown.classList.remove('open');input.blur();}
+  });
+  document.addEventListener('click',e=>{if(!document.getElementById('searchWrap').contains(e.target))dropdown.classList.remove('open');});
+  document.querySelectorAll('.scat').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.scat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');searchCat=btn.dataset.cat;if(input.value.trim())doSearch(input.value);
+  }));
+}
+
+/* ── CAROUSEL ── */
+function initCarousel(){
+  const track=document.getElementById('cTrack'),slides=[...document.querySelectorAll('.carousel-slide')];
+  const dotsWrap=document.getElementById('cDots'),progress=document.getElementById('cProgress');
+  let cur=0,timer=null; const DUR=4800;
+  slides.forEach((_,i)=>{const d=document.createElement('button');d.className='cdot'+(i===0?' active':'');d.onclick=()=>goto(i);dotsWrap.appendChild(d);});
+  function goto(idx){
+    slides[cur].classList.remove('active');cur=(idx+slides.length)%slides.length;
+    track.style.transform=`translateX(-${cur*100}%)`;slides[cur].classList.add('active');
+    document.querySelectorAll('.cdot').forEach((d,i)=>d.classList.toggle('active',i===cur));
+    clearTimeout(timer);progress.style.transition='none';progress.style.width='0%';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{progress.style.transition=`width ${DUR}ms linear`;progress.style.width='100%';}));
+    timer=setTimeout(()=>goto(cur+1),DUR);
+  }
+  document.getElementById('cPrev').onclick=()=>goto(cur-1);
+  document.getElementById('cNext').onclick=()=>goto(cur+1);
+  let tx=0;
+  document.getElementById('adHero').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+  document.getElementById('adHero').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)goto(dx>0?cur-1:cur+1);},{passive:true});
+  goto(0);
+}
+
+/* ── INDIA MAP ── */
+const INDIA_PLACES=[
+  {name:'Tirupati Temple',state:'Andhra Pradesh',city:'Tirupati',type:'Temple',lat:13.6288,lng:79.4192,desc:'Famous Venkateswara temple on Tirumala hills',img:'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=400&q=80'},
+  {name:'Araku Valley',state:'Andhra Pradesh',city:'Vizag',type:'Nature',lat:18.3273,lng:82.8763,desc:'Scenic hill station with coffee plantations',img:'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=80'},
+  {name:'Borra Caves',state:'Andhra Pradesh',city:'Vizag',type:'Hidden Gem',lat:18.1161,lng:83.0491,desc:'Ancient limestone caves with stalactites',img:'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400&q=80'},
+  {name:'Lepakshi',state:'Andhra Pradesh',city:'Hindupur',type:'Historical',lat:13.8028,lng:77.6086,desc:'16th century Vijayanagara temple with hanging pillar',img:'https://images.unsplash.com/photo-1548013146-72479768bada?w=400&q=80'},
+  {name:'Brihadeeswarar Temple',state:'Tamil Nadu',city:'Thanjavur',type:'Temple',lat:10.7826,lng:79.1317,desc:'UNESCO World Heritage Chola temple, 1000 years old',img:'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=400&q=80'},
+  {name:'Meenakshi Amman Temple',state:'Tamil Nadu',city:'Madurai',type:'Temple',lat:9.9195,lng:78.1193,desc:'Ancient Dravidian temple with colorful gopurams',img:'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&q=80'},
+  {name:'Kodaikanal',state:'Tamil Nadu',city:'Kodaikanal',type:'Nature',lat:10.2381,lng:77.4892,desc:'Princess of Hill Stations',img:'https://images.unsplash.com/photo-1601933973783-43cf8a7d4c5f?w=400&q=80'},
+  {name:'Hampi',state:'Karnataka',city:'Hampi',type:'Historical',lat:15.3350,lng:76.4600,desc:'UNESCO World Heritage Vijayanagara Empire ruins',img:'https://images.unsplash.com/photo-1599921841143-819065a55cc6?w=400&q=80'},
+  {name:'Mysore Palace',state:'Karnataka',city:'Mysuru',type:'Famous',lat:12.3051,lng:76.6551,desc:'Royal palace of Wadiyar dynasty',img:'https://images.unsplash.com/photo-1580581096469-cdfc0eb19f56?w=400&q=80'},
+  {name:'Gateway of India',state:'Maharashtra',city:'Mumbai',type:'Famous',lat:18.9220,lng:72.8347,desc:'Iconic colonial arch on Mumbai harbor',img:'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400&q=80'},
+  {name:'Ajanta Caves',state:'Maharashtra',city:'Aurangabad',type:'Historical',lat:20.5519,lng:75.7033,desc:'Ancient Buddhist cave murals, UNESCO heritage',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80'},
+  {name:'Amber Fort',state:'Rajasthan',city:'Jaipur',type:'Historical',lat:26.9855,lng:75.8513,desc:'Magnificent Rajput fort with mirror halls',img:'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&q=80'},
+  {name:'Taj Mahal',state:'Uttar Pradesh',city:'Agra',type:'Famous',lat:27.1751,lng:78.0421,desc:"7th Wonder — Shah Jahan's eternal monument",img:'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=400&q=80'},
+  {name:'Varanasi Ghats',state:'Uttar Pradesh',city:'Varanasi',type:'Temple',lat:25.3176,lng:82.9739,desc:'Sacred city on Ganga with ancient ghats',img:'https://images.unsplash.com/photo-1561361058-c24e01e56eda?w=400&q=80'},
+  {name:'Alleppey Backwaters',state:'Kerala',city:'Alappuzha',type:'Famous',lat:9.4981,lng:76.3388,desc:'Venice of the East — houseboat cruises',img:'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=400&q=80'},
+  {name:'Munnar',state:'Kerala',city:'Munnar',type:'Nature',lat:10.0892,lng:77.0595,desc:'Rolling tea gardens in Western Ghats',img:'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=400&q=80'},
+  {name:'Rann of Kutch',state:'Gujarat',city:'Bhuj',type:'Nature',lat:23.7337,lng:69.8597,desc:'Great white salt desert with Rann Utsav',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80'},
+  {name:'Victoria Memorial',state:'West Bengal',city:'Kolkata',type:'Famous',lat:22.5448,lng:88.3426,desc:'White marble monument of Queen Victoria era',img:'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&q=80'},
+  {name:'Konark Sun Temple',state:'Odisha',city:'Konark',type:'Historical',lat:19.8876,lng:86.0945,desc:'UNESCO heritage temple shaped as Sun God chariot',img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=80'},
+  {name:'Red Fort',state:'Delhi',city:'Delhi',type:'Historical',lat:28.6562,lng:77.2410,desc:"Mughal Emperor's grand riverside fortress",img:'https://images.unsplash.com/photo-1562679299-8fd94f3e8b66?w=400&q=80'},
+  {name:'Golden Temple',state:'Punjab',city:'Amritsar',type:'Temple',lat:31.6200,lng:74.8765,desc:"Sikhism's holiest shrine in shimmering gold",img:'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&q=80'},
+  {name:'Kedarnath',state:'Uttarakhand',city:'Rudraprayag',type:'Temple',lat:30.7352,lng:79.0669,desc:'High Himalayan Jyotirlinga at 3,583m',img:'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?w=400&q=80'},
+  {name:'Spiti Valley',state:'Himachal Pradesh',city:'Kaza',type:'Hidden Gem',lat:32.2308,lng:78.0707,desc:"Cold desert — 'Little Tibet' of India",img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80'},
+  {name:'Dal Lake',state:'Jammu and Kashmir',city:'Srinagar',type:'Famous',lat:34.0836,lng:74.8794,desc:'Iconic shikara rides and floating gardens',img:'https://images.unsplash.com/photo-1562679299-8fd94f3e8b66?w=400&q=80'},
+];
+const STATE_CITIES={
+  'Andhra Pradesh':['Tirupati','Vizag','Ongole','Vijayawada','Guntur','Hindupur'],
+  'Tamil Nadu':['Thanjavur','Madurai','Chennai','Kodaikanal','Mahabalipuram'],
+  'Karnataka':['Hampi','Mysuru','Bengaluru','Madikeri'],
+  'Maharashtra':['Mumbai','Aurangabad','Pune','Lonavala'],
+  'Rajasthan':['Jaipur','Jaisalmer','Udaipur','Pushkar'],
+  'Uttar Pradesh':['Agra','Varanasi','Lucknow','Mathura'],
+  'Kerala':['Alappuzha','Munnar','Thekkady','Kochi'],
+  'Gujarat':['Somnath','Bhuj','Ahmedabad','Dwarka'],
+  'West Bengal':['Kolkata','Darjeeling','Sundarbans'],
+  'Madhya Pradesh':['Khajuraho','Bhopal','Ujjain'],
+  'Odisha':['Puri','Konark','Bhubaneswar'],
+  'Goa':['Panaji','Old Goa','Margao'],
+  'Delhi':['Delhi'],
+  'Punjab':['Amritsar','Chandigarh'],
+  'Uttarakhand':['Rishikesh','Rudraprayag','Chamoli','Dehradun'],
+  'Himachal Pradesh':['Shimla','Manali','Kaza','Kullu'],
+  'Jammu and Kashmir':['Srinagar','Jammu','Gulmarg'],
+};
+let leafMap=null, indiaMarkers=[], activeMapType='All';
+const MAP_COLORS={'Historical':'#D97706','Temple':'#FF6B00','Nature':'#16A34A','Hidden Gem':'#9333EA','Famous':'#2563EB'};
+function populateCitySelect(state){
+  const sel=document.getElementById('mapCitySelect');
+  sel.innerHTML='<option value="All">All Cities</option>';
+  const cities=state==='All'?[]:STATE_CITIES[state]||[];
+  cities.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+}
+function initIndiaMap(){
+  leafMap=L.map('mapContainer',{zoomControl:true,attributionControl:false}).setView([22,80],5);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:18}).addTo(leafMap);
+  refreshIndiaMap(); populateCitySelect('All');
+}
+function markerIcon(type){
+  const color=MAP_COLORS[type]||'#FF6B00';
+  return L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:50% 50% 50% 0;background:${color};transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-location-dot" style="color:#fff;font-size:10px;transform:rotate(45deg)"></i></div>`,iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-32]});
+}
+function refreshIndiaMap(){
+  if(!leafMap)return;
+  indiaMarkers.forEach(m=>m.remove());indiaMarkers=[];
+  const filterState=document.getElementById('mapStateSelect')?.value||'All';
+  const filterCity=document.getElementById('mapCitySelect')?.value||'All';
+  let places=INDIA_PLACES;
+  if(filterState!=='All')places=places.filter(p=>p.state===filterState);
+  if(filterCity!=='All')places=places.filter(p=>p.city===filterCity);
+  if(activeMapType!=='All')places=places.filter(p=>p.type===activeMapType);
+  places.forEach(place=>{
+    const m=L.marker([place.lat,place.lng],{icon:markerIcon(place.type)}).addTo(leafMap);
+    const pop=document.createElement('div');pop.className='map-popup';
+    const img=document.createElement('img');img.src=place.img||'';img.alt=place.name;img.onerror=()=>img.style.display='none';
+    const body=document.createElement('div');body.className='map-popup-body';
+    const cat=document.createElement('div');cat.className='map-popup-cat';cat.textContent=place.type;
+    const name=document.createElement('div');name.className='map-popup-name';name.textContent=place.name;
+    const state=document.createElement('div');state.className='map-popup-state';state.innerHTML=`<i class="fa-solid fa-location-dot" style="color:var(--saffron)"></i>${place.state}`;
+    const desc=document.createElement('div');desc.className='map-popup-desc';desc.textContent=place.desc||'';
+    const btn=document.createElement('a');btn.className='map-popup-btn';btn.href=`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;btn.target='_blank';btn.rel='noopener noreferrer';btn.innerHTML='<i class="fa-solid fa-location-arrow"></i> Get Directions';
+    body.appendChild(cat);body.appendChild(name);body.appendChild(state);body.appendChild(desc);body.appendChild(btn);
+    pop.appendChild(img);pop.appendChild(body);
+    m.bindPopup(pop,{maxWidth:240,minWidth:220});indiaMarkers.push(m);
+  });
+}
+
+/* ── SCROLL REVEAL ── */
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.08});
+  document.querySelectorAll('.reveal,.stagger').forEach(el=>obs.observe(el));
+}
+
+/* ── JOIN FORM ── */
+function handleJoinSubmit(){
+  const name=document.getElementById('joinName').value.trim().slice(0,80);
+  const email=document.getElementById('joinEmail').value.trim().slice(0,120);
+  const type=document.getElementById('joinType').value;
+  if(!name){showToast('Please enter your name');return;}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Please enter a valid email');return;}
+  if(!type){showToast('Please select a type');return;}
+  showToast('Application submitted! We will contact you soon.');
+  ['joinName','joinEmail','joinPhone','joinDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('joinType').selectedIndex=0;
+}
+function handleNewsletter(e){
+  e.preventDefault();
+  const email=document.getElementById('nlEmail').value.trim();
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Please enter a valid email address');return;}
+  showToast('Subscribed! Welcome to Taste & View.');
+  document.getElementById('nlEmail').value='';
+}
+
+/* ── VOICE ── */
+let voiceOpen=false;
+function toggleVoicePanel(){voiceOpen=!voiceOpen;document.getElementById('voicePanel').classList.toggle('open',voiceOpen);}
+function startVoice(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){document.getElementById('voiceStatus').textContent='Not supported. Try Chrome.';return;}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const recognition=new SR();recognition.lang='en-IN';recognition.continuous=false;recognition.interimResults=true;
+  const fab=document.getElementById('voiceFab'),icon=document.getElementById('voiceFabIcon'),status=document.getElementById('voiceStatus'),transcript=document.getElementById('voiceTranscript'),wave=document.getElementById('voiceWave');
+  recognition.onstart=()=>{fab.classList.add('listening');icon.className='fa-solid fa-stop';wave.style.display='flex';status.textContent='Listening… Speak now';transcript.textContent='';};
+  recognition.onresult=e=>{const t=Array.from(e.results).map(r=>r[0].transcript).join('');transcript.textContent='"'+t+'"';if(e.results[e.results.length-1].isFinal)processVoiceCommand(t);};
+  recognition.onend=()=>{fab.classList.remove('listening');icon.className='fa-solid fa-microphone';wave.style.display='none';};
+  recognition.onerror=()=>{status.textContent='Could not understand. Try again.';fab.classList.remove('listening');icon.className='fa-solid fa-microphone';wave.style.display='none';};
+  recognition.start();
+}
+function processVoiceCommand(text){
+  const safe=text.replace(/[\x00-\x1F]/g,'').trim().slice(0,200),lower=safe.toLowerCase();
+  document.getElementById('voiceStatus').textContent='Processing: "'+safe+'"';
+  const match=lower.match(/(\d+)/);
+  if(match){
+    document.getElementById('budgetInput').value=Math.min(parseInt(match[1]),100000);
+    if(lower.includes('restaurant'))document.getElementById('catSelect').value='Restaurant';
+    else if(lower.includes('food')||lower.includes('street'))document.getElementById('catSelect').value='Street Food';
+    else if(lower.includes('caf'))document.getElementById('catSelect').value='Cafe';
+    else if(lower.includes('beach')||lower.includes('place'))document.getElementById('catSelect').value='Best Place';
+    else if(lower.includes('temple')||lower.includes('holy'))document.getElementById('catSelect').value='Holy Place';
+    else document.getElementById('catSelect').value='All';
+    document.getElementById('voicePanel').classList.remove('open');voiceOpen=false;
+    setTimeout(()=>{runAnalysis();document.querySelector('#analysis').scrollIntoView({behavior:'smooth'});},400);
+  }else if(lower.includes('map'))scrollToEl('#mapSection');
+  else if(lower.includes('culture'))scrollToEl('#culture');
+  else if(lower.includes('event'))scrollToEl('#events');
+  else if(lower.includes('ai')||lower.includes('assistant'))window.location.href='ai-assistant.html';
+  else if(lower.includes('india')||lower.includes('heritage'))window.location.href='ich.html';
+  else if(lower.includes('history'))window.location.href='history.html';
+  else if(lower.includes('plan')||lower.includes('trip'))window.location.href='plan-trip.html';
+  else document.getElementById('voiceStatus').textContent='Try: "restaurants under 200" or "open map"';
+}
+</script>
+</body>
+</html>

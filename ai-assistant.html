@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<link rel="icon" type="image/png" href="logo.png"/>
+<title>AI Assistant | Taste View</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --saffron:#FF6B00;--saffron-lt:#FF8C35;--saffron-dk:#D95A00;
+  --gold:#FFB300;--gold-lt:#FFC933;--gold-dk:#E09800;
+  --bg:#F7F4F0;--card:#FFF;--card2:#FFFAF5;
+  --surface:#F0EBE3;--surface2:#E8E0D5;
+  --tx:#1A1208;--tx2:#5C4A2A;--tx3:#9C8870;--tx4:#BFB0A0;
+  --green:#16A34A;--blue:#2563EB;
+  --sh-sm:0 2px 8px rgba(90,50,10,.08);
+  --sh:0 4px 20px rgba(90,50,10,.10);
+  --sh-md:0 8px 32px rgba(90,50,10,.14);
+  --sh-gold:0 4px 20px rgba(255,107,0,.25);
+  --r-sm:10px;--r:16px;--r-lg:22px;--r-xl:30px;--r-full:999px;
+  --t:all .22s cubic-bezier(.4,0,.2,1);
+  --gg:linear-gradient(135deg,#FF8C35,#FF6B00,#D95A00);
+  --hdr-h:62px;--bnav-h:68px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);overflow:hidden;display:flex;flex-direction:column}
+@media(max-width:767px){body{overflow:auto}}
+a{text-decoration:none;color:inherit}
+button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none}
+textarea{font-family:'Plus Jakarta Sans',sans-serif}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+
+/* HEADER */
+.header{flex-shrink:0;position:relative;z-index:100;background:rgba(247,244,240,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--surface);box-shadow:0 1px 12px rgba(90,50,10,.06);height:var(--hdr-h)}
+.hdr-in{max-width:1200px;margin:0 auto;padding:0 16px;height:100%;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.logo img{width:30px;height:30px;border-radius:9px;object-fit:cover}
+.logo-text{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-right{display:flex;align-items:center;gap:6px;margin-left:auto}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1.5px solid var(--surface2);display:flex;align-items:center;justify-content:center;color:var(--tx2);font-size:.84rem;transition:var(--t);text-decoration:none}
+.icon-btn:hover{background:rgba(255,107,0,.1);border-color:var(--saffron);color:var(--saffron)}
+.login-btn{display:flex;align-items:center;gap:5px;background:var(--gg);color:#fff;padding:8px 14px;border-radius:var(--r-full);font-size:.78rem;font-weight:700;transition:var(--t);box-shadow:var(--sh-gold)}
+.login-btn:hover{transform:translateY(-1px)}
+
+/* LAYOUT */
+.ai-wrap{display:flex;flex:1;overflow:hidden;max-width:1200px;width:100%;margin:0 auto}
+@media(max-width:767px){.ai-wrap{flex-direction:column;overflow:visible;height:auto}}
+
+/* SIDEBAR */
+.ai-sidebar{width:260px;flex-shrink:0;background:var(--card);border-right:1px solid var(--surface);display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:767px){.ai-sidebar{display:none}}
+.ai-sidebar-hd{padding:16px;border-bottom:1px solid var(--surface);flex-shrink:0}
+.ai-sidebar-hd h3{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;color:var(--tx2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.ai-sidebar-hd h3 i{color:var(--saffron)}
+.city-sel{width:100%;padding:9px 32px 9px 14px;background:var(--surface);border:1.5px solid var(--surface2);border-radius:var(--r-full);color:var(--tx);font-size:.83rem;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;margin-bottom:11px;transition:var(--t);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23FF6B00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.city-sel:focus{border-color:var(--saffron);background-color:var(--card)}
+.city-sel option{background:var(--card)}
+.new-chat-btn{width:100%;padding:10px;background:var(--gg);border:none;color:#fff;border-radius:var(--r);font-family:'Syne',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;transition:var(--t);letter-spacing:.06em;display:flex;align-items:center;justify-content:center;gap:7px;text-transform:uppercase;box-shadow:var(--sh-gold)}
+.new-chat-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,0,.4)}
+.sidebar-scroll{flex:1;overflow-y:auto;padding:14px;scrollbar-width:thin;scrollbar-color:var(--surface2) transparent}
+.sb-label{font-size:.6rem;font-weight:800;color:var(--tx4);letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
+.quick-btn{width:100%;text-align:left;padding:9px 12px;background:var(--surface);border:1.5px solid transparent;border-radius:var(--r-sm);color:var(--tx2);font-size:.76rem;cursor:pointer;transition:var(--t);margin-bottom:5px;display:flex;align-items:center;gap:8px}
+.quick-btn:hover{border-color:var(--saffron);color:var(--saffron);background:rgba(255,107,0,.06)}
+.quick-btn i{font-size:.76rem;color:var(--saffron);width:14px}
+.sb-divider{height:1px;background:var(--surface);margin:12px 0}
+.hist-item{padding:9px 11px;border-radius:var(--r-sm);cursor:pointer;transition:var(--t);font-size:.74rem;color:var(--tx3);display:flex;align-items:center;gap:7px;border:1.5px solid transparent;margin-bottom:4px}
+.hist-item:hover{background:rgba(255,107,0,.06);border-color:rgba(255,107,0,.15);color:var(--tx2)}
+.hist-item i{font-size:.7rem;color:var(--tx4)}
+
+/* CHAT MAIN */
+.ai-chat-main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+@media(max-width:767px){.ai-chat-main{height:100vh}}
+
+/* CHAT HEADER */
+.chat-hd{flex-shrink:0;background:var(--card);border-bottom:1px solid var(--surface);padding:13px 18px;display:flex;align-items:center;gap:12px}
+.arya-avatar{width:42px;height:42px;border-radius:50%;background:var(--gg);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0;box-shadow:var(--sh-gold)}
+.arya-name{font-family:'Syne',sans-serif;font-size:.94rem;font-weight:800;color:var(--tx);display:flex;align-items:center;gap:8px}
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);border:2px solid var(--card);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.arya-sub{font-size:.68rem;color:var(--tx3);margin-top:2px}
+.chat-hd-right{margin-left:auto;display:flex;gap:7px}
+.hd-btn{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3);cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:var(--t);text-decoration:none}
+.hd-btn:hover{color:var(--saffron);border-color:var(--saffron)}
+
+/* MESSAGES */
+.chat-messages{flex:1;overflow-y:auto;padding:18px 18px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--surface2) transparent}
+.chat-messages::-webkit-scrollbar{width:3px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--surface2)}
+
+/* WELCOME */
+.ai-welcome{text-align:center;padding:36px 20px;margin:auto 0}
+.ai-welcome-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--gg);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.6rem;margin:0 auto 18px;
+  box-shadow:var(--sh-gold);
+}
+.ai-welcome h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:var(--tx);margin-bottom:8px}
+.ai-welcome p{font-size:.82rem;color:var(--tx3);line-height:1.72;max-width:380px;margin:0 auto}
+
+/* MESSAGE BUBBLES */
+.msg{display:flex;gap:10px;animation:msgIn .28s ease}
+.msg.user{flex-direction:row-reverse}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.msg-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.msg-av.ai{background:var(--gg);color:#fff;box-shadow:var(--sh-gold)}
+.msg-av.user{background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3)}
+.msg-body{display:flex;flex-direction:column;max-width:74%}
+.msg.user .msg-body{align-items:flex-end}
+.msg-bubble{padding:11px 15px;border-radius:18px;font-size:.84rem;line-height:1.7}
+.msg.ai .msg-bubble{background:var(--card);border:1px solid var(--surface);color:var(--tx);border-radius:4px 18px 18px 18px;box-shadow:var(--sh-sm)}
+.msg.user .msg-bubble{background:var(--gg);color:#fff;border-radius:18px 4px 18px 18px;box-shadow:var(--sh-gold)}
+.msg-time{font-size:.6rem;color:var(--tx4);margin-top:4px;padding:0 4px}
+.msg-bubble strong{color:var(--saffron-dk)}
+.msg.user .msg-bubble strong{color:rgba(255,255,255,.9)}
+.msg-bubble ul{padding-left:18px;margin-top:5px}
+.msg-bubble ul li{margin-bottom:3px}
+.msg-bubble a{color:var(--saffron);text-decoration:underline}
+
+/* TYPING */
+.typing-bubble{background:var(--card);border:1px solid var(--surface);border-radius:4px 18px 18px 18px;padding:13px 16px;display:inline-flex;gap:5px;align-items:center;box-shadow:var(--sh-sm)}
+.t-dot{width:7px;height:7px;border-radius:50%;background:var(--saffron);opacity:.6;animation:tdot 1.2s infinite ease-in-out}
+.t-dot:nth-child(2){animation-delay:.2s}.t-dot:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* SUGGESTION CHIPS */
+.chips-row{flex-shrink:0;padding:10px 18px 0;display:flex;gap:7px;flex-wrap:wrap;background:var(--card);border-top:1px solid var(--surface)}
+.chip{background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx2);font-size:.72rem;font-weight:600;padding:6px 13px;border-radius:var(--r-full);cursor:pointer;transition:var(--t);white-space:nowrap}
+.chip:hover{border-color:var(--saffron);color:var(--saffron);background:rgba(255,107,0,.07)}
+
+/* INPUT AREA */
+.chat-input-area{flex-shrink:0;background:var(--card);border-top:1px solid var(--surface);padding:12px 18px calc(12px + var(--safe-b))}
+@media(min-width:768px){.chat-input-area{padding:12px 18px}}
+.input-row{display:flex;gap:9px;align-items:flex-end}
+.chat-textarea{flex:1;background:var(--surface);border:1.5px solid var(--surface2);border-radius:var(--r-lg);color:var(--tx);font-size:.86rem;padding:11px 14px;outline:none;resize:none;max-height:120px;min-height:46px;transition:var(--t);line-height:1.55}
+.chat-textarea:focus{border-color:var(--saffron);background:var(--card);box-shadow:0 0 0 3px rgba(255,107,0,.1)}
+.chat-textarea::placeholder{color:var(--tx3)}
+.input-actions{display:flex;gap:7px;align-items:flex-end}
+.voice-btn{width:44px;height:44px;border-radius:50%;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3);font-size:.9rem;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.voice-btn:hover{border-color:var(--saffron);color:var(--saffron)}
+.voice-btn.listening{background:linear-gradient(135deg,var(--green),#15803D);border-color:var(--green);color:#fff;animation:vPulse 1s ease-in-out infinite}
+@keyframes vPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.send-btn{width:44px;height:44px;border-radius:50%;background:var(--gg);border:none;color:#fff;font-size:.9rem;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--sh-gold)}
+.send-btn:hover{transform:scale(1.1);box-shadow:0 6px 22px rgba(255,107,0,.5)}
+.send-btn:disabled{opacity:.5;transform:none;cursor:not-allowed}
+
+/* BOTTOM NAV */
+@media(min-width:768px){}
+@media(max-width:767px){body{overflow:auto}.ai-wrap{overflow:visible;height:auto}.ai-chat-main{height:calc(100dvh - var(--hdr-h) - var(--bnav-h));overflow:hidden}.chat-input-area{padding:12px 14px calc(12px + var(--bnav-h) + var(--safe-b))}}
+
+/* ════ TASTE✦VIEW FLOATING NAVBAR ════ */
+.tv-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:9000;display:flex;align-items:center;gap:2px;padding:5px 6px;padding-bottom:max(5px,env(safe-area-inset-bottom,5px));background:rgba(255,255,255,.80);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,107,0,.18);border-radius:999px;box-shadow:0 4px 24px rgba(255,107,0,.13),0 1px 4px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.95);white-space:nowrap}
+.tv-item{width:44px;height:44px;min-width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;flex-direction:row;gap:0;padding:0;border-radius:999px;border:none;background:transparent;cursor:pointer;text-decoration:none;outline:none;-webkit-tap-highlight-color:transparent;overflow:hidden;transition:width .32s cubic-bezier(.4,0,.2,1),background .22s ease,box-shadow .22s ease,transform .18s cubic-bezier(.34,1.56,.64,1)}
+.tv-item:active{transform:scale(.86)!important}
+.tv-icon{width:20px;height:20px;min-width:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.56,.64,1)}
+.tv-icon svg{width:20px!important;height:20px!important;display:block;overflow:hidden;stroke-width:1.75px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;color:#C5C5C5;transition:color .18s ease}
+.tv-lbl{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.01em;white-space:nowrap;overflow:hidden;max-width:0;opacity:0;color:#fff;padding-right:0;transition:max-width .32s cubic-bezier(.4,0,.2,1),opacity .22s ease,padding-right .32s}
+.tv-item:not(.tv-active):not(.tv-center):hover .tv-icon svg{color:#FF6B00}
+.tv-item:not(.tv-active):not(.tv-center):hover{background:rgba(255,107,0,.08)}
+.tv-item:not(.tv-active):not(.tv-center):hover .tv-icon{transform:translateY(-2px) scale(1.1)}
+.tv-item.tv-active{width:auto;min-width:44px;padding:0 14px 0 10px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);box-shadow:0 4px 16px rgba(255,107,0,.38),0 1px 3px rgba(255,107,0,.2)}
+.tv-item.tv-active .tv-icon{margin-right:5px}
+.tv-item.tv-active .tv-icon svg{color:#fff;transform:scale(1.05)}
+.tv-item.tv-active .tv-lbl{max-width:72px;opacity:1;padding-right:2px}
+.tv-item.tv-active:hover{box-shadow:0 6px 22px rgba(255,107,0,.48)}
+.tv-center{width:46px;height:46px;min-width:46px;border-radius:50%;border:none;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin:0 3px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);box-shadow:0 4px 18px rgba(255,107,0,.42),0 0 0 3px rgba(255,107,0,.13);transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s ease;text-decoration:none}
+.tv-center .tv-icon svg{width:20px!important;height:20px!important;color:#fff;stroke-width:1.75px}
+.tv-center:hover{transform:translateY(-3px) scale(1.09);box-shadow:0 8px 26px rgba(255,107,0,.52),0 0 0 4px rgba(255,107,0,.16)}
+.tv-center:active{transform:scale(.88)!important}
+@media(min-width:768px){.tv-nav{display:none}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="hdr-in">
+    <a href="index.html" class="logo"><img src="logo.png" alt=""/><div><div class="logo-text">Taste&#10022;View</div></div></a>
+    <div class="hdr-right">
+      <a href="index.html" class="icon-btn" title="Home"><i class="fa-solid fa-house"></i></a>
+      <a href="favorites.html" class="icon-btn" title="Favorites"><i class="fa-solid fa-bookmark"></i></a>
+      <a href="profile.html" class="icon-btn" title="Profile"><i class="fa-regular fa-circle-user"></i></a>
+      <a href="login.html" class="login-btn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
+    </div>
+  </div>
+</header>
+
+<div class="ai-wrap">
+  <!-- SIDEBAR -->
+  <div class="ai-sidebar">
+    <div class="ai-sidebar-hd">
+      <h3><i class="fa-solid fa-sliders"></i> Settings</h3>
+      <select class="city-sel" id="citySelect">
+        <option value="Ongole">Ongole</option>
+        <option value="Guntur">Guntur</option>
+        <option value="Vijayawada">Vijayawada</option>
+        <option value="Vizag">Visakhapatnam</option>
+        <option value="Tirupati">Tirupati</option>
+        <option value="India">All of India</option>
+      </select>
+      <button class="new-chat-btn" onclick="startNewChat()"><i class="fa-solid fa-plus"></i> New Chat</button>
+    </div>
+    <div class="sidebar-scroll">
+      <div class="sb-label" style="margin-bottom:10px">Quick Actions</div>
+      <button class="quick-btn" onclick="sendQuick('What are the top restaurants near me?')"><i class="fa-solid fa-utensils"></i> Top Restaurants</button>
+      <button class="quick-btn" onclick="sendQuick('Best places to visit on a budget of &#8377;500')"><i class="fa-solid fa-wallet"></i> Budget Travel</button>
+      <button class="quick-btn" onclick="sendQuick('What cultural events are happening this week?')"><i class="fa-solid fa-calendar-star"></i> Cultural Events</button>
+      <button class="quick-btn" onclick="sendQuick('Tell me about local street food')"><i class="fa-solid fa-bowl-food"></i> Street Food Guide</button>
+      <button class="quick-btn" onclick="sendQuick('Recommend hidden gems near me')"><i class="fa-solid fa-gem"></i> Hidden Gems</button>
+      <button class="quick-btn" onclick="sendQuick('Best temples to visit')"><i class="fa-solid fa-place-of-worship"></i> Temples Guide</button>
+      <button class="quick-btn" onclick="sendQuick('Plan a weekend trip for me')"><i class="fa-solid fa-route"></i> Plan Weekend Trip</button>
+      <button class="quick-btn" onclick="sendQuick('What are the cafes with best ambience?')"><i class="fa-solid fa-mug-hot"></i> Best Cafes</button>
+      <div class="sb-divider"></div>
+      <div class="sb-label" style="margin-bottom:10px">Recent Chats</div>
+      <div class="hist-item" onclick="sendQuick('Budget restaurants in Ongole')"><i class="fa-regular fa-comment"></i> Budget restaurants in Ongole</div>
+      <div class="hist-item" onclick="sendQuick('Weekend trip plan from Ongole')"><i class="fa-regular fa-comment"></i> Weekend trip plan</div>
+      <div class="hist-item" onclick="sendQuick('Cultural events this month')"><i class="fa-regular fa-comment"></i> Cultural events</div>
+    </div>
+  </div>
+
+  <!-- CHAT MAIN -->
+  <div class="ai-chat-main">
+    <div class="chat-hd">
+      <div class="arya-avatar"><i class="fa-solid fa-robot"></i></div>
+      <div>
+        <div class="arya-name">Arya <span class="online-dot"></span></div>
+        <div class="arya-sub">AI Travel &amp; Culture Assistant &middot; Always online</div>
+      </div>
+      <div class="chat-hd-right">
+        <button class="hd-btn" title="Clear chat" onclick="clearChat()"><i class="fa-solid fa-rotate-left"></i></button>
+        <button class="hd-btn" title="Voice" onclick="toggleVoice()" id="voiceHdBtn"><i class="fa-solid fa-microphone"></i></button>
+        <a href="index.html" class="hd-btn" title="Home"><i class="fa-solid fa-house"></i></a>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="ai-welcome" id="welcome">
+        <div class="ai-welcome-icon"><i class="fa-solid fa-robot"></i></div>
+        <h3>Namaste! I'm Arya &#128591;</h3>
+        <p>Your personal AI guide to food, culture &amp; travel across Andhra Pradesh and all of India. Ask me anything!</p>
+      </div>
+    </div>
+
+    <div class="chips-row" id="chipsRow">
+      <div class="chip" onclick="sendChip(this)">Top restaurants near me</div>
+      <div class="chip" onclick="sendChip(this)">Budget under &#8377;300</div>
+      <div class="chip" onclick="sendChip(this)">Hidden gems</div>
+      <div class="chip" onclick="sendChip(this)">Weekend trip plan</div>
+      <div class="chip" onclick="sendChip(this)">Best street food</div>
+      <div class="chip" onclick="sendChip(this)">Cultural events</div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="input-row">
+        <textarea class="chat-textarea" id="chatInput" placeholder="Ask about restaurants, places, events, culture&#8230;" rows="1" maxlength="800"></textarea>
+        <div class="input-actions">
+          <button class="voice-btn" id="voiceBtn" title="Voice input" onclick="toggleVoice()">
+            <i class="fa-solid fa-microphone" id="voiceIcon"></i>
+          </button>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="tv-nav" id="tvNav"><a class="tv-item" href="index.html" title="Home" aria-label="Home"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="tv-lbl">Home</span></a><a class="tv-item" href="explore-world.html" title="Explore" aria-label="Explore"><span class="tv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><span class="tv-lbl">Explore</span></a><a class="tv-center tv-active" href="ai-assistant.html" title="AI Assistant" aria-label="AI Assistant" style="box-shadow:0 4px 18px rgba(255,107,0,.55),0 0 0 5px rgba(255,107,0,.18)"><span class="tv-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M9 11V7a3 3 0 016 0v4"/><circle cx="9" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="1" fill="currentColor" stroke="none"/></svg></span></a><a class="tv-item" href="plan-trip.html" title="Plan Trip" aria-label="Plan Trip"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg></span><span class="tv-lbl">Plan Trip</span></a><a class="tv-item" href="history.html" title="History" aria-label="History"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l2.5 2.5"/><path d="M3.05 11a9 9 0 100 2M3 4v4h4"/></svg></span><span class="tv-lbl">History</span></a></nav>
+
+<script>
+/* ================================================================
+   STATE
+================================================================ */
+let currentCity = 'Ongole';
+let chatHistory = [];
+let isResponding = false;
+let voiceRec = null;
+let isListening = false;
+
+document.getElementById('citySelect').addEventListener('change', e => {
+  currentCity = e.target.value;
+  addSystemMsg('Switched to ' + currentCity + '. How can I help you explore ' + currentCity + '?');
+});
+
+/* ================================================================
+   TIME
+================================================================ */
+function now() {
+  return new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+}
+
+/* ================================================================
+   ADD MESSAGES
+================================================================ */
+function addMsg(role, content, isHTML = false) {
+  const messages = document.getElementById('chatMessages');
+  const welcome = document.getElementById('welcome');
+  if (welcome) welcome.remove();
+
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + (role === 'user' ? 'user' : 'ai');
+
+  const avClass = role === 'user' ? 'user' : 'ai';
+  const avIcon = role === 'user' ? '<i class="fa-regular fa-circle-user"></i>' : '<i class="fa-solid fa-robot"></i>';
+  const bubbleContent = isHTML ? content : escHTML(content).replace(/\n/g, '<br>');
+
+  wrap.innerHTML = `
+    <div class="msg-av ${avClass}">${avIcon}</div>
+    <div class="msg-body">
+      <div class="msg-bubble">${bubbleContent}</div>
+      <div class="msg-time">${now()}</div>
+    </div>`;
+
+  messages.appendChild(wrap);
+  messages.scrollTop = messages.scrollHeight;
+
+  chatHistory.push({ role: role === 'user' ? 'user' : 'assistant', content });
+  if (chatHistory.length > 40) chatHistory = chatHistory.slice(-40);
+  return wrap;
+}
+
+function addSystemMsg(text) {
+  const messages = document.getElementById('chatMessages');
+  const el = document.createElement('div');
+  el.style.cssText = 'text-align:center;font-size:.72rem;color:var(--tx4);padding:4px 0';
+  el.textContent = text;
+  messages.appendChild(el);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function addTypingIndicator() {
+  const messages = document.getElementById('chatMessages');
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.id = 'typing';
+  el.innerHTML = `
+    <div class="msg-av ai"><i class="fa-solid fa-robot"></i></div>
+    <div class="typing-bubble">
+      <div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>
+    </div>`;
+  messages.appendChild(el);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+function escHTML(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
+}
+
+/* ================================================================
+   SEND MESSAGE — calls real Anthropic API
+================================================================ */
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || isResponding) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  addMsg('user', text);
+  await getAIResponse(text);
+}
+
+async function getAIResponse(userMsg) {
+  isResponding = true;
+  const sendBtn = document.getElementById('sendBtn');
+  sendBtn.disabled = true;
+  addTypingIndicator();
+
+  const systemPrompt = `You are Arya, a friendly and knowledgeable AI travel and culture assistant for the Taste & View platform — a food and travel discovery app for Andhra Pradesh and India.
+
+You specialize in:
+- Food & restaurants in ${currentCity}, Andhra Pradesh, and all of India
+- Tourist places, hidden gems, temples, beaches, nature spots
+- Cultural events, traditions, festivals, local experiences  
+- Budget travel tips and smart recommendations
+- India's rich history, heritage, and culture
+
+Your personality: Warm, enthusiastic, helpful like a local friend. Use light emojis where natural. Format responses clearly — use bullet points when listing items. Keep answers concise but complete.
+
+Current city focus: ${currentCity}
+
+When recommending places, mention:
+- Approximate cost/entry fee
+- Best time to visit
+- One practical insider tip
+
+Always be encouraging and helpful. If you don't have specific data, give helpful general guidance while being honest.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [
+          ...chatHistory.slice(-12).map(m => ({ role: m.role, content: m.content })),
+          { role: 'user', content: userMsg }
+        ]
+      })
+    });
+
+    removeTyping();
+
+    if (response.ok) {
+      const data = await response.json();
+      const aiText = data.content?.[0]?.text || getFallback(userMsg);
+      addMsg('ai', formatResponse(aiText), true);
+    } else {
+      addMsg('ai', formatResponse(getFallback(userMsg)), true);
+    }
+  } catch (err) {
+    removeTyping();
+    addMsg('ai', formatResponse(getFallback(userMsg)), true);
+  }
+
+  isResponding = false;
+  sendBtn.disabled = false;
+  updateChips(userMsg);
+}
+
+/* ================================================================
+   FORMAT AI RESPONSE — markdown to HTML
+================================================================ */
+function formatResponse(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/^### (.*)$/gm, '<div style="font-family:\'Syne\',sans-serif;font-size:.88rem;color:var(--saffron-dk);margin:8px 0 4px;font-weight:800">$1</div>')
+    .replace(/^## (.*)$/gm, '<div style="font-family:\'Syne\',sans-serif;font-size:.92rem;color:var(--saffron-dk);margin:10px 0 5px;font-weight:800">$1</div>')
+    .replace(/^- (.*)$/gm, '<li style="margin-bottom:3px">$1</li>')
+    .replace(/(<li[^>]*>.*<\/li>\n?)+/g, s => '<ul style="padding-left:18px;margin:6px 0">' + s + '</ul>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+/* ================================================================
+   FALLBACK RESPONSES (when API unavailable)
+================================================================ */
+function getFallback(query) {
+  const city = currentCity;
+  const q = query.toLowerCase();
+  if (q.includes('restaurant') || q.includes('food') || q.includes('eat')) {
+    return `Great question about food in **${city}**! &#127869;\n\n**Top Restaurants:**\n- Andhra Bhavan — Authentic Andhra thali, &#8377;120–200/person\n- Hotel Minerva Grand — Multi-cuisine, &#8377;300–500/person\n- Sri Lakshmi Restaurant — Local favourites, &#8377;80–150/person\n\n**Best Street Food:**\n- Punugulu & Gongura rice near Bus Stand (&#8377;20–40)\n- Pesarattu & Upma breakfast (&#8377;30–50)\n- Biryani at Old Market (&#8377;80–120)\n\n**Tip:** Visit 12–2 PM for fresh thali meals. Most places close by 10 PM.`;
+  }
+  if (q.includes('budget') || q.includes('cheap') || q.includes('&#8377;')) {
+    const match = query.match(/(\d+)/);
+    const budget = match ? parseInt(match[1]) : 300;
+    return `Here's what you can explore in **${city}** within &#8377;${budget}! &#128176;\n\n**Best Budget Picks:**\n- Street food at Bus Stand — &#8377;50–100\n- Local temple darshan — Free\n- Gardens & Parks — Free entry\n- Auto-rickshaw sightseeing — &#8377;150–200\n\n**Tip:** Morning temple visits are free and less crowded. Pack your own water to save extra!`;
+  }
+  if (q.includes('temple') || q.includes('holy') || q.includes('sacred')) {
+    return `${city} has beautiful temples! &#128591;\n\n**Famous Temples:**\n- Kothapatnam Beach Temple — Scenic coastal temple, free entry\n- Sri Venkateswara Swamy Temple — Peaceful local shrine\n- Srinivasa Temple — Morning prayers at 6 AM\n\n**Tips:**\n- Visit early morning (6–8 AM) to avoid crowds\n- Dress modestly — cover shoulders & knees\n- Best days: Tuesday and Friday for special prayers`;
+  }
+  if (q.includes('trip') || q.includes('weekend') || q.includes('plan')) {
+    return `Here's a perfect weekend from **${city}**! &#128506;\n\n**Saturday:**\n- Morning: Local temples & markets (Free–&#8377;100)\n- Afternoon: Beach or nature spot (Free)\n- Evening: Street food & cultural show (&#8377;100–200)\n\n**Sunday:**\n- Morning: Nature walk / Hill trek (Free–&#8377;50)\n- Afternoon: Museum or heritage site (&#8377;20–50)\n- Evening: Best restaurant dinner (&#8377;150–300)\n\n**Total: &#8377;400–700 for a complete weekend!**\n\nWant a more detailed day-by-day itinerary?`;
+  }
+  return `Namaste! &#128075; I'm **Arya**, your guide to **${city}** and all of India!\n\nI can help you with:\n- &#127869; **Restaurants & Food** — Best places on any budget\n- &#128506; **Places to Visit** — Temples, beaches, hidden gems\n- &#127881; **Events** — Cultural shows, festivals, fairs\n- &#128176; **Budget Planning** — Best experiences at any price\n- &#9992; **Travel Tips** — Local knowledge for better trips\n\nWhat would you like to explore today?`;
+}
+
+/* ================================================================
+   CHIPS & QUICK ACTIONS
+================================================================ */
+function updateChips(lastMsg) {
+  const q = lastMsg.toLowerCase();
+  let chips = [];
+  if (q.includes('restaurant') || q.includes('food')) chips = ['Best street food', 'Cafes near me', 'Budget meals under &#8377;200', 'Biryani spots'];
+  else if (q.includes('temple') || q.includes('holy')) chips = ['Best time to visit', 'Free entry temples', 'Nearby pilgrimage', 'Temple festivals'];
+  else if (q.includes('trip') || q.includes('weekend')) chips = ['Day trip ideas', 'Budget travel tips', 'Family-friendly places', 'Hidden gems'];
+  else chips = ['Best restaurants', 'Hidden gems', 'Cultural events', 'Budget travel'];
+  document.getElementById('chipsRow').innerHTML = chips.map(c => `<div class="chip" onclick="sendChip(this)">${c}</div>`).join('');
+}
+
+function sendChip(el) {
+  document.getElementById('chatInput').value = el.textContent;
+  sendMessage();
+}
+
+function sendQuick(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+/* ================================================================
+   NEW CHAT / CLEAR
+================================================================ */
+function startNewChat() {
+  chatHistory = [];
+  const messages = document.getElementById('chatMessages');
+  messages.innerHTML = `<div class="ai-welcome" id="welcome">
+    <div class="ai-welcome-icon"><i class="fa-solid fa-robot"></i></div>
+    <h3>Namaste! I'm Arya &#128591;</h3>
+    <p>Your personal AI guide to food, culture &amp; travel. Ask me anything!</p>
+  </div>`;
+  document.getElementById('chatInput').value = '';
+  resetChips();
+}
+
+function clearChat() {
+  if (confirm('Clear this conversation?')) startNewChat();
+}
+
+function resetChips() {
+  document.getElementById('chipsRow').innerHTML = `
+    <div class="chip" onclick="sendChip(this)">Top restaurants near me</div>
+    <div class="chip" onclick="sendChip(this)">Budget under &#8377;300</div>
+    <div class="chip" onclick="sendChip(this)">Hidden gems</div>
+    <div class="chip" onclick="sendChip(this)">Weekend trip plan</div>
+    <div class="chip" onclick="sendChip(this)">Best street food</div>
+    <div class="chip" onclick="sendChip(this)">Cultural events</div>`;
+}
+
+/* ================================================================
+   KEYBOARD & TEXTAREA AUTO-RESIZE
+================================================================ */
+const chatInput = document.getElementById('chatInput');
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+chatInput.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+/* ================================================================
+   VOICE INPUT
+================================================================ */
+function toggleVoice() {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert('Voice input not supported. Please use Chrome or Edge.');
+    return;
+  }
+  if (isListening) { voiceRec?.stop(); return; }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  voiceRec = new SR();
+  voiceRec.lang = 'en-IN';
+  voiceRec.continuous = false;
+  voiceRec.interimResults = true;
+
+  voiceRec.onstart = () => {
+    isListening = true;
+    document.getElementById('voiceBtn').classList.add('listening');
+    document.getElementById('voiceHdBtn').classList.add('listening');
+    document.getElementById('voiceIcon').className = 'fa-solid fa-stop';
+    chatInput.placeholder = 'Listening…';
+  };
+
+  voiceRec.onresult = e => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    chatInput.value = transcript;
+    if (e.results[e.results.length - 1].isFinal) sendMessage();
+  };
+
+  voiceRec.onend = () => {
+    isListening = false;
+    document.getElementById('voiceBtn').classList.remove('listening');
+    document.getElementById('voiceHdBtn').classList.remove('listening');
+    document.getElementById('voiceIcon').className = 'fa-solid fa-microphone';
+    chatInput.placeholder = 'Ask about restaurants, places, events, culture…';
+  };
+
+  voiceRec.onerror = () => voiceRec.stop();
+  voiceRec.start();
+}
+
+/* ================================================================
+   INIT — send greeting on load
+================================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    if (!chatHistory.length) {
+      const greeting = `Namaste! &#128591; I'm **Arya**, your personal guide to **${currentCity}** and all of India!\n\nI can help you discover:\n- &#127869; **Best food** — restaurants, street food, cafes\n- &#128506; **Places to visit** — temples, beaches, hidden gems\n- &#127881; **Cultural events** — festivals, shows, local traditions\n- &#128176; **Budget tips** — best experiences at any price point\n\nWhat would you like to explore today?`;
+      addMsg('ai', formatResponse(greeting), true);
+    }
+  }, 500);
+});
+</script>
+</body>
+</html>

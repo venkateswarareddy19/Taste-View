@@ -1,0 +1,12 @@
+{
+  "name": "taste-view",
+  "version": "1.0.0",
+  "description": "Smart travel + food + budget analysis + AI assistant platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

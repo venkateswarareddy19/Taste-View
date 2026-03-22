@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<link rel="icon" type="image/png" href="logo.png"/>
+<title>India's Culture &amp; Heritage | Taste &amp; View</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   TASTE & VIEW — REDESIGNED UI v5
+   Mobile-app style · South Indian warmth · Premium clean
+   ALL existing JS hooks (IDs/classes) preserved
+═══════════════════════════════════════════════════════════ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  /* Brand */
+  --saffron:#FF6B00;--saffron-lt:#FF8C35;--saffron-dk:#D95A00;
+  --gold:#FFB300;--gold-lt:#FFC933;--gold-dk:#E09800;
+  /* Surfaces */
+  --bg:#F7F4F0;--card:#FFFFFF;--card2:#FFFAF5;
+  --surface:#F0EBE3;--surface2:#E8E0D5;
+  /* Text */
+  --tx:#1A1208;--tx2:#5C4A2A;--tx3:#9C8870;--tx4:#BFB0A0;
+  /* Accent */
+  --green:#16A34A;--blue:#2563EB;--red:#DC2626;
+  /* Shadows */
+  --sh-sm:0 2px 8px rgba(90,50,10,.08);
+  --sh:0 4px 20px rgba(90,50,10,.10);
+  --sh-md:0 8px 32px rgba(90,50,10,.14);
+  --sh-lg:0 20px 60px rgba(90,50,10,.18);
+  --sh-gold:0 4px 20px rgba(255,107,0,.25);
+  /* Radius */
+  --r-sm:10px;--r:16px;--r-lg:22px;--r-xl:30px;--r-full:999px;
+  /* Transitions */
+  --t:all .22s cubic-bezier(.4,0,.2,1);
+  --ts:all .16s cubic-bezier(.4,0,.2,1);
+  /* Gradients */
+  --gg:linear-gradient(135deg,#FF8C35,#FF6B00,#D95A00);
+  --gg2:linear-gradient(135deg,#FFC933,#FFB300,#E09800);
+  --gcard:linear-gradient(180deg,transparent 45%,rgba(26,18,8,.85) 100%);
+  /* Layout */
+  --hdr-h:62px;--bnav-h:68px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);color:var(--tx);
+  min-height:100vh;overflow-x:hidden;
+  padding-bottom:0;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none}
+input,select,textarea{font-family:'Plus Jakarta Sans',sans-serif}
+img{display:block}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+
+/* ─────────────────────────────────────
+   TOP HEADER — App style
+───────────────────────────────────── */
+
+/* ─── HEADER — Logo LEFT · Icons RIGHT ─── */
+.header{
+  position:sticky;top:0;z-index:900;
+  background:rgba(247,244,240,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--surface);
+  box-shadow:0 1px 12px rgba(90,50,10,.06);
+  height:var(--hdr-h);
+}
+.header-in{
+  width:100%;max-width:1200px;margin:0 auto;
+  padding:0 14px;height:100%;
+  display:flex;align-items:center;gap:10px;
+}
+/* Logo — always left */
+.logo{
+  display:flex;align-items:center;gap:8px;
+  text-decoration:none;flex-shrink:0;
+}
+.logo img{width:30px;height:30px;border-radius:9px;object-fit:cover;box-shadow:var(--sh-sm)}
+.logo-text{
+  font-family:'Syne',sans-serif;font-size:1.08rem;font-weight:800;
+  background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.01em;white-space:nowrap;
+}
+.tagline{display:none}
+/* Search pill — grows in centre */
+.search-wrap{flex:1;min-width:0;max-width:400px;position:relative}
+.header-search-pill{
+  width:100%;display:flex;align-items:center;gap:8px;
+  background:var(--surface);border-radius:var(--r-full);
+  padding:9px 14px;cursor:pointer;transition:var(--t);
+  border:1.5px solid transparent;
+}
+.header-search-pill:focus-within,.header-search-pill:hover{
+  background:#fff;border-color:rgba(255,107,0,.3);box-shadow:var(--sh-sm);
+}
+.header-search-pill i{color:var(--tx3);font-size:.82rem;flex-shrink:0}
+.header-search-pill input{
+  background:transparent;border:none;outline:none;
+  color:var(--tx);font-size:.82rem;width:100%;min-width:0;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.header-search-pill input::placeholder{color:var(--tx3)}
+.search-kbd{font-size:.56rem;background:#fff;border:1px solid var(--surface2);color:var(--tx3);padding:2px 5px;border-radius:5px;flex-shrink:0;box-shadow:var(--sh-sm);display:none}
+@media(min-width:640px){.search-kbd{display:inline}}
+/* Right icons group — always right */
+.header-right{
+  display:flex;align-items:center;gap:6px;
+  flex-shrink:0;margin-left:auto;
+}
+.icon-btn{
+  position:relative;width:36px;height:36px;border-radius:50%;
+  background:var(--surface);border:1.5px solid var(--surface2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--tx2);font-size:.84rem;transition:var(--t);text-decoration:none;
+  flex-shrink:0;
+}
+.icon-btn:hover{background:rgba(255,107,0,.1);border-color:var(--saffron);color:var(--saffron)}
+/* Hide AI/Profile icons on very small screens, show on sm+ */
+.mob-hide{display:none}
+@media(min-width:480px){.mob-hide{display:flex}}
+.fav-badge{
+  position:absolute;top:-4px;right:-4px;
+  background:var(--saffron);color:#fff;
+  font-size:.44rem;font-weight:800;
+  width:15px;height:15px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+.login-btn{
+  display:flex;align-items:center;gap:5px;
+  background:var(--gg);color:#fff;padding:8px 13px;border-radius:var(--r-full);
+  font-size:.76rem;font-weight:700;transition:var(--t);
+  box-shadow:var(--sh-gold);white-space:nowrap;flex-shrink:0;
+}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,107,0,.4)}
+.login-txt{display:none}
+@media(min-width:400px){.login-txt{display:inline}}
+/* Desktop */
+@media(min-width:768px){
+  .header-in{gap:16px;padding:0 20px}
+  .search-wrap{max-width:380px}
+  .tagline{display:block;font-size:.62rem;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+  .mob-hide{display:flex}
+}
+
+/* Search dropdown — preserve original behaviour */
+.search-wrap{position:relative;flex:1;max-width:480px}
+.search-input-row{display:none}/* hidden — using pill above */
+.search-dropdown{
+  position:absolute;top:calc(100% + 8px);left:-16px;right:-16px;
+  background:var(--card);border-radius:var(--r-lg);
+  border:1px solid var(--surface);box-shadow:var(--sh-lg);
+  overflow:hidden;z-index:200;display:none;
+}
+.search-dropdown.open{display:block;animation:ddIn .16s ease}
+@keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.search-cat-tabs{display:flex;border-bottom:1px solid var(--surface);padding:4px 6px 0;overflow-x:auto;scrollbar-width:none;gap:2px}
+.search-cat-tabs::-webkit-scrollbar{display:none}
+.scat{padding:8px 12px;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx3);cursor:pointer;white-space:nowrap;border:none;border-bottom:2.5px solid transparent;background:none;font-family:'Plus Jakarta Sans',sans-serif;transition:var(--t);border-radius:var(--r-sm) var(--r-sm) 0 0}
+.scat.active,.scat:hover{color:var(--saffron);border-bottom-color:var(--saffron)}
+.search-results{max-height:280px;overflow-y:auto}
+.search-result-item{display:flex;align-items:center;gap:11px;padding:11px 14px;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--surface)}
+.search-result-item:hover,.search-result-item.focused{background:rgba(255,107,0,.05)}
+.sri-img{width:40px;height:40px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.sri-body{flex:1;min-width:0}
+.sri-name{font-size:.84rem;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sri-meta{font-size:.66rem;color:var(--tx3);margin-top:2px;display:flex;gap:7px}
+.sri-badge{font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:var(--r-full);background:rgba(255,107,0,.1);color:var(--saffron);border:1px solid rgba(255,107,0,.2);white-space:nowrap;align-self:center;flex-shrink:0}
+.search-empty{padding:28px 14px;text-align:center;color:var(--tx3);font-size:.8rem}
+
+/* ─────────────────────────────────────
+   TOP NAV — Horizontal scrollable chips
+───────────────────────────────────── */
+.top-nav{
+  background:var(--card);border-bottom:1px solid var(--surface);
+  padding:10px 16px;display:flex;gap:7px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.top-nav::-webkit-scrollbar{display:none}
+.top-nav-in{display:flex;gap:7px;margin:0 auto}
+.top-nav a{
+  text-decoration:none;color:var(--tx2);font-size:.72rem;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  padding:8px 14px;white-space:nowrap;
+  border-radius:var(--r-full);border:1.5px solid var(--surface);
+  background:var(--surface);transition:var(--t);
+  display:flex;align-items:center;gap:5px;flex-shrink:0;
+}
+.top-nav a:hover{border-color:var(--saffron);color:var(--saffron);background:rgba(255,107,0,.06)}
+.top-nav a.active{background:var(--gg);border-color:transparent;color:#fff;box-shadow:var(--sh-gold)}
+.top-nav a i{font-size:.7rem}
+
+/* ─────────────────────────────────────
+   SECTIONS — General layout
+───────────────────────────────────── */
+.section{
+  padding:22px 14px 26px;
+  position:relative;max-width:100%;margin:0 auto;overflow:visible;
+}
+/* No fade overlay — clean grid layout */
+.section-hd{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+}
+/* Grid inside section */
+.section>.grid,.section .grid{overflow:visible}
+.section-inner>.grid,.section>.stagger.grid{overflow:visible}
+@media(min-width:768px){
+  .section{max-width:1200px;padding:34px 20px 40px}
+  .section-hd{padding:0}
+}
+
+/* Section headers */
+
+.section-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);
+  border-radius:var(--r-full);padding:4px 10px;
+  font-size:.58rem;font-weight:800;color:var(--saffron);
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:1.22rem;font-weight:800;
+  color:var(--tx);line-height:1.15;letter-spacing:-.01em;
+}
+.section-underline{width:36px;height:3px;background:var(--gg);border-radius:2px;margin-top:5px}
+.section-subtitle{font-size:.74rem;color:var(--tx3);margin-top:4px}
+.see-all-btn{
+  display:flex;align-items:center;gap:4px;
+  font-size:.75rem;font-weight:700;color:var(--saffron);
+  padding:7px 14px;border-radius:var(--r-full);
+  border:1.5px solid rgba(255,107,0,.25);background:rgba(255,107,0,.07);
+  transition:var(--t);flex-shrink:0;cursor:pointer;
+}
+.see-all-btn:hover{background:var(--saffron);color:#fff;border-color:transparent}
+
+/* Section headers */
+
+.section-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);border-radius:var(--r-full);padding:4px 10px;font-size:.58rem;font-weight:800;color:var(--saffron);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.section-title{font-family:'Syne',sans-serif;font-size:1.22rem;font-weight:800;color:var(--tx);line-height:1.15;letter-spacing:-.01em}
+.section-underline{width:36px;height:3px;background:var(--gg);border-radius:2px;margin-top:5px}
+.section-subtitle{font-size:.74rem;color:var(--tx3);margin-top:4px;display:flex;align-items:center;gap:5px}
+.see-all-btn{display:flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;color:var(--saffron);padding:7px 14px;border-radius:var(--r-full);border:1.5px solid rgba(255,107,0,.25);background:rgba(255,107,0,.07);transition:var(--t);flex-shrink:0;cursor:pointer}
+.see-all-btn:hover{background:var(--saffron);color:#fff;border-color:transparent}
+
+/* ─────────────────────────────────────
+   CARD — New app-style design
+───────────────────────────────────── */
+.card{
+  background:var(--card);border-radius:var(--r-lg);
+  overflow:hidden;transition:var(--t);
+  position:relative;
+  box-shadow:var(--sh-sm);
+  border:1px solid var(--surface);
+  display:flex;flex-direction:column;
+  animation:fadeUp .4s ease both;
+}
+.card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(255,107,0,.2)}
+.card:active{transform:scale(.97)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card:nth-child(1){animation-delay:.04s}.card:nth-child(2){animation-delay:.08s}
+.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.16s}
+.card:nth-child(5){animation-delay:.20s}.card:nth-child(6){animation-delay:.24s}
+.card:nth-child(7){animation-delay:.28s}.card:nth-child(8){animation-delay:.32s}
+/* Image */
+.card-img-wrap{position:relative;overflow:hidden;height:155px;flex-shrink:0}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s;display:block}
+.card:hover .card-img-wrap img{transform:scale(1.06)}
+/* Gradient overlay */
+.card-img-wrap::after{content:'';position:absolute;inset:0;background:var(--gcard);pointer-events:none}
+.card-badge{
+  position:absolute;top:9px;left:9px;z-index:2;
+  background:rgba(247,244,240,.92);backdrop-filter:blur(8px);
+  border:1px solid var(--surface);color:var(--tx2);
+  font-size:.56rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 8px;border-radius:var(--r-full);display:flex;align-items:center;gap:4px;
+}
+.card-rating{
+  position:absolute;top:9px;right:9px;z-index:2;
+  background:rgba(247,244,240,.92);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,179,0,.3);color:var(--gold-dk);
+  font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:var(--r-full);
+}
+.card-cost{
+  position:absolute;bottom:9px;right:9px;z-index:2;
+  font-size:.62rem;font-weight:800;padding:3px 8px;border-radius:var(--r-full);
+  background:var(--gg);color:#fff;
+}
+.card-cost.free{background:linear-gradient(135deg,#16A34A,#15803D)}
+/* Body */
+.card-body{padding:10px 12px 6px;flex:1;overflow:hidden}
+.card-body h3{font-size:.88rem;font-weight:700;margin-bottom:3px;color:var(--tx);line-height:1.3}
+.card-body p{font-size:.72rem;color:var(--tx3);line-height:1.5;display:-webkit-box;--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Actions */
+.card-actions{display:flex;gap:5px;padding:0 10px 10px;flex-shrink:0}
+.btn-view{
+  flex:1.2;padding:8px 6px;
+  background:var(--gg);border:none;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:.69rem;font-weight:700;
+  border-radius:var(--r-sm);cursor:pointer;transition:var(--t);
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.btn-view:hover{opacity:.88;transform:scale(1.02)}
+.btn-dir{
+  flex:1;padding:8px 4px;
+  background:rgba(37,99,235,.08);border:1.5px solid rgba(37,99,235,.2);
+  color:var(--blue);font-family:'Plus Jakarta Sans',sans-serif;font-size:.69rem;font-weight:700;
+  border-radius:var(--r-sm);cursor:pointer;transition:var(--t);
+  display:flex;align-items:center;justify-content:center;gap:4px;text-decoration:none;
+}
+.btn-dir:hover{background:rgba(37,99,235,.18);border-color:var(--blue)}
+.btn-fav{
+  width:32px;height:32px;background:var(--surface);border:1.5px solid var(--surface2);
+  color:var(--tx3);border-radius:var(--r-sm);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;
+  transition:var(--t);flex-shrink:0;
+}
+.btn-fav:hover,.btn-fav.active{color:#DC2626;border-color:#FECACA;background:#FFF0F0}
+/* AI Pick badge */
+.card.ai-pick{border-color:rgba(255,179,0,.4)}
+.card.ai-pick::before{
+  content:'✦ AI Pick';position:absolute;top:7px;left:50%;transform:translateX(-50%);
+  background:var(--gg2);color:var(--tx);font-size:.5rem;font-weight:800;
+  letter-spacing:.1em;padding:3px 9px;border-radius:var(--r-full);z-index:3;
+  white-space:nowrap;box-shadow:var(--sh-sm);
+}
+
+/* ─────────────────────────────────────
+   MODAL
+───────────────────────────────────── */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:2000;background:rgba(26,18,8,.55);backdrop-filter:blur(10px);justify-content:center;align-items:flex-end;padding:0}
+@media(min-width:768px){.modal-overlay{align-items:center;padding:20px}}
+.modal-overlay.open{display:flex;animation:mfade .2s ease}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+.modal-box{
+  background:var(--card);border-radius:var(--r-xl) var(--r-xl) 0 0;
+  max-width:540px;width:100%;max-height:92vh;overflow-y:auto;
+  position:relative;box-shadow:0 -12px 56px rgba(26,18,8,.2);
+  animation:mSlideUp .28s cubic-bezier(.4,0,.2,1);
+}
+@media(min-width:768px){.modal-box{border-radius:var(--r-xl);animation:mIn .28s cubic-bezier(.34,1.56,.64,1)}}
+@keyframes mSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes mIn{from{opacity:0;transform:scale(.92) translateY(18px)}to{opacity:1;transform:none}}
+/* Drag handle */
+.modal-box::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:36px;height:4px;border-radius:2px;background:var(--surface2)}
+@media(min-width:768px){.modal-box::before{display:none}}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.84rem;display:flex;align-items:center;justify-content:center;transition:var(--t);z-index:2}
+.modal-close:hover{color:var(--saffron);border-color:var(--saffron)}
+.modal-img{width:100%;height:220px;object-fit:cover;border-radius:var(--r-xl) var(--r-xl) 0 0}
+.modal-content{padding:20px 20px 24px}
+.modal-cat{font-size:.62rem;color:var(--tx3);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:5px;margin-top:2px}
+.modal-content h2{font-family:'Syne',sans-serif;font-size:1.22rem;font-weight:800;margin:8px 0 11px;color:var(--tx)}
+.modal-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.modal-tag{background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx2);font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:var(--r-full);display:flex;align-items:center;gap:5px}
+.modal-tag.hl{color:var(--gold-dk);border-color:rgba(255,179,0,.3);background:rgba(255,179,0,.08)}
+.modal-tag.green{color:var(--green);border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.08)}
+.modal-desc{font-size:.84rem;color:var(--tx2);line-height:1.78;margin-bottom:16px}
+.contact-now-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;background:linear-gradient(135deg,var(--green),#15803D);border:none;color:#fff;border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:var(--t);text-decoration:none;margin-bottom:9px;box-shadow:0 4px 16px rgba(22,163,74,.35)}
+.contact-now-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(22,163,74,.45)}
+.modal-actions{display:flex;gap:8px}
+.modal-save-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx2);border-radius:var(--r);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:var(--t)}
+.modal-save-btn:hover{border-color:var(--saffron);color:var(--saffron)}
+.modal-save-btn.saved{color:#DC2626;border-color:#FECACA;background:#FFF0F0}
+
+/* ─────────────────────────────────────
+   FOOTER
+───────────────────────────────────── */
+.footer{background:var(--tx);padding:44px 16px 24px;color:rgba(247,244,240,.7);position:relative;overflow:hidden}
+.footer-bg-text{position:absolute;font-family:'Syne',sans-serif;font-size:clamp(4rem,12vw,10rem);font-weight:800;color:rgba(255,107,0,.04);white-space:nowrap;pointer-events:none;letter-spacing:.02em;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);/* centred so no overflow gap */}
+.footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:44px;padding-bottom:32px;border-bottom:1px solid rgba(247,244,240,.1);position:relative;z-index:1}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr;gap:22px}}
+.footer-brand-logo{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;background:var(--gg);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:9px}
+.footer-brand-desc{font-size:.78rem;color:rgba(247,244,240,.5);line-height:1.78;max-width:290px;margin-bottom:18px}
+.footer-social{display:flex;gap:8px}
+.social-btn{width:36px;height:36px;border-radius:50%;background:rgba(247,244,240,.07);border:1px solid rgba(247,244,240,.12);display:flex;align-items:center;justify-content:center;color:rgba(247,244,240,.55);text-decoration:none;font-size:.86rem;transition:var(--t)}
+.social-btn:hover{background:rgba(255,107,0,.2);color:var(--saffron);border-color:var(--saffron);transform:translateY(-3px)}
+.footer-inner h4{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;color:var(--gold-lt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.footer-links{display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:.78rem;color:rgba(247,244,240,.5);text-decoration:none;transition:var(--t);display:flex;align-items:center;gap:6px}
+.footer-links a:hover{color:var(--saffron);padding-left:4px}
+.footer-links a i{font-size:.66rem;width:13px}
+.footer-contact-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px}
+.footer-contact-item i{color:var(--saffron);margin-top:2px;font-size:.78rem;width:13px}
+.footer-contact-item span{font-size:.76rem;color:rgba(247,244,240,.5);line-height:1.5}
+.footer-contact-item a{color:rgba(247,244,240,.5);text-decoration:none}
+.footer-contact-item a:hover{color:var(--saffron)}
+.footer-bottom{max-width:1100px;margin:22px auto 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:11px;position:relative;z-index:1}
+.footer-bottom p{font-size:.72rem;color:rgba(247,244,240,.38)}
+.footer-bottom-links{display:flex;gap:14px}
+.footer-bottom-links a{font-size:.72rem;color:rgba(247,244,240,.38);text-decoration:none;transition:color .2s}
+.footer-bottom-links a:hover{color:var(--saffron)}
+@media(max-width:768px){.footer-bottom{flex-direction:column;text-align:center}}
+
+/* active dot — only on regular links, NEVER on center button */
+.mbn-link:active{transform:scale(.88)}
+/* ── AI BOT CENTER BUTTON — orange circle, zero extras ── */
+/* kill ALL pseudo-elements on the center button — completely */
+
+/* ─────────────────────────────────────
+   BACK TO TOP
+───────────────────────────────────── */
+#backToTop{position:fixed;bottom:calc(var(--bnav-h) + var(--safe-b) + 14px);left:16px;z-index:700;width:42px;height:42px;border-radius:50%;background:var(--card);border:1.5px solid var(--surface);color:var(--tx2);font-size:.88rem;cursor:pointer;transition:var(--t);display:none;align-items:center;justify-content:center;box-shadow:var(--sh)}
+#backToTop:hover{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+
+
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .56s ease,transform .56s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.stagger>*{opacity:0;transform:translateY(16px);transition:opacity .44s ease,transform .44s ease}
+.stagger.visible>*:nth-child(1){transition-delay:.04s}.stagger.visible>*:nth-child(2){transition-delay:.09s}
+.stagger.visible>*:nth-child(3){transition-delay:.14s}.stagger.visible>*:nth-child(4){transition-delay:.19s}
+.stagger.visible>*:nth-child(5){transition-delay:.24s}.stagger.visible>*:nth-child(6){transition-delay:.29s}
+.stagger.visible>*:nth-child(7){transition-delay:.34s}.stagger.visible>*:nth-child(8){transition-delay:.39s}
+.stagger.visible>*{opacity:1;transform:translateY(0)}
+
+/* ─────────────────────────────────────
+   DESKTOP — full layout
+───────────────────────────────────── */
+@media(min-width:768px){
+  body{padding-bottom:0}
+    .voice-fab{bottom:20px;right:20px}
+  .voice-panel{bottom:82px;right:20px}
+  #backToTop{bottom:20px;left:20px}
+  .toast{bottom:24px}
+  .section{max-width:1200px;padding:40px 20px 44px;overflow:visible}
+  .section::after{display:none}
+  .section>.grid,.section .grid{padding-left:0;padding-right:0}
+  .app-cats{padding:22px 20px 24px}
+  .app-cats-in,.location-bar-in{max-width:1200px;padding:0 20px}
+  .search-wrap{max-width:none;flex:1}
+  .search-dropdown{left:0;right:0}
+  .footer-bg-text{display:block}
+  #analysis .section-inner{max-width:1200px;padding:0 20px}
+}
+
+
+/* ═══ ICH HERO ═══ */
+.ich-hero{position:relative;height:62vw;min-height:240px;max-height:520px;overflow:hidden;border-radius:0;margin:0}
+@media(min-width:480px){.ich-hero{margin:10px 14px;border-radius:var(--r-xl);box-shadow:var(--sh-md)}}
+@media(min-width:768px){.ich-hero{height:420px;max-height:none;margin:14px 20px}}
+@media(min-width:1200px){.ich-hero{height:500px}}
+.hero-slides{position:absolute;inset:0}
+.hslide{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease}
+.hslide.active{opacity:1}
+.hslide img{width:100%;height:100%;object-fit:cover;animation:heroZoom 6s ease forwards}
+@keyframes heroZoom{from{transform:scale(1.07)}to{transform:scale(1)}}
+.hero-grad{position:absolute;inset:0;background:linear-gradient(160deg,rgba(26,18,8,.82) 0%,rgba(26,18,8,.18) 52%,rgba(26,18,8,.7) 100%);z-index:2}
+.hero-grad-bot{position:absolute;bottom:0;left:0;right:0;height:38%;background:linear-gradient(to top,rgba(247,244,240,1),transparent);z-index:3}
+.hero-content{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:14px 16px 20px}
+@media(min-width:480px){.hero-content{justify-content:center;padding:20px}}
+@media(min-width:768px){.hero-content{padding:32px 40px}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,0,.18);border:1px solid rgba(255,107,0,.35);color:var(--gold-lt);font-size:.56rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;padding:4px 12px;border-radius:var(--r-full);margin-bottom:8px;animation:fadeUp .5s ease .1s both}
+.hero-title{font-family:'Syne',sans-serif;font-size:clamp(1.3rem,5vw,3rem);font-weight:800;color:#fff;line-height:1.1;margin-bottom:6px;text-shadow:0 3px 20px rgba(0,0,0,.5);animation:fadeUp .5s ease .2s both}
+.hero-title .hl{background:linear-gradient(135deg,var(--gold-lt),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(.72rem,2vw,.88rem);color:rgba(255,248,240,.82);max-width:480px;line-height:1.65;margin-bottom:14px;animation:fadeUp .5s ease .3s both;display:-webkit-box;--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hero-cta-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s ease .4s both}
+.btn-hero-p{display:inline-flex;align-items:center;gap:5px;background:var(--gg);color:#fff;padding:9px 16px;border-radius:var(--r-full);font-size:.74rem;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:var(--t);box-shadow:var(--sh-gold)}
+.btn-hero-p:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,0,.5)}
+.btn-hero-o{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;padding:9px 14px;border-radius:var(--r-full);font-size:.74rem;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.3);cursor:pointer;transition:var(--t)}
+.btn-hero-o:hover{background:rgba(255,255,255,.25);transform:translateY(-2px)}
+.hero-counter{position:absolute;top:14px;right:14px;z-index:5;font-family:'Syne',sans-serif;font-size:.74rem;color:rgba(255,255,255,.55);letter-spacing:.1em}
+.hero-counter span{color:var(--gold-lt)}
+.hero-dots{position:absolute;bottom:46px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5}
+@media(min-width:480px){.hero-dots{bottom:14px}}
+.hdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);border:none;cursor:pointer;transition:var(--t)}
+.hdot.active{width:20px;border-radius:3px;background:var(--saffron)}
+.hero-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--gg);z-index:5;transition:width .1s linear;border-radius:0}
+@media(min-width:480px){.hero-progress{border-radius:0 0 var(--r-xl) var(--r-xl)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ═══ STICKY CATEGORY NAV ═══ */
+.ich-nav{display:flex;gap:7px;flex-wrap:nowrap;padding:11px 14px;background:var(--card);border-bottom:1px solid var(--surface);position:sticky;top:var(--hdr-h);z-index:89;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ich-nav::-webkit-scrollbar{display:none}
+.ich-nav-btn{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx3);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 13px;border-radius:var(--r-full);cursor:pointer;transition:var(--t);text-decoration:none;white-space:nowrap;flex-shrink:0}
+.ich-nav-btn:hover{border-color:var(--saffron);color:var(--saffron)}
+.ich-nav-btn.active{background:var(--gg);border-color:transparent;color:#fff;box-shadow:var(--sh-gold)}
+
+/* ═══ STATS STRIP ═══ */
+.ich-stats{display:flex;background:var(--card);border-bottom:1px solid var(--surface);overflow-x:auto;scrollbar-width:none}
+.ich-stats::-webkit-scrollbar{display:none}
+.ich-stat{flex:1;min-width:110px;text-align:center;padding:18px 12px;border-right:1px solid var(--surface);transition:var(--t)}
+.ich-stat:last-child{border-right:none}
+.ich-stat:hover{background:rgba(255,107,0,.04)}
+.ich-stat-num{font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;color:var(--saffron);line-height:1}
+.ich-stat-lbl{font-size:.56rem;color:var(--tx3);letter-spacing:.14em;text-transform:uppercase;margin-top:4px;font-weight:700}
+
+/* ═══ ICH CARD GRID ═══ */
+.ich-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+@media(min-width:560px){.ich-grid{gap:14px}}
+@media(min-width:768px){.ich-grid{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:1100px){.ich-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* ═══ ICH CARD ═══ */
+.ich-card{background:var(--card);border:1px solid var(--surface);border-radius:var(--r-lg);overflow:hidden;transition:var(--t);display:flex;flex-direction:column;box-shadow:var(--sh-sm);animation:fadeUp .4s ease both}
+.ich-card:hover{transform:translateY(-5px);box-shadow:var(--sh-md);border-color:rgba(255,107,0,.2)}
+.ich-card:active{transform:scale(.97)}
+.ich-img{position:relative;height:150px;overflow:hidden;flex-shrink:0}
+.ich-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;display:block}
+.ich-card:hover .ich-img img{transform:scale(1.07)}
+.ich-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(26,18,8,.75) 100%);pointer-events:none}
+.ich-badge{position:absolute;top:8px;left:8px;z-index:2;background:rgba(247,244,240,.92);backdrop-filter:blur(8px);border:1px solid var(--surface);color:var(--tx2);font-size:.54rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:var(--r-full);display:flex;align-items:center;gap:4px}
+.ich-state{position:absolute;top:8px;right:8px;z-index:2;background:rgba(247,244,240,.92);backdrop-filter:blur(8px);border:1px solid rgba(255,179,0,.3);color:var(--gold-dk);font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:var(--r-full)}
+.ich-body{flex:1;padding:10px 11px 6px}
+.ich-name{font-family:'Syne',sans-serif;font-size:.86rem;font-weight:800;color:var(--tx);margin-bottom:3px;line-height:1.28}
+.ich-desc{font-size:.71rem;color:var(--tx3);line-height:1.5;display:-webkit-box;--webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ich-actions{display:flex;gap:5px;padding:0 10px 10px;flex-shrink:0}
+.btn-dir2{flex:1;padding:8px 5px;background:rgba(255,107,0,.07);border:1.5px solid rgba(255,107,0,.22);color:var(--saffron);font-family:'Plus Jakarta Sans',sans-serif;font-size:.69rem;font-weight:700;border-radius:var(--r-sm);cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:4px;text-decoration:none}
+.btn-dir2:hover{background:rgba(255,107,0,.14);border-color:var(--saffron)}
+.btn-story{flex:1.3;padding:8px 5px;background:var(--gg);border:none;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.69rem;font-weight:700;border-radius:var(--r-sm);cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:4px}
+.btn-story:hover{opacity:.88;transform:scale(1.02)}
+
+/* ═══ 28 STATES GRID ═══ */
+.states-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.states-grid{grid-template-columns:repeat(3,1fr);gap:12px}}
+@media(min-width:768px){.states-grid{grid-template-columns:repeat(4,1fr);gap:14px}}
+.state-card{border-radius:var(--r-lg);overflow:hidden;height:140px;position:relative;cursor:pointer;transition:var(--t);border:1px solid var(--surface);box-shadow:var(--sh-sm)}
+.state-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md);border-color:rgba(255,107,0,.2)}
+.state-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
+.state-card:hover img{transform:scale(1.07)}
+.state-ovl{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,18,8,.88) 0%,rgba(26,18,8,.08) 55%)}
+.state-body{position:absolute;bottom:0;left:0;right:0;padding:10px 11px}
+.state-nm{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;color:#fff}
+.state-tg{font-size:.6rem;color:rgba(255,179,0,.85);margin-top:1px;font-weight:600}
+
+/* ═══ DIVIDER ═══ */
+.ich-div{display:flex;align-items:center;gap:10px;padding:4px 16px;max-width:1200px;margin:0 auto}
+.ich-div::before,.ich-div::after{content:'';flex:1;height:1px;background:var(--surface)}
+.ich-div-inner{display:flex;align-items:center;gap:6px;font-size:.62rem;font-weight:800;color:var(--saffron);letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+
+/* ═══ STORY MODAL CUSTOM ═══ */
+.story-img-area{position:relative;height:190px;flex-shrink:0;overflow:hidden}
+.story-img-area img{width:100%;height:100%;object-fit:cover;display:block}
+.story-img-grad{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,var(--card) 100%)}
+.story-img-close{position:absolute;top:12px;right:12px;background:var(--surface);border:1.5px solid var(--surface2);color:var(--tx2);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.84rem;display:flex;align-items:center;justify-content:center;transition:var(--t);z-index:2}
+.story-img-close:hover{color:var(--saffron);border-color:var(--saffron)}
+.story-hd{padding:0 18px 12px;flex-shrink:0}
+.story-meta-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.story-badge{background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);color:var(--saffron);font-size:.58rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:var(--r-full)}
+.story-loc{font-size:.7rem;color:var(--tx3);display:flex;align-items:center;gap:4px}
+.story-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:var(--tx);line-height:1.28}
+.story-controls{display:flex;align-items:center;gap:9px;padding:10px 18px;background:var(--surface);border-top:1px solid var(--surface2);border-bottom:1px solid var(--surface2);flex-shrink:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.story-controls::-webkit-scrollbar{display:none}
+.ctrl-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:var(--r-full);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:var(--t);border:none;white-space:nowrap;flex-shrink:0}
+.ctrl-btn-play{background:var(--gg);color:#fff;box-shadow:var(--sh-gold)}
+.ctrl-btn-play:hover{opacity:.88}
+.ctrl-btn-play.playing{background:linear-gradient(135deg,var(--green),#15803d)}
+.ctrl-btn-voice{background:rgba(255,107,0,.08);border:1.5px solid rgba(255,107,0,.2)!important;color:var(--saffron)}
+.ctrl-btn-voice:hover{background:rgba(255,107,0,.16)}
+.ctrl-btn-voice.active{background:rgba(255,107,0,.14);border-color:var(--saffron)!important}
+.ctrl-sep{width:1px;height:22px;background:var(--surface2);flex-shrink:0}
+.ctrl-lang{background:var(--card);border:1.5px solid var(--surface2);color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:.74rem;padding:7px 24px 7px 10px;border-radius:var(--r-full);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23FF6B00' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;flex-shrink:0}
+.ctrl-lang option{background:var(--card)}
+.maps-link2{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:var(--r-full);background:rgba(37,99,235,.08);border:1.5px solid rgba(37,99,235,.2);color:var(--blue);font-size:.72rem;font-weight:700;cursor:pointer;transition:var(--t);text-decoration:none;white-space:nowrap;margin-left:auto;flex-shrink:0}
+.maps-link2:hover{background:rgba(37,99,235,.16)}
+.story-text-area{padding:16px 18px 22px;overflow-y:auto;flex:1}
+.story-text-area::-webkit-scrollbar{width:3px}
+.story-text-area::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+.story-text{font-size:.84rem;color:var(--tx2);line-height:1.88;white-space:pre-wrap}
+
+/* ═══ CTA SECTION ═══ */
+.ich-cta{text-align:center;padding:40px 16px}
+.ich-cta-btns{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.btn-cta-p{display:inline-flex;align-items:center;gap:6px;background:var(--gg);color:#fff;padding:11px 20px;border-radius:var(--r-full);font-size:.82rem;font-weight:700;text-decoration:none;border:none;cursor:pointer;transition:var(--t);box-shadow:var(--sh-gold)}
+.btn-cta-p:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(255,107,0,.45)}
+.btn-cta-o{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--surface2);color:var(--tx2);padding:11px 18px;border-radius:var(--r-full);font-size:.82rem;font-weight:700;text-decoration:none;cursor:pointer;transition:var(--t);box-shadow:var(--sh-sm)}
+.btn-cta-o:hover{border-color:var(--saffron);color:var(--saffron)}
+
+
+/* Desktop section max-width override for ich */
+@media (min-width: 768px) {
+  .section {
+    max-width: 1200px;
+    padding: 34px 20px 40px;
+  }
+
+  .ich-grid,
+  .states-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+@media(min-width:768px){
+  .ich-nav{top:var(--hdr-h);padding:11px 20px}
+  .ich-stats .ich-stat{min-width:130px;padding:22px 20px}
+  .ich-stat-num{font-size:2.2rem}
+  .ich-hero{height:420px;max-height:none;margin:14px 20px}
+}
+
+/* ════ TASTE✦VIEW FLOATING NAVBAR ════ */
+.tv-nav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:9000;display:flex;align-items:center;gap:2px;padding:5px 6px;padding-bottom:max(5px,env(safe-area-inset-bottom,5px));background:rgba(255,255,255,.80);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,107,0,.18);border-radius:999px;box-shadow:0 4px 24px rgba(255,107,0,.13),0 1px 4px rgba(0,0,0,.06),inset 0 1px 0 rgba(255,255,255,.95);white-space:nowrap}
+.tv-item{width:44px;height:44px;min-width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;flex-direction:row;gap:0;padding:0;border-radius:999px;border:none;background:transparent;cursor:pointer;text-decoration:none;outline:none;-webkit-tap-highlight-color:transparent;overflow:hidden;transition:width .32s cubic-bezier(.4,0,.2,1),background .22s ease,box-shadow .22s ease,transform .18s cubic-bezier(.34,1.56,.64,1)}
+.tv-item:active{transform:scale(.86)!important}
+.tv-icon{width:20px;height:20px;min-width:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.56,.64,1)}
+.tv-icon svg{width:20px!important;height:20px!important;display:block;overflow:hidden;stroke-width:1.75px;stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round;color:#C5C5C5;transition:color .18s ease}
+.tv-lbl{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.01em;white-space:nowrap;overflow:hidden;max-width:0;opacity:0;color:#fff;padding-right:0;transition:max-width .32s cubic-bezier(.4,0,.2,1),opacity .22s ease,padding-right .32s}
+.tv-item:not(.tv-active):not(.tv-center):hover .tv-icon svg{color:#FF6B00}
+.tv-item:not(.tv-active):not(.tv-center):hover{background:rgba(255,107,0,.08)}
+.tv-item:not(.tv-active):not(.tv-center):hover .tv-icon{transform:translateY(-2px) scale(1.1)}
+.tv-item.tv-active{width:auto;min-width:44px;padding:0 14px 0 10px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);box-shadow:0 4px 16px rgba(255,107,0,.38),0 1px 3px rgba(255,107,0,.2)}
+.tv-item.tv-active .tv-icon{margin-right:5px}
+.tv-item.tv-active .tv-icon svg{color:#fff;transform:scale(1.05)}
+.tv-item.tv-active .tv-lbl{max-width:72px;opacity:1;padding-right:2px}
+.tv-item.tv-active:hover{box-shadow:0 6px 22px rgba(255,107,0,.48)}
+.tv-center{width:46px;height:46px;min-width:46px;border-radius:50%;border:none;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin:0 3px;background:linear-gradient(135deg,#FF6B00,#FF9A3C);box-shadow:0 4px 18px rgba(255,107,0,.42),0 0 0 3px rgba(255,107,0,.13);transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .22s ease;text-decoration:none}
+.tv-center .tv-icon svg{width:20px!important;height:20px!important;color:#fff;stroke-width:1.75px}
+.tv-center:hover{transform:translateY(-3px) scale(1.09);box-shadow:0 8px 26px rgba(255,107,0,.52),0 0 0 4px rgba(255,107,0,.16)}
+.tv-center:active{transform:scale(.88)!important}
+@media(min-width:768px){.tv-nav{display:none}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-in">
+    <!-- Logo -->
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Taste&amp;View"/>
+      <div>
+        <div class="logo-text">Taste✦View</div>
+        <div class="tagline">India's Culture &amp; Heritage</div>
+      </div>
+    </a>
+
+    <!-- Search (uses original search logic) -->
+    <div class="search-wrap" id="searchWrap">
+      <div class="header-search-pill search-input-row">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search places, food, events…" autocomplete="off" maxlength="100"/>
+        <span class="search-kbd">⌘K</span>
+      </div>
+      <div class="search-dropdown" id="searchDropdown">
+        <div class="search-cat-tabs">
+          <button class="scat active" data-cat="All">All</button>
+          <button class="scat" data-cat="Restaurant">Food</button>
+          <button class="scat" data-cat="Best Place">Places</button>
+          <button class="scat" data-cat="Holy Place">Sacred</button>
+          <button class="scat" data-cat="Cafe">Cafes</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+
+    <!-- Right actions -->
+    <div class="header-right">
+      <a href="favorites.html" class="icon-btn" title="Favorites">
+        <i class="fa-solid fa-bookmark"></i>
+        <span class="fav-badge" id="favBadge" style="display:none"></span>
+      </a>
+      <a href="ai-assistant.html" class="icon-btn mob-hide" title="AI Assistant">
+        <i class="fa-solid fa-robot"></i>
+      </a>
+      <a href="profile.html" class="icon-btn mob-hide" title="Profile">
+        <i class="fa-regular fa-circle-user"></i>
+      </a>
+      <a href="login.html" class="login-btn">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        <span class="login-txt">Login</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="ich-hero" id="ichHero">
+  <div class="hero-slides" id="heroSlides">
+    <div class="hslide active"><img src="https://i.pinimg.com/736x/1f/03/7e/1f037e5a655beaa2eacdd1ff5d449982.jpg" alt="Temples" loading="eager"/></div>
+    <div class="hslide"><img src="https://i.pinimg.com/1200x/e9/1a/b6/e91ab6d60ffd80c74e6364c96f293a84.jpg" alt="Festival" loading="lazy"/></div>
+    <div class="hslide"><img src="https://i.pinimg.com/1200x/e9/87/9e/e9879e7e5dc741625e9016bda1d80182.jpg" alt="Classical Dance" loading="lazy"/></div>
+    <div class="hslide"><img src="https://i.pinimg.com/736x/34/4e/67/344e6791794fc9f36043ba652a2ab141.jpg" alt="Rajasthan" loading="lazy"/></div>
+    <div class="hslide"><img src="https://i.pinimg.com/736x/4f/24/38/4f2438eba1c15808c30d8e1a9f34745b.jpg" alt="Sikkim" loading="lazy"/></div>
+    <div class="hslide"><img src="https://i.pinimg.com/736x/e9/0e/69/e90e69d58a0767481480c05c70a8e271.jpg" alt="Art" loading="lazy"/></div>
+  </div>
+  <div class="hero-grad"></div>
+  <div class="hero-grad-bot"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="heroEyebrow"><i class="fa-solid fa-om"></i> 5000 Years of Civilisation</div>
+    <h1 class="hero-title" id="heroTitle">Explore <span class="hl">Sacred</span> India</h1>
+    <p class="hero-sub" id="heroSub">3,600+ temples, 40 UNESCO sites, and a spirituality that has endured five millennia.</p>
+    <div class="hero-cta-row" id="heroCta">
+      <a href="#temples" class="btn-hero-p" id="heroBtn1"><i class="fa-solid fa-place-of-worship"></i> Explore Temples</a>
+      <a href="#culture-section" class="btn-hero-o" id="heroBtn2"><i class="fa-solid fa-masks-theater"></i> Culture</a>
+    </div>
+  </div>
+  <div class="hero-counter"><span id="hCurr">01</span> / <span id="hTotal">06</span></div>
+  <div class="hero-dots" id="heroDots"></div>
+  <div class="hero-progress" id="heroProgress" style="width:0%"></div>
+</section>
+
+<!-- ═══ CATEGORY NAV ═══ -->
+<nav class="ich-nav" id="ichNav">
+  <a href="#temples"         class="ich-nav-btn active"><i class="fa-solid fa-place-of-worship"></i> Temples</a>
+  <a href="#festivals"       class="ich-nav-btn"><i class="fa-solid fa-fire-flame-curved"></i> Festivals</a>
+  <a href="#culture-section" class="ich-nav-btn"><i class="fa-solid fa-masks-theater"></i> Culture</a>
+  <a href="#arts"            class="ich-nav-btn"><i class="fa-solid fa-person-dancing"></i> Classical Arts</a>
+  <a href="#crafts"          class="ich-nav-btn"><i class="fa-solid fa-hands-holding"></i> Crafts</a>
+  <a href="#regions"         class="ich-nav-btn"><i class="fa-solid fa-map-location-dot"></i> 28 States</a>
+</nav>
+
+<!-- ═══ STATS ═══ -->
+<div class="ich-stats reveal">
+  <div class="ich-stat"><div class="ich-stat-num" id="cnt1">0</div><div class="ich-stat-lbl">Ancient Temples</div></div>
+  <div class="ich-stat"><div class="ich-stat-num" id="cnt2">0</div><div class="ich-stat-lbl">Official Languages</div></div>
+  <div class="ich-stat"><div class="ich-stat-num" id="cnt3">0</div><div class="ich-stat-lbl">UNESCO Sites</div></div>
+  <div class="ich-stat"><div class="ich-stat-num" id="cnt4">0</div><div class="ich-stat-lbl">Years of History</div></div>
+</div>
+
+<!-- ═══ TEMPLES ═══ -->
+<section id="temples" class="section reveal" style="background:var(--bg)">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-place-of-worship"></i> Sacred Shrines</div>
+      <h2 class="section-title">Famous Temples of India</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="ich-grid stagger" id="templesGrid"></div>
+</section>
+
+<div class="ich-div"><div class="ich-div-inner"><i class="fa-solid fa-fire-flame-curved"></i> Festivals of India</div></div>
+
+<!-- ═══ FESTIVALS ═══ -->
+<section id="festivals" class="section reveal" style="background:var(--card)">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-fire-flame-curved"></i> Celebrations</div>
+      <h2 class="section-title">Festivals of India</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="ich-grid stagger" id="festivalsGrid"></div>
+</section>
+
+<div class="ich-div"><div class="ich-div-inner"><i class="fa-solid fa-masks-theater"></i> Culture &amp; Traditions</div></div>
+
+<!-- ═══ CULTURE ═══ -->
+<section id="culture-section" class="section reveal" style="background:var(--bg)">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-masks-theater"></i> Living Heritage</div>
+      <h2 class="section-title">Culture &amp; Traditions</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="ich-grid stagger" id="cultureGrid"></div>
+</section>
+
+<div class="ich-div"><div class="ich-div-inner"><i class="fa-solid fa-person-dancing"></i> Classical Arts</div></div>
+
+<!-- ═══ ARTS ═══ -->
+<section id="arts" class="section reveal" style="background:var(--card)">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-person-dancing"></i> Classical Forms</div>
+      <h2 class="section-title">Classical Arts of India</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="ich-grid stagger" id="artsGrid"></div>
+</section>
+
+<div class="ich-div"><div class="ich-div-inner"><i class="fa-solid fa-hands-holding"></i> Traditional Crafts</div></div>
+
+<!-- ═══ CRAFTS ═══ -->
+<section id="crafts" class="section reveal" style="background:var(--bg)">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-hands-holding"></i> Traditional Craft</div>
+      <h2 class="section-title">Arts &amp; Crafts of India</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="ich-grid stagger" id="craftsGrid"></div>
+</section>
+
+<div class="ich-div"><div class="ich-div-inner"><i class="fa-solid fa-map-location-dot"></i> 28 States of India</div></div>
+
+<!-- ═══ 28 STATES ═══ -->
+<section id="regions" class="section reveal" style="background:var(--card)">
+  <div class="section-hd">
+    <div class="section-hd-left">
+      <div class="section-pill"><i class="fa-solid fa-map-location-dot"></i> All India</div>
+      <h2 class="section-title">All 28 States — Regional Diversity</h2>
+      <div class="section-underline"></div>
+    </div>
+  </div>
+  <div class="states-grid stagger" id="statesGrid"></div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<div class="ich-cta reveal" style="background:var(--bg)">
+  <div class="section-pill" style="justify-content:center"><i class="fa-solid fa-compass"></i> Continue Exploring</div>
+  <h2 class="section-title" style="margin-top:8px;text-align:center">Discover More of India</h2>
+  <div class="ich-cta-btns">
+    <a href="history.html"      class="btn-cta-p"><i class="fa-solid fa-scroll"></i> History of India</a>
+    <a href="plan-trip.html"    class="btn-cta-o"><i class="fa-solid fa-route"></i> Plan a Trip</a>
+    <a href="ai-assistant.html" class="btn-cta-o"><i class="fa-solid fa-robot"></i> Ask AI</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-logo">Taste✦View</div>
+      <p class="footer-brand-desc">Your AI-powered guide to the finest food, culture and hidden gems across Andhra Pradesh and all of India.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+      <div style="margin-top:16px">
+        <p style="font-size:.58rem;color:rgba(247,244,240,.4);letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px;font-weight:700">Available On</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="#" style="display:flex;align-items:center;gap:7px;padding:8px 13px;background:rgba(247,244,240,.06);border:1px solid rgba(247,244,240,.12);border-radius:11px;text-decoration:none;transition:var(--t)">
+            <i class="fa-brands fa-google-play" style="font-size:1.25rem;color:var(--saffron)"></i>
+            <div><div style="font-size:.5rem;color:rgba(247,244,240,.5);letter-spacing:.1em;text-transform:uppercase">Get it on</div><div style="font-size:.76rem;font-weight:700;color:rgba(247,244,240,.88)">Google Play</div></div>
+          </a>
+          <a href="#" style="display:flex;align-items:center;gap:7px;padding:8px 13px;background:rgba(247,244,240,.06);border:1px solid rgba(247,244,240,.12);border-radius:11px;text-decoration:none;transition:var(--t)">
+            <i class="fa-brands fa-apple" style="font-size:1.35rem;color:rgba(247,244,240,.88)"></i>
+            <div><div style="font-size:.5rem;color:rgba(247,244,240,.5);letter-spacing:.1em;text-transform:uppercase">Download on the</div><div style="font-size:.76rem;font-weight:700;color:rgba(247,244,240,.88)">App Store</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4>Explore</h4>
+      <div class="footer-links">
+        <a href="#analysis"><i class="fa-solid fa-magnifying-glass-dollar"></i> Budget Analysis</a>
+        <a href="#food"><i class="fa-solid fa-utensils"></i> Restaurants &amp; Food</a>
+        <a href="#places"><i class="fa-solid fa-mountain-sun"></i> Best Places</a>
+        <a href="#mapSection"><i class="fa-solid fa-map-location-dot"></i> India Map</a>
+        <a href="#culture"><i class="fa-solid fa-masks-theater"></i> Culture &amp; Heritage</a>
+        <a href="#events"><i class="fa-solid fa-calendar-star"></i> Events</a>
+        <a href="ai-assistant.html"><i class="fa-solid fa-robot"></i> AI Assistant</a>
+        <a href="ich.html"><i class="fa-solid fa-om"></i> India's Culture</a>
+        <a href="history.html"><i class="fa-solid fa-scroll"></i> History of India</a>
+        <a href="explore-world.html"><i class="fa-solid fa-earth-americas"></i> Explore World</a>
+      </div>
+    </div>
+    <div>
+      <h4>Contact &amp; Info</h4>
+      <div class="footer-contact-item"><i class="fa-solid fa-location-dot"></i><span>Ongole, Prakasam Dist.,<br>Andhra Pradesh, India</span></div>
+      <div class="footer-contact-item"><i class="fa-solid fa-phone"></i><span>+91 xxxxxxxxxx</span></div>
+      <div class="footer-contact-item"><i class="fa-solid fa-envelope"></i><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="274f424b4b48675346545342514e4250094e49">[email&#160;protected]</a></span></div>
+      <div class="footer-contact-item"><i class="fa-solid fa-clock"></i><span>Open: 9 AM – 10 PM IST</span></div>
+      <div style="margin-top:16px"><h4>Legal</h4><div class="footer-links" style="margin-top:10px">
+        <a href="privacy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        <a href="#"><i class="fa-solid fa-file-contract"></i> Terms of Service</a>
+        <a href="#"><i class="fa-solid fa-circle-info"></i> About Us</a>
+      </div></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Taste &amp; View · All Rights Reserved · Made with <i class="fa-solid fa-heart" style="color:var(--saffron)"></i> in Andhra Pradesh</p>
+    <div class="footer-bottom-links"><a href="#">Sitemap</a><a href="#">Cookies</a><a href="#">Support</a></div>
+  </div>
+</footer>
+
+<!-- ═══ STORY MODAL ═══ -->
+<div class="modal-overlay" id="storyModal" onclick="if(event.target===this)closeStory()">
+  <div class="modal-box" style="display:flex;flex-direction:column;max-height:90vh">
+    <div class="story-img-area">
+      <img id="sImg" src="" alt=""/>
+      <div class="story-img-grad"></div>
+      <button class="story-img-close" onclick="closeStory()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="story-hd">
+      <div class="story-meta-row">
+        <span class="story-badge" id="sBadge"></span>
+        <span class="story-loc"><i class="fa-solid fa-location-dot" style="color:var(--saffron)"></i><span id="sLoc"></span></span>
+      </div>
+      <h2 class="story-title" id="sTitle"></h2>
+    </div>
+    <div class="story-controls">
+      <button class="ctrl-btn ctrl-btn-play" id="playBtn" onclick="togglePlay()">
+        <i class="fa-solid fa-play" id="playIcon"></i><span id="playLbl">Play</span>
+      </button>
+      <div class="ctrl-sep"></div>
+      <button class="ctrl-btn ctrl-btn-voice active" id="voiceToggleBtn" onclick="toggleVoiceOnOff()">
+        <i class="fa-solid fa-microphone" id="voiceIcon2"></i><span id="voiceLbl2">Voice ON</span>
+      </button>
+      <div class="ctrl-sep"></div>
+      <select class="ctrl-lang" id="langSel" onchange="switchLang()">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="te">తెలుగు</option>
+      </select>
+      <a class="maps-link2" id="sMapsLink" href="#" target="_blank" rel="noopener">
+        <i class="fa-solid fa-route"></i> Maps
+      </a>
+    </div>
+    <div class="story-text-area">
+      <p class="story-text" id="sText"></p>
+    </div>
+  </div>
+</div>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top"><i class="fa-solid fa-chevron-up"></i></button>
+<div class="toast" id="toast"></div>
+
+<nav class="tv-nav" id="tvNav"><a class="tv-item" href="index.html" title="Home" aria-label="Home"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="tv-lbl">Home</span></a><a class="tv-item" href="explore-world.html" title="Explore" aria-label="Explore"><span class="tv-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span><span class="tv-lbl">Explore</span></a><a class="tv-center" href="ai-assistant.html" title="AI Assistant" aria-label="AI Assistant"><span class="tv-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M9 11V7a3 3 0 016 0v4"/><circle cx="9" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="16" r="1" fill="currentColor" stroke="none"/></svg></span></a><a class="tv-item" href="history.html" title="History" aria-label="History"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M12 8v4l2.5 2.5"/><path d="M3.05 11a9 9 0 100 2M3 4v4h4"/></svg></span><span class="tv-lbl">History</span></a><a class="tv-item tv-active" href="ich.html" title="Culture" aria-label="Culture"><span class="tv-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><span class="tv-lbl">Culture</span></a></nav>
+
+<script>
+/* ════ HERO SLIDE DATA ════ */
+const HERO_SLIDES=[
+  {eyebrow:'Beauty of Mountains',title:'Land of Dawn <span class="hl">Lit Mountains</span>',sub:'Arunachal Pradesh is the first place in India to greet the sun. Covered with misty hills, monasteries, and untouched nature.',btn1:'<i class="fa-solid fa-place-of-worship"></i> Explore',link1:'#temples',btn2:'<i class="fa-solid fa-om"></i> Culture',link2:'#culture-section'},
+  {eyebrow:'Heart of Heritage',title:'<span class="hl">Land of Timeless</span> Wonders',sub:'From the iconic Taj Mahal to ancient Varanasi, Uttar Pradesh is rich in history, culture, and spirituality.',btn1:'<i class="fa-solid fa-fire-flame-curved"></i> Festivals',link1:'#festivals',btn2:'<i class="fa-solid fa-calendar-star"></i> Heritage',link2:'#festivals'},
+  {eyebrow:"God's Own Country",title:'Land of <span class="hl">Backwaters &amp; Greenery</span>',sub:'Kerala is known for its serene backwaters, lush greenery, and Ayurvedic wellness traditions.',btn1:'<i class="fa-solid fa-landmark"></i> Explore',link1:'#culture-section',btn2:'<i class="fa-solid fa-route"></i> Plan Trip',link2:'plan-trip.html'},
+  {eyebrow:'Land of Kings',title:'Royal <span class="hl">Rajasthan</span>',sub:'Forts, palaces and desert landscapes — Rajasthan is the jewel of Indias cultural heritage.',btn1:'<i class="fa-solid fa-place-of-worship"></i> Explore',link1:'#temples',btn2:'<i class="fa-solid fa-hands-holding"></i> Crafts',link2:'#crafts'},
+  {eyebrow:'Nature Hidden Gem',title:'Land of <span class="hl">Peaceful Peaks</span>',sub:'Sikkim offers breathtaking mountain views, monasteries and clean surroundings — eco-friendly India.',btn1:'<i class="fa-solid fa-place-of-worship"></i> Temples',link1:'#temples',btn2:'<i class="fa-solid fa-masks-theater"></i> Arts',link2:'#arts'},
+  {eyebrow:'Raw Beauty of India',title:'Land of <span class="hl">Hidden Waterfalls</span>',sub:'Chhattisgarh is home to dense forests, tribal culture, and stunning waterfalls like Chitrakote Falls.',btn1:'<i class="fa-solid fa-hands-holding"></i> Crafts',link1:'#crafts',btn2:'<i class="fa-solid fa-palette"></i> Discover',link2:'#crafts'},
+];
+
+/* ════ ICH DATA ════ */
+const TEMPLES=[
+  {id:'t1',name:'Brihadeeswarar Temple',state:'Tamil Nadu',city:'Thanjavur',badge:'UNESCO',img:'https://i.pinimg.com/736x/35/85/dc/3585dc5b5d898ece7d68e87c400c25f3.jpg',desc:'Dravidian masterpiece built 1010 CE. The 66m vimana carved from a single granite piece.',lat:10.7828,lng:79.1318,story:`The Brihadeeswarar Temple stands as one of the greatest achievements of Indian civilisation. Completed in 1010 CE by Chola emperor Raja Raja Chola I, this magnificent structure rises 66 metres into the Tamil Nadu sky.\n\nThe temple\'s vimana is crowned by a single granite stone weighing approximately 80 tonnes. UNESCO recognised it as a World Heritage Site in 1987.\n\nIt remains an active place of worship, with rituals performed continuously for over a thousand years — a true living heritage of humanity.`},
+  {id:'t2',name:'Meenakshi Amman Temple',state:'Tamil Nadu',city:'Madurai',badge:'Dravidian Marvel',img:'https://i.pinimg.com/1200x/f8/bb/b1/f8bbb1c0ed1961d00e1ee46e75640127.jpg',desc:'14 gopurams adorned with 33,000 sculpted figures. A city within a city, drawing pilgrims for 2000 years.',lat:9.9195,lng:78.1193,story:`The Meenakshi Amman Temple in Madurai is an architectural wonder drawing pilgrims for more than 2,000 years. Dedicated to Goddess Meenakshi and Lord Sundareswarar, this 14-acre complex features 14 gopurams, the tallest soaring to 52 metres.\n\nEach tower is encrusted with thousands of brightly painted stone figures. The Golden Lotus Tank reflects the towering gopurams, creating one of South India\'s most beautiful reflections.`},
+  {id:'t3',name:'Golden Temple',state:'Punjab',city:'Amritsar',badge:"Sikh's Holiest",img:'https://i.pinimg.com/736x/58/dd/8b/58dd8ba5f2195dcb1403655b74ec96f2.jpg',desc:'Spiritual centre of Sikhism. Golden dome reflected in sacred Amrit Sarovar.',lat:31.6200,lng:74.8765,story:`The Harmandir Sahib — the Golden Temple — is the holiest shrine of the Sikh faith. Its upper floors were covered with gold leaf under Maharaja Ranjit Singh in the 19th century.\n\nThe Guru ka Langar serves free meals to approximately 100,000 people every day — a living embodiment of the Sikh principle of seva (selfless service).`},
+  {id:'t4',name:'Tirupati Venkateswara',state:'Andhra Pradesh',city:'Tirupati',badge:'Richest Temple',img:'https://i.pinimg.com/1200x/ab/78/bf/ab78bfbaae40c078380bedb830b96394.jpg',desc:'Most visited religious site in the world — 50,000–100,000 pilgrims daily on Tirumala Hills.',lat:13.6833,lng:79.3470,story:`The Sri Venkateswara Temple is the most visited religious site in the world. On any given day, between 50,000 and 100,000 devotees climb the seven sacred Tirumala hills.\n\nThe Tirupati laddu, distributed as prasadam, holds a Geographical Indication tag — one of the first temple offerings to receive such recognition in India.`},
+  {id:'t5',name:'Kedarnath Temple',state:'Uttarakhand',city:'Kedarnath',badge:'Himalayan Shrine',img:'https://i.pinimg.com/736x/e1/98/9f/e1989f4fc766b63dbb10f1244f253480.jpg',desc:'Perched at 3,583m in the Himalayas. One of the Char Dham shrines, open six months a year.',lat:30.7346,lng:79.0669,story:`At 3,583 metres in the Garhwal Himalayas, Kedarnath Temple is one of India\'s most dramatic sacred sites. Built in the 8th century by Adi Shankaracharya, the stone temple is constructed from massive interlocking blocks without mortar.\n\nIn 2013, catastrophic floods devastated the valley. Yet the ancient temple survived virtually undamaged, inspiring awe and reinforcing faith among millions.`},
+  {id:'t6',name:'Somnath Temple',state:'Gujarat',city:'Prabhas Patan',badge:'Jyotirlinga',img:'https://i.pinimg.com/1200x/65/80/11/658011808d7a409403f097bd0856dc47.jpg',desc:'First of twelve Jyotirlinga shrines. Rebuilt seven times — symbol of eternal resilience.',lat:20.8880,lng:70.4013,story:`The Somnath Temple is one of the most sacred sites in India — the first of the twelve Jyotirlinga shrines. The temple has been looted and destroyed at least six times, most famously by Mahmud of Ghazni in 1024 CE. Each time it was rebuilt — a testament to unbreakable faith.`},
+  {id:'t7',name:'Kashi Vishwanath',state:'Uttar Pradesh',city:'Varanasi',badge:'Oldest City',img:'https://i.pinimg.com/1200x/dd/e3/f5/dde3f54471c565c4bd68886ab60edfc2.jpg',desc:"The Jyotirlinga in the world's oldest city. Ganga aarti at dusk is one of India's most divine spectacles.",lat:25.3109,lng:83.0107,story:`The Kashi Vishwanath Temple in Varanasi has stood at the spiritual centre of the world\'s oldest continuously inhabited city for thousands of years.\n\nThe Ganga Aarti performed on the ghats every evening — with dozens of priests performing synchronised fire rituals — is one of the most breathtaking spiritual spectacles on earth.`},
+  {id:'t8',name:'Hampi Virupaksha',state:'Karnataka',city:'Hampi',badge:'UNESCO Heritage',img:'https://i.pinimg.com/1200x/c2/e6/94/c2e6941fd305ce7b437f1eaef4ef7c40.jpg',desc:'Living temple at the heart of Hampi — capital of the Vijayanagara Empire, the richest medieval kingdom.',lat:15.3350,lng:76.4601,story:`The Virupaksha Temple at Hampi has been continuously functioning since at least the 7th century CE. It stands at the heart of what was once Vijayanagara — the most powerful empire in medieval South India, with a population over 500,000 at its peak.`},
+];
+const FESTIVALS=[
+  {id:'f1',name:'Holi — Festival of Colours',state:'Pan-India',city:'Mathura & Vrindavan',badge:'Spring Festival',img:'https://i.pinimg.com/1200x/91/15/77/91157741f67195cec26b61ffadfd5213.jpg',desc:'The most exuberant Indian festival — celebrating triumph of good over evil with clouds of colour.',lat:27.5530,lng:77.6613,story:`Holi is celebrated on the full moon of Phalguna, marking the end of winter and arrival of spring. On Holi day, streets transform into rivers of colour. Social barriers dissolve for one glorious day.\n\nThe most spectacular celebrations are in Mathura and Vrindavan, where the festival lasts 16 days.`},
+  {id:'f2',name:'Diwali — Festival of Lights',state:'Pan-India',city:'Varanasi',badge:'Most Celebrated',img:'https://i.pinimg.com/736x/ae/1b/d4/ae1bd4b68eb350ca3630f1636fd1df55.jpg',desc:"India's most celebrated five-day festival of light, sweets, and family — Lord Rama's return from exile.",lat:25.3176,lng:83.0062,story:`Diwali is a five-day festival of joy, light and family. It marks Lord Rama\'s return to Ayodhya after 14 years of exile.\n\nThe Diwali celebrations in Varanasi, where thousands of diyas float on the Ganges, create one of the most ethereally beautiful scenes in India.`},
+  {id:'f3',name:'Navratri & Durga Puja',state:'West Bengal & Gujarat',city:'Kolkata & Ahmedabad',badge:'Nine Nights',img:'https://i.pinimg.com/736x/8e/c6/cc/8ec6cc0e031ccad065dbc784650d5d08.jpg',desc:'Nine nights of goddess worship — spectacular Durga Puja pandals in Bengal and Garba nights in Gujarat.',lat:22.5726,lng:88.3639,story:`Navratri means nine nights — honouring the nine forms of Goddess Durga. In West Bengal it becomes Durga Puja — enormous temporary pandals throughout Kolkata housing exquisitely crafted clay idols.\n\nThe Garba of Vadodara and Ahmedabad is UNESCO-recognised as Intangible Cultural Heritage.`},
+  {id:'f4',name:'Pongal',state:'Tamil Nadu',city:'Chennai & Madurai',badge:'Harvest Festival',img:'https://i.pinimg.com/736x/cd/83/13/cd83131c0418adfcffaa6f78efbd93ea.jpg',desc:"Tamil Nadu's four-day harvest celebration — gratitude to the sun, cattle and nature for abundance.",lat:13.0827,lng:80.2707,story:`Pongal is Tamil Nadu\'s most beloved festival — a four-day harvest celebration marking the sun\'s northward journey. The word Pongal means to overflow, symbolising abundance.\n\nJallikattu — traditional bull-taming — during Pongal represents Tamil people\'s deep connection with their agricultural roots.`},
+];
+const CULTURE_DATA=[
+  {id:'ci1',name:'Indian Classical Cuisine',state:'Pan-India',city:'Across India',badge:'Food Culture',img:'https://i.pinimg.com/736x/90/45/d5/9045d57300b9da5ec55b40f157032a69.jpg',desc:'5000 years of culinary heritage — from Kashmiri wazwan to Kerala sadya, each region distinct.',lat:20.5937,lng:78.9629,story:`Indian cuisine is not one cuisine but thousands — shaped by geography, religion, history and trade over five millennia.\n\nIndian street food culture is a world in itself — chaat of Delhi, vada pav of Mumbai, dosa of South India, kathi rolls of Kolkata. The ritual of shared meals and atithi devo bhava remain central to Indian identity.`},
+  {id:'ci2',name:'Yoga & Meditation',state:'Uttarakhand',city:'Rishikesh',badge:'Ancient Wisdom',img:'https://i.pinimg.com/1200x/ca/2b/f6/ca2bf65e496baee48c4a99cdc78aaecb.jpg',desc:"India's most transformative gift to the world — a 5000-year system of physical, mental and spiritual discipline.",lat:30.0869,lng:78.2676,story:`Yoga is India\'s most significant gift to the modern world — a 5,000-year system practised today by 300 million people globally. Rishikesh is the Yoga Capital of the World.\n\nThe United Nations declared June 21 as International Yoga Day in 2014. On that day, millions practise simultaneously from the Arctic to the equator.`},
+  {id:'ci3',name:'Indian Wedding Traditions',state:'Pan-India',city:'Across India',badge:'Living Ritual',img:'https://i.pinimg.com/736x/d3/a0/e5/d3a0e5f97447da5dc318c7718df286ab.jpg',desc:'Multi-day celebrations blending ancient Vedic rituals, regional customs, music and dance.',lat:20.5937,lng:78.9629,story:`An Indian wedding is not merely a ceremony — it is a multi-day festival, a community gathering and a performance of culture. Hindu marriages are built around Vedic fire rituals.\n\nThe Mehendi ceremony adorns the bride with intricate henna; Sangeet features family performances; Haldi applies auspicious turmeric paste.`},
+  {id:'ci4',name:'Kumbh Mela',state:'Uttar Pradesh',city:'Prayagraj',badge:"World's Largest",img:'https://i.pinimg.com/1200x/d9/03/9e/d9039e8d9f2f37bc5ddca60a58822bae.jpg',desc:"World's largest peaceful gathering — 200 million pilgrims at 2019 Kumbh. UNESCO recognised event.",lat:25.4358,lng:81.8463,story:`The Kumbh Mela is the world\'s largest peaceful human gathering. The 2019 Kumbh at Prayagraj drew an estimated 200 million visitors over 49 days.\n\nUNESCO inscribed Kumbh Mela on the Representative List of Intangible Cultural Heritage in 2017.`},
+];
+const ARTS_DATA=[
+  {id:'a1',name:'Bharatanatyam',state:'Tamil Nadu',city:'Chennai',badge:'Classical Dance',img:'https://i.pinimg.com/736x/46/af/55/46af55a204d9caab72979411904986d1.jpg',desc:"India's oldest classical dance — temple origins, precise footwork, expressive mudras and devotional themes.",lat:13.0827,lng:80.2707,story:`Bharatanatyam is India\'s oldest classical dance, with roots in the Natya Shastra (200 BCE–200 CE). The dance originated as temple art performed by devadasis. It is characterised by geometric bent-knee posture, complex footwork, 64 hand gestures (mudras), and expressive facial abhinaya.`},
+  {id:'a2',name:'Kathak',state:'Uttar Pradesh',city:'Lucknow & Jaipur',badge:'Classical Dance',img:'https://i.pinimg.com/1200x/00/0a/23/000a23f5d25e8bd5919fedd8aa1c1324.jpg',desc:"North India's premier classical dance — rapid spins, intricate footwork, synthesis of Hindu and Mughal traditions.",lat:26.8467,lng:80.9462,story:`Kathak evolved absorbing both Hindu devotional tradition and Persian/Mughal court aesthetics. Its defining elements are extraordinary footwork with 100+ ankle bells and gravity-defying spins.\n\nThe improvised rhythmic dialogue between dancer and tabla player is one of the most sophisticated musical conversations in world culture.`},
+  {id:'a3',name:'Hindustani Classical Music',state:'Pan-India',city:'Varanasi & Mumbai',badge:'Classical Music',img:'https://i.pinimg.com/1200x/58/69/11/5869114519d37e53eb5fb030bdd48b8f.jpg',desc:"One of the world's oldest music systems — ragas and talas going back to the Sama Veda.",lat:25.3176,lng:83.0062,story:`Hindustani classical music traces its roots to the Sama Veda (c. 1500 BCE). The foundation is the raga — defined not just by scale but by specific patterns, ornaments and even the time of day.\n\nEach raga is a complete universe of emotional possibility. The tabla drives rhythmic cycles and the interplay between musician and tabla player represents one of music\'s great dialogues.`},
+  {id:'a4',name:'Carnatic Music',state:'Tamil Nadu',city:'Chennai',badge:'South Classical',img:'https://i.pinimg.com/1200x/ce/41/f5/ce41f5909dd6270e3dc4b6db28d6d879.jpg',desc:"South India's classical tradition. Chennai's Music Season is the world's largest classical music festival.",lat:13.0827,lng:80.2707,story:`Carnatic music is the classical music tradition of South India. The Trinity of Carnatic music — Tyagaraja, Muthuswami Dikshitar and Syama Sastri — composed thousands of works.\n\nThe December Music Season in Chennai is the world\'s largest classical music festival, with over 2,000 performances across 3 weeks.`},
+];
+const CRAFTS_DATA=[
+  {id:'cr1',name:'Madhubani Painting',state:'Bihar',city:'Mithila',badge:'Folk Art',img:'https://i.pinimg.com/736x/24/f7/80/24f780e662e09c96bce6bffcf8a5c69b.jpg',desc:'Ancient folk art from Bihar — natural colours depicting mythological stories, passed mother to daughter.',lat:26.3594,lng:86.1478,story:`Madhubani painting has been practised in the Mithila region of Bihar for over 2,500 years. Traditionally created by women on the walls and floors of their homes, it was passed from mothers to daughters.\n\nMadhubani painting received GI tag status in 2007 and is now recognised as one of India\'s most important living art traditions.`},
+  {id:'cr2',name:'Pashmina Weaving',state:'J & K',city:'Srinagar',badge:'Luxury Textile',img:'https://i.pinimg.com/1200x/c4/cd/d7/c4cdd7d4ec4dae5bc517aa89d550377d.jpg',desc:"World's finest wool woven into shawls of extraordinary beauty — some so fine they pass through a ring.",lat:34.0837,lng:74.7973,story:`Pashmina — the world\'s most luxurious natural fibre — comes from the Changthangi goat of Ladakh. The art of hand-spinning and weaving Pashmina has been practised in Kashmir for at least 600 years.\n\nThe most exquisite Kani shawls can take two to three years to complete.`},
+  {id:'cr3',name:'Warli Tribal Paintings',state:'Maharashtra',city:'Thane',badge:'Tribal Art',img:'https://i.pinimg.com/736x/0a/10/b6/0a10b6675a16cded46cb4697968450e1.jpg',desc:'Ancient tribal art using circles, triangles, squares — depicting daily life and relationship with nature.',lat:19.2183,lng:73.0742,story:`Warli painting is practised by the Warli tribe in Maharashtra. It dates to at least the 10th century CE. The art uses three geometric shapes: circle, triangle and square.\n\nFrom these three forms, artists construct entire worlds of daily life — farming, fishing, wedding ceremonies.`},
+  {id:'cr4',name:'Kalamkari Art',state:'Andhra Pradesh',city:'Srikalahasti',badge:'Temple Art',img:'https://i.pinimg.com/736x/4c/68/8a/4c688ae9f092c2ef4fea5c72699fbdfe.jpg',desc:'Ancient textile art using natural dyes — GI-tagged heritage craft of Andhra Pradesh.',lat:13.7498,lng:79.7071,story:`Kalamkari is an ancient form of hand-painted cotton textile originating in Andhra Pradesh. Kalam (pen) + kari (work) — literally pen work.\n\nTraditionally used to create large narrative panels for Hindu temples depicting the Ramayana and Mahabharata, Kalamkari served as visual scripture. It received a GI tag in 2013.`},
+];
+const STATES_28=[
+  {name:'Andhra Pradesh',tag:'Rice Bowl of India',img:'https://i.pinimg.com/1200x/ab/78/bf/ab78bfbaae40c078380bedb830b96394.jpg'},
+  {name:'Arunachal Pradesh',tag:'Land of Dawn-Lit Mountains',img:'https://i.pinimg.com/736x/1f/03/7e/1f037e5a655beaa2eacdd1ff5d449982.jpg'},
+  {name:'Assam',tag:'Land of Red River',img:'https://i.pinimg.com/1200x/4f/9c/4f/4f9c4fda115f82adac1fb9176602e2f0.jpg'},
+  {name:'Bihar',tag:'Land of Enlightenment',img:'https://i.pinimg.com/1200x/de/02/43/de0243c13be121e8ba2e2f698a4739eb.jpg'},
+  {name:'Chhattisgarh',tag:'Heart of India',img:'https://i.pinimg.com/736x/e9/0e/69/e90e69d58a0767481480c05c70a8e271.jpg'},
+  {name:'Goa',tag:'Pearl of the Orient',img:'https://i.pinimg.com/1200x/e9/87/9e/e9879e7e5dc741625e9016bda1d80182.jpg'},
+  {name:'Gujarat',tag:'Land of Lords',img:'https://i.pinimg.com/1200x/9b/c4/e9/9bc4e99557f6a0c589fb678072397127.jpg'},
+  {name:'Haryana',tag:'Granary of India',img:'https://i.pinimg.com/1200x/5e/38/ff/5e38ff442f05e068ca8e299d59a2636c.jpg'},
+  {name:'Himachal Pradesh',tag:'Dev Bhoomi',img:'https://i.pinimg.com/1200x/fd/7f/ff/fd7fff307238b518b9afa4c0f3850023.jpg'},
+  {name:'Jharkhand',tag:'Land of Forests',img:'https://i.pinimg.com/736x/86/35/5b/86355b704618b6e39398eef3790e82d1.jpg'},
+  {name:'Karnataka',tag:'Land of Sandalwood',img:'https://i.pinimg.com/736x/d2/43/57/d2435716c49237e961b3edf91ffb9214.jpg'},
+  {name:'Kerala',tag:"God's Own Country",img:'https://i.pinimg.com/736x/34/4e/67/344e6791794fc9f36043ba652a2ab141.jpg'},
+  {name:'Madhya Pradesh',tag:'Heart of India',img:'https://i.pinimg.com/1200x/a4/3c/6d/a43c6d732a8c73caa24c0da3fb639146.jpg'},
+  {name:'Maharashtra',tag:'Land of Warriors',img:'https://i.pinimg.com/736x/df/22/5d/df225da60d5ce75c1f6bea68443d48f5.jpg'},
+  {name:'Manipur',tag:'Jewel of India',img:'https://i.pinimg.com/736x/9a/7e/5f/9a7e5f87158cafcbf76298427b88a87d.jpg'},
+  {name:'Meghalaya',tag:'Abode of Clouds',img:'https://i.pinimg.com/1200x/43/90/c0/4390c0c0380065f5c7fe20705c0fdf88.jpg'},
+  {name:'Mizoram',tag:'Land of Highlanders',img:'https://i.pinimg.com/1200x/3e/ea/ee/3eeaee8e7b89355b271ba360adc74434.jpg'},
+  {name:'Nagaland',tag:'Land of Festivals',img:'https://i.pinimg.com/1200x/3c/6f/6a/3c6f6a9210ae44c4bc67d9fc99be96a9.jpg'},
+  {name:'Odisha',tag:'Soul of India',img:'https://i.pinimg.com/736x/37/14/4c/37144c9f30bfc57f3c394fbed1aecc3e.jpg'},
+  {name:'Punjab',tag:'Land of Five Rivers',img:'https://i.pinimg.com/736x/58/dd/8b/58dd8ba5f2195dcb1403655b74ec96f2.jpg'},
+  {name:'Rajasthan',tag:'Land of Kings',img:'https://i.pinimg.com/736x/58/b3/28/58b328aa5766ccaf7e7cb974c7bdfcad.jpg'},
+  {name:'Sikkim',tag:'Land of Monasteries',img:'https://i.pinimg.com/736x/4f/24/38/4f2438eba1c15808c30d8e1a9f34745b.jpg'},
+  {name:'Tamil Nadu',tag:'Land of Temples',img:'https://i.pinimg.com/1200x/f8/bb/b1/f8bbb1c0ed1961d00e1ee46e75640127.jpg'},
+  {name:'Telangana',tag:'Land of Nizams',img:'https://i.pinimg.com/736x/43/f6/55/43f6559ea9b3a9588fe8477de33612f1.jpg'},
+  {name:'Tripura',tag:'Land of the Gods',img:'https://i.pinimg.com/736x/85/ab/64/85ab64cda42a33aa92c6f04fbd116dc5.jpg'},
+  {name:'Uttar Pradesh',tag:'Heartland of India',img:'https://i.pinimg.com/1200x/e9/1a/b6/e91ab6d60ffd80c74e6364c96f293a84.jpg'},
+  {name:'Uttarakhand',tag:'Dev Bhoomi',img:'https://i.pinimg.com/736x/e1/98/9f/e1989f4fc766b63dbb10f1244f253480.jpg'},
+  {name:'West Bengal',tag:'Cultural Capital',img:'https://i.pinimg.com/1200x/bf/0a/c6/bf0ac6d95f4ea174edb7511b8d5e000d.jpg'},
+];
+const ALL_ITEMS=[...TEMPLES,...FESTIVALS,...CULTURE_DATA,...ARTS_DATA,...CRAFTS_DATA];
+
+/* ════ RENDER ════ */
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function buildCard(item){
+  const mUrl=`https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
+  const d=document.createElement('div');d.className='ich-card reveal';
+  d.innerHTML=`<div class="ich-img">
+    <img src="${esc(item.img)}" alt="" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1548013146-72479768bada?w=400'">
+    <div class="ich-badge"><i class="fa-solid fa-star"></i><span></span></div>
+    <div class="ich-state"></div>
+  </div>
+  <div class="ich-body"><div class="ich-name"></div><div class="ich-desc"></div></div>
+  <div class="ich-actions">
+    <a class="btn-dir2" href="${esc(mUrl)}" target="_blank" rel="noopener"><i class="fa-solid fa-route"></i> Visit</a>
+    <button class="btn-story" onclick="openStory('${esc(item.id)}')"><i class="fa-solid fa-book-open"></i> Story</button>
+  </div>`;
+  d.querySelector('.ich-badge span').textContent=item.badge||'';
+  d.querySelector('.ich-state').textContent=item.state||'';
+  d.querySelector('.ich-name').textContent=item.name||'';
+  d.querySelector('.ich-desc').textContent=item.desc||'';
+  return d;
+}
+function renderGrid(id,items){
+  const g=document.getElementById(id);g.innerHTML='';
+  items.forEach(i=>g.appendChild(buildCard(i)));
+  g.classList.add('stagger');setTimeout(()=>g.classList.add('visible'),60);
+}
+function renderStates(){
+  document.getElementById('statesGrid').innerHTML=STATES_28.map((s,i)=>`
+    <div class="state-card reveal" style="animation-delay:${i*.025}s">
+      <img src="${s.img}" alt="${s.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1548013146-72479768bada?w=400'">
+      <div class="state-ovl"></div>
+      <div class="state-body"><div class="state-nm">${s.name}</div><div class="state-tg">${s.tag}</div></div>
+    </div>`).join('');
+}
+
+/* ════ HERO ════ */
+let hIdx=0,hTimer=null,hAnimFrame=null;
+const H_DUR=5000;
+function initHero(){
+  const total=HERO_SLIDES.length;
+  document.getElementById('hTotal').textContent=String(total).padStart(2,'0');
+  const dotsEl=document.getElementById('heroDots');
+  HERO_SLIDES.forEach((_,i)=>{const d=document.createElement('button');d.className='hdot'+(i===0?' active':'');d.onclick=()=>goHero(i);dotsEl.appendChild(d);});
+  goHero(0,true);
+}
+function goHero(i,init=false){
+  const slides=document.querySelectorAll('.hslide'),dots=document.querySelectorAll('.hdot');
+  slides.forEach((s,j)=>{s.classList.toggle('active',j===i);if(j===i){const img=s.querySelector('img');img.style.animation='none';requestAnimationFrame(()=>requestAnimationFrame(()=>{img.style.animation='';}))}});
+  dots.forEach((d,j)=>d.classList.toggle('active',j===i));
+  document.getElementById('hCurr').textContent=String(i+1).padStart(2,'0');
+  const sl=HERO_SLIDES[i];
+  const fade=ids=>ids.forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0';el.style.transition='opacity .4s ease';}}); 
+  if(!init){
+    fade(['heroEyebrow','heroTitle','heroSub','heroCta']);
+    setTimeout(()=>{
+      document.getElementById('heroEyebrow').innerHTML=`<i class="fa-solid fa-om"></i> ${sl.eyebrow}`;
+      document.getElementById('heroTitle').innerHTML=sl.title;
+      document.getElementById('heroSub').textContent=sl.sub;
+      const b1=document.getElementById('heroBtn1'),b2=document.getElementById('heroBtn2');
+      b1.innerHTML=sl.btn1;b1.href=sl.link1;b2.innerHTML=sl.btn2;b2.href=sl.link2;
+      ['heroEyebrow','heroTitle','heroSub','heroCta'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.opacity='1';});
+    },380);
+  } else {
+    document.getElementById('heroEyebrow').innerHTML=`<i class="fa-solid fa-om"></i> ${sl.eyebrow}`;
+    document.getElementById('heroTitle').innerHTML=sl.title;
+    document.getElementById('heroSub').textContent=sl.sub;
+    const b1=document.getElementById('heroBtn1'),b2=document.getElementById('heroBtn2');
+    b1.innerHTML=sl.btn1;b1.href=sl.link1;b2.innerHTML=sl.btn2;b2.href=sl.link2;
+  }
+  hIdx=i;startHeroTimer();
+}
+function startHeroTimer(){
+  clearInterval(hTimer);cancelAnimationFrame(hAnimFrame);
+  const start=performance.now(),prog=document.getElementById('heroProgress');
+  prog.style.transition='none';prog.style.width='0%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    function frame(now){const pct=Math.min((now-start)/H_DUR*100,100);prog.style.width=pct+'%';prog.style.transition='none';if(pct<100)hAnimFrame=requestAnimationFrame(frame);}
+    hAnimFrame=requestAnimationFrame(frame);
+  }));
+  hTimer=setInterval(()=>goHero((hIdx+1)%HERO_SLIDES.length),H_DUR);
+}
+
+/* ════ NAV ACTIVE ════ */
+function initNavActive(){
+  const sections=['temples','festivals','culture-section','arts','crafts','regions'];
+  const btns=document.querySelectorAll('.ich-nav-btn');
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){btns.forEach(b=>b.classList.remove('active'));const idx=sections.indexOf(e.target.id);if(idx>=0&&btns[idx])btns[idx].classList.add('active');}}),{threshold:.25});
+  sections.forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el);});
+}
+
+/* ════ STORY MODAL ════ */
+let currentItem=null,utterance=null,isSpeaking=false,voiceEnabled=true;
+function openStory(id){
+  const item=ALL_ITEMS.find(i=>i.id===id);if(!item)return;
+  currentItem=item;stopSpeech();
+  document.getElementById('sImg').src=item.img;
+  document.getElementById('sBadge').textContent=item.badge||'';
+  document.getElementById('sLoc').textContent=(item.city||'')+', '+(item.state||'');
+  document.getElementById('sTitle').textContent=item.name||'';
+  document.getElementById('sText').textContent=item.story||item.desc||'';
+  document.getElementById('sMapsLink').href=`https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}`;
+  document.getElementById('langSel').value='en';
+  resetPlayUI();
+  document.getElementById('storyModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeStory(){stopSpeech();document.getElementById('storyModal').classList.remove('open');document.body.style.overflow='';currentItem=null;}
+function resetPlayUI(){
+  document.getElementById('playBtn').classList.remove('playing');
+  document.getElementById('playIcon').className='fa-solid fa-play';
+  document.getElementById('playLbl').textContent='Play';
+  isSpeaking=false;
+}
+function togglePlay(){
+  if(!voiceEnabled){showToast('Enable Voice first!');return;}
+  if(!window.speechSynthesis){showToast('Speech not supported. Try Chrome.');return;}
+  if(isSpeaking)stopSpeech();else startSpeech();
+}
+function startSpeech(){
+  stopSpeech();
+  const text=document.getElementById('sText').textContent;
+  const langMap={en:'en-IN',hi:'hi-IN',te:'te-IN'};
+  utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang=langMap[document.getElementById('langSel').value]||'en-IN';
+  utterance.rate=0.9;utterance.pitch=1.05;
+  utterance.onstart=()=>{isSpeaking=true;document.getElementById('playBtn').classList.add('playing');document.getElementById('playIcon').className='fa-solid fa-pause';document.getElementById('playLbl').textContent='Pause';};
+  utterance.onend=utterance.onerror=()=>resetPlayUI();
+  window.speechSynthesis.speak(utterance);
+}
+function stopSpeech(){if(window.speechSynthesis)window.speechSynthesis.cancel();resetPlayUI();}
+function toggleVoiceOnOff(){
+  voiceEnabled=!voiceEnabled;stopSpeech();
+  const btn=document.getElementById('voiceToggleBtn');
+  btn.classList.toggle('active',voiceEnabled);
+  document.getElementById('voiceIcon2').className=voiceEnabled?'fa-solid fa-microphone':'fa-solid fa-microphone-slash';
+  document.getElementById('voiceLbl2').textContent=voiceEnabled?'Voice ON':'Voice OFF';
+}
+function switchLang(){
+  if(!currentItem)return;
+  const lang=document.getElementById('langSel').value;stopSpeech();
+  const pre={hi:'यह एक महत्वपूर्ण सांस्कृतिक धरोहर है।\n\n',te:'ఇది ఒక ముఖ్యమైన సాంస్కృతిక వారసత్వం.\n\n'};
+  document.getElementById('sText').textContent=(pre[lang]||'')+(currentItem.story||currentItem.desc||'');
+}
+
+/* ════ COUNTERS ════ */
+function animCounter(id,target,suf=''){
+  const el=document.getElementById(id);let n=0;const step=Math.ceil(target/60);
+  const iv=setInterval(()=>{n=Math.min(n+step,target);el.textContent=n+suf;if(n>=target)clearInterval(iv);},25);
+}
+function initCounters(){
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){animCounter('cnt1',3600,'+');animCounter('cnt2',22,'');animCounter('cnt3',40,'');animCounter('cnt4',5000,'+');io.disconnect();}}),{threshold:.3});
+  io.observe(document.querySelector('.ich-stats'));
+}
+
+/* ════ REVEAL ════ */
+function initReveal(){
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}}),{threshold:.06});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+}
+
+/* ════ TOAST ════ */
+let toastT;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2800);}
+
+/* ════ SCROLL ════ */
+window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b)b.style.display=window.scrollY>600?'flex':'none';});
+
+/* ════ BOOT ════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderGrid('templesGrid',TEMPLES);
+  renderGrid('festivalsGrid',FESTIVALS);
+  renderGrid('cultureGrid',CULTURE_DATA);
+  renderGrid('artsGrid',ARTS_DATA);
+  renderGrid('craftsGrid',CRAFTS_DATA);
+  renderStates();
+  initHero();initReveal();initNavActive();initCounters();
+  setTimeout(initReveal,200);
+});
+</script>
+</body>
+</html>

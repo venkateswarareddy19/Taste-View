@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Login | Taste &amp; View</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --org:#FF7A00;--org2:#FFB347;
+  --gg:linear-gradient(135deg,#FF7A00,#FFB347);
+  --tx:#2C1A0E;--tx2:#6B4C2A;--tx3:#9C7A50;
+  --input-bg:rgba(255,255,255,0.88);
+  --sh-btn:0 4px 18px rgba(255,122,0,.40);
+  --r-full:999px;
+  --t:all .25s cubic-bezier(.4,0,.2,1);
+}
+html,body{height:100%;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  min-height:100vh;min-height:100dvh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:12px 16px;
+  overflow-y:auto;overflow-x:hidden;
+  position:relative;
+  background:linear-gradient(160deg,#FDF6E8 0%,#F5D8A8 45%,#EEDBB5 75%,#FAF0DA 100%);
+}
+
+/* BG BOKEH */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg::before{content:'';position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,80,.5),transparent 70%);top:-80px;left:-60px;filter:blur(40px)}
+.bg::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,160,40,.4),transparent 70%);bottom:-60px;right:-50px;filter:blur(36px)}
+.orb{position:absolute;border-radius:50%;filter:blur(28px);pointer-events:none}
+
+/* BACK */
+.back{position:fixed;top:12px;left:12px;z-index:100;display:flex;align-items:center;gap:5px;color:var(--tx2);font-size:.74rem;font-weight:600;text-decoration:none;background:rgba(255,255,255,.6);backdrop-filter:blur(10px);padding:6px 12px;border-radius:var(--r-full);border:1px solid rgba(255,255,255,.8);transition:var(--t);box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.back:hover{color:var(--org);background:rgba(255,255,255,.85)}
+
+/* PAGE WRAP */
+.pw{position:relative;z-index:10;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center}
+
+/* LOGO AREA */
+.logo-area{display:flex;flex-direction:column;align-items:center;margin-bottom:14px}
+.logo-img{width:66px;height:66px;border-radius:16px;object-fit:cover;box-shadow:0 8px 24px rgba(255,107,0,.38),0 3px 10px rgba(0,0,0,.12)}
+.app-name{font-family:'Syne',sans-serif;font-size:1.65rem;font-weight:800;color:var(--tx);letter-spacing:-.02em;margin-top:10px;display:flex;align-items:center;gap:5px}
+.star{color:#FFB300;filter:drop-shadow(0 1px 4px rgba(255,179,0,.6));animation:sp 2.5s ease-in-out infinite}
+@keyframes sp{0%,100%{transform:scale(1)}50%{transform:scale(1.2) rotate(12deg)}}
+
+/* CARD */
+.card{width:100%;background:rgba(255,255,255,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:22px;border:1.5px solid rgba(255,255,255,.80);padding:22px 22px 20px;box-shadow:0 16px 48px rgba(180,80,0,.10),0 4px 16px rgba(255,150,30,.08),inset 0 1px 0 rgba(255,255,255,.9)}
+
+/* TOGGLE */
+.toggle{display:flex;background:rgba(255,255,255,.5);border:1.5px solid rgba(255,200,100,.35);border-radius:var(--r-full);padding:3px;margin-bottom:16px;width:100%}
+.tBtn{flex:1;padding:7px 10px;border:none;border-radius:var(--r-full);background:transparent;color:var(--tx3);font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:var(--t);display:flex;align-items:center;justify-content:center;gap:5px}
+.tBtn.active{background:var(--gg);color:#fff;box-shadow:0 3px 10px rgba(255,107,0,.35)}
+
+/* MSG */
+.msg{padding:8px 12px;border-radius:10px;font-size:.76rem;font-weight:600;margin-bottom:10px;display:none}
+.msg.err{background:rgba(220,50,50,.09);border:1px solid rgba(220,50,50,.22);color:#c0392b}
+.msg.ok{background:rgba(39,174,96,.09);border:1px solid rgba(39,174,96,.22);color:#1a7a45}
+
+/* HEADING */
+.ftitle{font-size:1.15rem;font-weight:800;color:var(--tx);text-align:center;margin-bottom:2px}
+.fsub{font-size:.76rem;color:var(--tx3);text-align:center;margin-bottom:14px;font-weight:500;line-height:1.45}
+
+/* INPUTS */
+.ig{position:relative;margin-bottom:10px}
+.ii{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--org);font-size:.82rem;pointer-events:none;z-index:2}
+.fi{width:100%;padding:11px 40px 11px 38px;background:var(--input-bg);border:1.5px solid rgba(255,200,100,.32);border-radius:var(--r-full);color:var(--tx);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:500;outline:none;transition:var(--t);box-shadow:0 2px 6px rgba(200,100,0,.05),inset 0 1px 2px rgba(255,255,255,.8)}
+.fi:focus{border-color:var(--org);box-shadow:0 0 0 3px rgba(255,122,0,.12);background:#fff}
+.fi::placeholder{color:var(--tx3)}
+.eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tx3);cursor:pointer;font-size:.84rem;padding:3px;transition:var(--t);z-index:2}
+.eye:hover{color:var(--org)}
+
+/* FORGOT */
+.forgot{text-align:right;margin:-4px 0 12px}
+.forgot a{font-size:.74rem;color:var(--tx3);font-weight:600;text-decoration:none;transition:var(--t)}
+.forgot a:hover{color:var(--org)}
+
+/* SUBMIT */
+.sbtn{width:100%;padding:12px;background:var(--gg);border:none;color:#fff;border-radius:var(--r-full);font-family:'Plus Jakarta Sans',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;transition:var(--t);box-shadow:var(--sh-btn);letter-spacing:.03em;margin-bottom:14px}
+.sbtn:hover{transform:scale(1.02);box-shadow:0 6px 22px rgba(255,122,0,.52)}
+.sbtn:active{transform:scale(.98)}
+
+/* DIVIDER */
+.divr{display:flex;align-items:center;gap:10px;margin-bottom:12px;color:var(--tx3);font-size:.74rem;font-weight:600}
+.divr::before,.divr::after{content:'';flex:1;height:1px;background:rgba(180,120,50,.18)}
+
+/* SOCIAL */
+.soc-btn{width:100%;padding:10px 14px;margin-bottom:9px;border-radius:var(--r-full);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;font-weight:700;display:flex;align-items:center;gap:10px;transition:var(--t);border:none}
+.soc-btn:hover{transform:translateY(-1px)}
+.soc-btn:active{transform:scale(.98)}
+.google-btn{background:rgba(255,255,255,.88);border:1.5px solid rgba(200,180,140,.3);color:var(--tx);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.google-btn:hover{background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.09)}
+.fb-btn{background:linear-gradient(135deg,#3b5998,#5272B4);color:#fff;box-shadow:0 3px 12px rgba(59,89,152,.38)}
+.fb-btn:hover{box-shadow:0 5px 18px rgba(59,89,152,.5)}
+.g-ico{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.fb-ico{width:24px;height:24px;flex-shrink:0;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.soc-label{flex:1;text-align:center}
+
+/* FOOTER */
+.ffoot{text-align:center;margin-top:12px;font-size:.78rem;color:var(--tx3);font-weight:500}
+.ffoot a{color:var(--org);font-weight:800;font-style:italic;text-decoration:none;transition:var(--t)}
+.ffoot a:hover{color:#E65100}
+
+/* RESPONSIVE */
+@media(max-height:640px){
+  .logo-img{width:52px;height:52px;border-radius:12px}
+  .app-name{font-size:1.35rem;margin-top:7px}
+  .logo-area{margin-bottom:10px}
+  .card{padding:16px 18px 14px}
+  .ftitle{font-size:1rem}
+  .fsub{margin-bottom:10px}
+  .fi{padding:9px 38px 9px 36px;font-size:.8rem}
+  .sbtn{padding:10px;font-size:.86rem;margin-bottom:10px}
+  .soc-btn{padding:8px 12px;font-size:.8rem;margin-bottom:7px}
+  .toggle{margin-bottom:12px}
+}
+@media(max-width:360px){
+  .card{padding:16px 14px 14px}
+  .app-name{font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="orb" style="width:260px;height:260px;background:radial-gradient(circle,rgba(255,200,80,.45),transparent 70%);top:-80px;right:20%;"></div>
+  <div class="orb" style="width:200px;height:200px;background:radial-gradient(circle,rgba(255,160,50,.35),transparent 70%);bottom:10%;left:10%;"></div>
+  <div class="orb" style="width:160px;height:160px;background:radial-gradient(circle,rgba(255,230,120,.4),transparent 70%);top:30%;right:-40px;"></div>
+</div>
+
+<a href="index.html" class="back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+
+<div class="pw">
+
+  <!-- LOGO -->
+  <div class="logo-area">
+    <img src="logo.png" alt="Taste&amp;View" class="logo-img"/>
+    <div class="app-name">Taste<span class="star">✦</span>View</div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <!-- TOGGLE -->
+    <div class="toggle">
+      <button class="tBtn active" id="loginBtn" onclick="setMode('login')">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+      </button>
+      <button class="tBtn" id="signupBtn" onclick="setMode('signup')">
+        <i class="fa-solid fa-user-plus"></i> Sign Up
+      </button>
+    </div>
+
+    <div class="msg" id="formMsg"></div>
+
+    <h2 class="ftitle" id="ftitle">Welcome back!</h2>
+    <p class="fsub" id="fsub">Login to continue your culinary adventure.</p>
+
+    <form id="authForm">
+
+      <div class="ig" id="nameGrp" style="display:none">
+        <i class="ii fa-solid fa-user"></i>
+        <input class="fi" type="text" id="nameIn" placeholder="Full Name"/>
+      </div>
+
+      <div class="ig">
+        <i class="ii fa-solid fa-circle-user"></i>
+        <input class="fi" type="email" id="emailIn" placeholder="example@email.com" required/>
+      </div>
+
+      <div class="ig">
+        <i class="ii fa-solid fa-lock"></i>
+        <input class="fi" type="password" id="passIn" placeholder="Password" required/>
+        <button type="button" class="eye" id="eyeBtn"><i class="fa-regular fa-eye"></i></button>
+      </div>
+
+      <div class="ig" id="confGrp" style="display:none">
+        <i class="ii fa-solid fa-lock"></i>
+        <input class="fi" type="password" id="confIn" placeholder="Confirm Password"/>
+      </div>
+
+      <div class="forgot" id="forgotWrap">
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="sbtn" id="sbtn">Log In</button>
+
+    </form>
+
+    <div class="divr">OR</div>
+
+    <button class="soc-btn google-btn" type="button" onclick="showMsg('Google login coming soon!','ok')">
+      <div class="g-ico">
+        <svg viewBox="0 0 18 18" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.658 14.013 17.64 11.705 17.64 9.2z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+          <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+      </div>
+      <span class="soc-label">Log in with Google</span>
+    </button>
+
+    <button class="soc-btn fb-btn" type="button" onclick="showMsg('Facebook login coming soon!','ok')">
+      <div class="fb-ico"><i class="fa-brands fa-facebook-f"></i></div>
+      <span class="soc-label">Log in with Facebook</span>
+    </button>
+
+    <div class="ffoot" id="switchTxt">
+      Don't have an account? <a href="#" onclick="setMode('signup');return false">Sign Up</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let mode='login';
+function setMode(m){
+  mode=m;
+  document.getElementById('loginBtn').classList.toggle('active',m==='login');
+  document.getElementById('signupBtn').classList.toggle('active',m==='signup');
+  document.getElementById('ftitle').textContent=m==='login'?'Welcome back!':'Create Account';
+  document.getElementById('fsub').textContent=m==='login'?'Login to continue your culinary adventure.':'Join Taste & View for free today.';
+  document.getElementById('nameGrp').style.display=m==='signup'?'block':'none';
+  document.getElementById('confGrp').style.display=m==='signup'?'block':'none';
+  document.getElementById('forgotWrap').style.display=m==='login'?'block':'none';
+  document.getElementById('sbtn').textContent=m==='login'?'Log In':'Create Account';
+  document.getElementById('switchTxt').innerHTML=m==='login'
+    ?`Don't have an account? <a href="#" onclick="setMode('signup');return false">Sign Up</a>`
+    :`Already have an account? <a href="#" onclick="setMode('login');return false">Login</a>`;
+  clearMsg();
+}
+document.getElementById('eyeBtn').addEventListener('click',()=>{
+  const i=document.getElementById('passIn'),ic=document.querySelector('#eyeBtn i');
+  i.type=i.type==='password'?'text':'password';
+  ic.className=i.type==='password'?'fa-regular fa-eye':'fa-regular fa-eye-slash';
+});
+function showMsg(t,type='err'){const el=document.getElementById('formMsg');el.textContent=t;el.className='msg '+type;el.style.display='block';}
+function clearMsg(){document.getElementById('formMsg').style.display='none';}
+document.getElementById('authForm').addEventListener('submit',e=>{
+  e.preventDefault();clearMsg();
+  const email=document.getElementById('emailIn').value.trim();
+  const pass=document.getElementById('passIn').value.trim();
+  let users=JSON.parse(localStorage.getItem('tv_users')||'[]');
+  if(mode==='signup'){
+    const name=document.getElementById('nameIn').value.trim();
+    const conf=document.getElementById('confIn').value.trim();
+    if(!name){showMsg('Please enter your full name');return;}
+    if(pass.length<6){showMsg('Password must be at least 6 characters');return;}
+    if(pass!==conf){showMsg('Passwords do not match');return;}
+    if(users.some(u=>u.email===email)){showMsg('Account already exists. Please login.');return;}
+    const user={name,email,pass,joined:new Date().toLocaleDateString('en-IN')};
+    users.push(user);localStorage.setItem('tv_users',JSON.stringify(users));
+    localStorage.setItem('tv_user',JSON.stringify(user));
+    showMsg('Account created! Redirecting...','ok');
+    setTimeout(()=>window.location.href='profile.html',1100);return;
+  }
+  const user=users.find(u=>u.email===email&&u.pass===pass);
+  if(user){
+    localStorage.setItem('tv_user',JSON.stringify(user));
+    showMsg('Welcome back, '+user.name+'! Redirecting...','ok');
+    setTimeout(()=>window.location.href='profile.html',1000);
+  }else{showMsg('Invalid email or password. Please try again.');}
+});
+(function(){
+  var path=(window.location.pathname.split('/').pop()||'index.html');
+  var map={'index.html':'home','ai-assistant.html':'ai','plan-trip.html':'plan','profile.html':'profile','favorites.html':'favs','ich.html':'explore','history.html':'explore','login.html':'profile'};
+  var cur=map[path]||'home';
+  document.querySelectorAll('#mobBottomNav .mbn-link').forEach(function(l){l.classList.toggle('active',l.dataset.sec===cur);});
+})();
+</script>
+</body>
+</html>
